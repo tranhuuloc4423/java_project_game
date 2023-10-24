@@ -68,7 +68,8 @@ public class Entity {
 
             if (sprites != null && spriteNum >= 1 && spriteNum <= sprites.length) {
                 BufferedImage image = sprites[spriteNum - 1];
-                g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                int size = gp.tileSize * 2;
+                g2.drawImage(image, screenX, screenY, size, size, null);
             }
         }
 
