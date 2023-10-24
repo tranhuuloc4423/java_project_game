@@ -1,25 +1,31 @@
 package Tile;
 
 import main.GamePanel;
+import main.MouseHandler;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 public class TileManager {
     GamePanel gp;
     public Tile[] tile;
     public int mapTileNum[][];
 
-    public TileManager(GamePanel gp) {
+    public MouseHandler mouseH;
+
+    public TileManager(GamePanel gp, MouseHandler mouseH) {
         this.gp = gp;
         tile = new Tile[50];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileManager();
         loadMap("/res/maps/worldV2.txt");
+        this.mouseH = mouseH;
     }
 
     public int getTileNumber(int x, int y) {
@@ -27,8 +33,6 @@ public class TileManager {
     }
 
     public void getTileManager() {
-
-
         // place holder
         setup(0, "grass00", false);
         setup(1, "grass00", false);
@@ -86,6 +90,23 @@ public class TileManager {
             e.printStackTrace();
         }
     }
+
+    //
+    public void changeTileImage(int col, int row, int tileIndex) {
+        mapTileNum[col][row] = tileIndex;
+    }
+
+    public void update() {
+        int col = mouseH.tileX;
+        int row = mouseH.tileY;
+        if(row == 21) {
+            if(col >= 15 && col <= 18 ) {
+                changeTileImage(col, row, 39);
+            }
+        }
+
+    }
+
     public void loadMap(String filePath) {
         try {
             InputStream is = getClass().getResourceAsStream(filePath);
@@ -111,6 +132,27 @@ public class TileManager {
             reader.close();
 
         } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void plantCrop(int col, int row, Crop crop) {
+        Tile targetTile = tile[mapTileNum[col][row]];
+
+        if (targetTile.crop != null) {
+            System.out.println("This tile is already occupied.");
+        } else {
+            targetTile.crop = crop;
+        }
+    }
+
+    public void loadCropImage(Crop crop) {
+        BufferedImage cropImage = null;
+
+        // Tải hình ảnh cây trồng từ tệp tin
+        try {
+            cropImage = ImageIO.read(getClass().getResourceAsStream("/res/tiles/.png")); // Thay đổi đường dẫn tới tệp tin hình ảnh cây trồng
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

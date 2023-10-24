@@ -115,8 +115,6 @@ public class Player extends Entity {
                         break;
                 }
             }
-
-
         }
 
         if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed)) {

@@ -31,9 +31,10 @@ public class GamePanel extends JPanel implements  Runnable {
     public int FPS = 60;
 
     // SYSTEM
-    TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler(this);
     MouseHandler mouseH = new MouseHandler(this);
+    TileManager tileM = new TileManager(this, mouseH);
+
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public Sound music = new Sound();
@@ -75,7 +76,6 @@ public class GamePanel extends JPanel implements  Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
-
 
 
 //    @Override
@@ -137,7 +137,11 @@ public class GamePanel extends JPanel implements  Runnable {
     public void update() {
         if(gameState == playState) {
             player.update();
-
+            if(mouseH.isMouseClicked) {
+                System.out.println("Mouse clicked");
+                tileM.update();
+                mouseH.isMouseClicked = false;
+            }
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null) {
                     npc[i].update();

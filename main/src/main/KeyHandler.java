@@ -20,7 +20,6 @@ public class KeyHandler implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
         int code = e.getKeyCode();
 
         if(code == KeyEvent.VK_W) {
@@ -39,6 +38,7 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_D) {
             rightPressed = true;
         }
+
         if(code == KeyEvent.VK_P) {
             if(gp.gameState == gp.playState) {
                 gp.gameState = gp.pauseState;
