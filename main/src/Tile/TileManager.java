@@ -25,6 +25,8 @@ public class TileManager {
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileManager();
         loadMap("/res/maps/worldV2.txt");
+        loadMap("/res/maps/Map_farm.txt");
+
         this.mouseH = mouseH;
     }
 
@@ -45,47 +47,92 @@ public class TileManager {
         setup(8, "grass00", false);
         setup(9, "grass00", false);
 
+
         // placeholder
-        setup(10, "grass00", false);
-        setup(11, "grass01", false);
-        setup(12, "water00", true);
-        setup(13, "water01", true);
-        setup(14, "water02", true);
-        setup(15, "water03", true);
-        setup(16, "water04", true);
-        setup(17, "water05", true);
-        setup(18, "water06", true);
-        setup(19, "water07", true);
-        setup(20, "water08", true);
-        setup(21, "water09", true);
-        setup(22, "water10", true);
-        setup(23, "water11", true);
-        setup(24, "water12", true);
-        setup(25, "water13", true);
-        setup(26, "road00", false);
-        setup(27, "road01", false);
-        setup(28, "road02", false);
-        setup(29, "road03", false);
-        setup(30, "road04", false);
-        setup(31, "road05", false);
-        setup(32, "road06", false);
-        setup(33, "road07", false);
-        setup(34, "road08", false);
-        setup(35, "road09", false);
-        setup(36, "road10", false);
-        setup(37, "road11", false);
-        setup(38, "road12", false);
-        setup(39, "earth", false);
-        setup(40, "wall", true);
-        setup(41, "tree", true);
+
+        setup(10, "W01", true);
+        setup(11, "H03", false);
+        setup(12, "H12", false);
+        setup(13, "H15", false);
+        setup(14, "H29", false);
+        setup(15, "H30", false);
+        setup(16, "H36", false);
+        setup(17, "H37", false);
+        setup(18, "H38", false);
+        setup(19, "H40", false);
+        setup(20, "H42", false);
+        setup(21, "H43", false);
+        setup(22, "H44", false);
+        setup(23, "H45", false);
+        setup(24, "H47", false);
+        setup(25, "H48", false);
+        setup(26, "H49", false);
+        setup(27, "H50", false);
+        setup(28, "H51", false);
+        setup(29, "T09", false);
+        setup(30, "T65", false);
+        setup(31, "T66", false);
+        setup(32, "T67", false);
+        setup(33, "T68", false);
+        setup(34, "T69", false);
+        setup(35, "T70", false);
+        setup(36, "T71", false);
+        setup(37, "T72", false);
+        setup(38, "T73", false);
+        setup(39, "T74", false);
+        setup(40, "H05", false);
+        setup(41, "H06", false);
+        setup(42, "H39", false);
+        setup(43, "H35", false);
+        setup(44, "H41", false);
+        setup(45, "H46", false);
+        setup(46, "tile002", false);
+
+
+
+
+//        setup(10, "grass00", false);
+//        setup(11, "grass01", false);
+//        setup(12, "water00", true);
+//        setup(13, "water01", true);
+//        setup(14, "water02", true);
+//        setup(15, "water03", true);
+//        setup(16, "water04", true);
+//        setup(17, "water05", true);
+//        setup(18, "water06", true);
+//        setup(19, "water07", true);
+//        setup(20, "water08", true);
+//        setup(21, "water09", true);
+//        setup(22, "water10", true);
+//        setup(23, "water11", true);
+//        setup(24, "water12", true);
+//        setup(25, "water13", true);
+//        setup(26, "road00", false);
+//        setup(27, "road01", false);
+//        setup(28, "road02", false);
+//        setup(29, "road03", false);
+//        setup(30, "road04", false);
+//        setup(31, "road05", false);
+//        setup(32, "road06", false);
+//        setup(33, "road07", false);
+//        setup(34, "road08", false);
+//        setup(35, "road09", false);
+//        setup(36, "road10", false);
+//        setup(37, "road11", false);
+//        setup(38, "road12", false);
+//        setup(39, "earth", false);
+//        setup(40, "wall", true);
+//        setup(41, "tree", true);
     }
     public void setup(int index, String imageName, boolean collision) {
         UtilityTool tool = new UtilityTool();
         try{
             tile[index] = new Tile();
-            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));
-            tile[index].image = tool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+            BufferedImage image =  ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));
+//            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));
+//            tile[index].image = tool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
             tile[index].collision = collision;
+            tile[index].image = image;
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -99,9 +146,9 @@ public class TileManager {
     public void update() {
         int col = mouseH.tileX;
         int row = mouseH.tileY;
-        if(row == 21) {
-            if(col >= 15 && col <= 18 ) {
-                changeTileImage(col, row, 39);
+        if(row >= 8 && row <= 11) {
+            if(col >= 15 && col <= 16 ) {
+                changeTileImage(col, row, 46);
             }
         }
 
@@ -170,7 +217,7 @@ public class TileManager {
                     && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
                     && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY
             ) {
-                g2.drawImage(tile[tileNum].image, screenX, screenY, null);
+                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
             worldCol++;
 
