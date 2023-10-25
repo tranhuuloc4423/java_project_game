@@ -74,7 +74,7 @@ public class UI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int width = gp.tileSize * 16; // tileSize = 48
+        int width = 747; // tileSize = 48
         int height = gp.tileSize * 3;
         int x = (gp.screenWidth - width) / 2; // screenWidth = 1152
         int y = gp.screenHeight - 160; // screenHeight = 768
@@ -90,7 +90,8 @@ public class UI {
         }
         int width = gp.tileSize * 2; // tileSize = 48
         int height = gp.tileSize * 2;
-        int x = width * 2 + 14 + (80 * (index - 1)); // screenWidth = 1152
+        int initX = width * 2 + 22;
+        int x = initX + (78 * (index - 1)); // screenWidth = 1152
         int y = gp.screenHeight - 140; // screenHeight = 768
         g2.drawImage(image, x, y, width, height, null);
     }
