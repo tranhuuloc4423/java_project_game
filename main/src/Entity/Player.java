@@ -25,13 +25,13 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - (gp.tileSize/ 2);
 
         solidArea = new Rectangle();
-        solidArea.x = 70;
-        solidArea.y = 70;
+        solidArea.x = 64;
+        solidArea.y = 64;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        solidArea.width = 70;
-        solidArea.height = 70;
+        solidArea.width = 64;
+        solidArea.height = 64;
         setDefaultValues();
         setPlayerImage();
     }
@@ -44,10 +44,12 @@ public class Player extends Entity {
     }
 
     public void getTilePositionPlayer() {
-        landTileX = worldX / gp.tileSize;
-        landTileY = worldY / gp.tileSize;
-        System.out.println(landTileX);
-        System.out.println(landTileY);
+//        worldX = gp.player.worldX - screenX;
+//        worldY = gp.player.worldY - screenY;
+        landTileX = (worldX / gp.tileSize) + 2;
+        landTileY = (worldY / gp.tileSize) + 1;
+//        System.out.println(landTileX);
+//        System.out.println(landTileY);
     }
 
     public void pickUpObject(int index) {
@@ -57,7 +59,6 @@ public class Player extends Entity {
     }
 
     public void setPlayerImage() {
-
         try {
             for (int i = 1; i <= spritesNum; i++) {
                 // move

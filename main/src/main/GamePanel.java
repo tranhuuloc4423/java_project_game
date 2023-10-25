@@ -4,8 +4,12 @@ import Entity.Entity;
 import Entity.Player;
 import Tile.TileManager;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import Object.SuperObject;
 
 public class GamePanel extends JPanel implements  Runnable {
@@ -31,9 +35,13 @@ public class GamePanel extends JPanel implements  Runnable {
     public int FPS = 60;
 
     // SYSTEM
-    KeyHandler keyH = new KeyHandler(this);
-    MouseHandler mouseH = new MouseHandler(this);
-    TileManager tileM = new TileManager(this, mouseH);
+    public KeyHandler keyH = new KeyHandler(this);
+    public MouseHandler mouseH = new MouseHandler(this);
+
+
+    Cursor customCursor;
+
+
 
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
@@ -50,6 +58,9 @@ public class GamePanel extends JPanel implements  Runnable {
     public SuperObject obj[] = new SuperObject[10];
     public Entity npc[] = new Entity[10];
 
+    // tiles
+    TileManager tileM = new TileManager(this);
+
     // game state
     public int gameState;
     public final int playState = 1;
@@ -62,6 +73,18 @@ public class GamePanel extends JPanel implements  Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true);
         addMouseListener(mouseH);
+
+        customCursor();
+    }
+
+    public void customCursor() {
+        try {
+            BufferedImage cursorImage = ImageIO.read(getClass().getResourceAsStream("/res/mouse/custom_mouse_1.png"));
+            customCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "customCursor");
+            setCursor(customCursor);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setupGame() {
@@ -137,11 +160,12 @@ public class GamePanel extends JPanel implements  Runnable {
     public void update() {
         if(gameState == playState) {
             player.update();
-            if(mouseH.isMouseClicked) {
-                System.out.println("Mouse clicked");
-                tileM.update();
-                mouseH.isMouseClicked = false;
-            }
+//            if(mouseH.isMouseClicked) {
+//                System.out.println("Mouse clicked");
+//
+//                mouseH.isMouseClicked = false;
+//            }
+            tileM.update();
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null) {
                     npc[i].update();
@@ -164,6 +188,7 @@ public class GamePanel extends JPanel implements  Runnable {
         if(keyH.checkDrawTime) {
             drawStart =  System.nanoTime();
         }
+
         // tiles
         tileM.draw(g2);
 
@@ -173,6 +198,8 @@ public class GamePanel extends JPanel implements  Runnable {
                 obj[i].draw(g2, this);
             }
         }
+
+
 
         // npc
         for(int i = 0; i < npc.length; i++) {

@@ -72,11 +72,6 @@ public class Entity {
                 g2.drawImage(image, screenX, screenY, size, size, null);
             }
         }
-
-
-
-
-
     }
 
 

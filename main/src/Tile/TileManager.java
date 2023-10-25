@@ -1,6 +1,8 @@
 package Tile;
 
+import Entity.Player;
 import main.GamePanel;
+import main.KeyHandler;
 import main.MouseHandler;
 import main.UtilityTool;
 
@@ -17,15 +19,15 @@ public class TileManager {
     public Tile[] tile;
     public int mapTileNum[][];
     public MouseHandler mouseH;
-    public TileManager(GamePanel gp, MouseHandler mouseH) {
+    public TileManager(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[50];
+        tile = new Tile[100];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileManager();
 //        loadMap("/res/maps/worldV2.txt");
         loadMap("/res/maps/Map_farm.txt");
 
-        this.mouseH = mouseH;
+        this.mouseH = gp.mouseH;
     }
 
     public int getTileNumber(int x, int y) {
@@ -105,15 +107,26 @@ public class TileManager {
         mapTileNum[col][row] = tileIndex;
     }
 
-    public void update() {
-        int col = mouseH.tileX;
-        int row = mouseH.tileY;
+    public void checkHoe() {
+        int col = gp.player.landTileX;
+        int row = gp.player.landTileY;
+        System.out.println(col);
+        System.out.println(row);
+        int hoeCounter = 0;
         if(row >= 8 && row <= 11) {
             if(col >= 15 && col <= 16 ) {
+                hoeCounter++;
                 changeTileImage(col, row, 46);
+                System.out.println("hoe...");
+                System.out.println(hoeCounter);
             }
         }
+    }
 
+    public void update() {
+        if(gp.keyH.isHoe) {
+            checkHoe();
+        }
     }
 
     public void loadMap(String filePath) {
