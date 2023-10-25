@@ -12,6 +12,12 @@ import java.io.IOException;
 public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX, screenY;
+    public int landTileX, landTileY;
+
+    public BufferedImage[] hoeUp = new BufferedImage[spritesNum];
+    public BufferedImage[] hoeDown = new BufferedImage[spritesNum];
+    public BufferedImage[] hoeLeft = new BufferedImage[spritesNum];
+    public BufferedImage[] hoeRight = new BufferedImage[spritesNum];
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
@@ -19,24 +25,30 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - (gp.tileSize/ 2);
 
         solidArea = new Rectangle();
-        solidArea.x = 12;
-        solidArea.y = 24;
+        solidArea.x = 70;
+        solidArea.y = 70;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        solidArea.width = 24;
-        solidArea.height = 24;
+        solidArea.width = 70;
+        solidArea.height = 70;
         setDefaultValues();
         setPlayerImage();
     }
 
     public void setDefaultValues() {
-        worldX = gp.tileSize * 22;
-        worldY = gp.tileSize * 23;
+        worldX = gp.tileSize * 15;
+        worldY = gp.tileSize * 16;
         speed = 4;
         direction = "down";
     }
 
+    public void getTilePositionPlayer() {
+        landTileX = worldX / gp.tileSize;
+        landTileY = worldY / gp.tileSize;
+        System.out.println(landTileX);
+        System.out.println(landTileY);
+    }
 
     public void pickUpObject(int index) {
         if(index != 999) {
@@ -48,18 +60,23 @@ public class Player extends Entity {
 
         try {
             for (int i = 1; i <= spritesNum; i++) {
-
                 // move
-                up[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabbit/up_" + i + ".png"));
-                down[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabbit/down_" + i + ".png"));
-                left[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabbit/left_" + i + ".png"));
-                right[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabbit/right_" + i + ".png"));
+                up[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/up_" + i + ".png"));
+                down[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/down_" + i + ".png"));
+                left[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/left_" + i + ".png"));
+                right[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/right_" + i + ".png"));
 
                 // idle
-                idleUp[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabbit/idle_up_" + i + ".png"));
-                idleDown[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabbit/idle_down_" + i + ".png"));
-                idleLeft[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabbit/idle_left_" + i + ".png"));
-                idleRight[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabbit/idle_right_" + i + ".png"));
+                idleUp[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_up_" + i + ".png"));
+                idleDown[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_down_" + i + ".png"));
+                idleLeft[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_left_" + i + ".png"));
+                idleRight[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_right_" + i + ".png"));
+
+                // hoe
+                hoeUp[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/t" + i + ".png"));
+                hoeDown[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/b" + i + ".png"));
+                hoeLeft[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/l" + i + ".png"));
+                hoeRight[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/r" + i + ".png"));
             }
         } catch(IOException e) {
             e.printStackTrace();
@@ -67,18 +84,15 @@ public class Player extends Entity {
     }
 
 
-
     public void update() {
+        getTilePositionPlayer();
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
             if(keyH.upPressed) {
                 direction = "up";
-
             } else if(keyH.downPressed) {
                 direction = "down";
-
             } else if(keyH.leftPressed) {
                 direction = "left";
-
             } else if(keyH.rightPressed) {
                 direction = "right";
             }
@@ -117,7 +131,7 @@ public class Player extends Entity {
             }
         }
 
-        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed)) {
+        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.isHoe) {
             switch (direction) {
                 case "up":
                     sprites = idleUp;
@@ -130,6 +144,23 @@ public class Player extends Entity {
                     break;
                 case "right":
                     sprites = idleRight;
+                    break;
+            }
+        }
+
+        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.isHoe) {
+            switch (direction) {
+                case "up":
+                    sprites = hoeUp;
+                    break;
+                case "down":
+                    sprites = hoeDown;
+                    break;
+                case "left":
+                    sprites = hoeLeft;
+                    break;
+                case "right":
+                    sprites = hoeRight;
                     break;
             }
         }
@@ -153,68 +184,11 @@ public class Player extends Entity {
         }
     }
 
-
-
     public void draw(Graphics2D g2) {
-//        BufferedImage[] sprites = null;
-//
-//        switch (direction) {
-//            case "up":
-//                sprites = up;
-//                break;
-//            case "down":
-//                sprites = down;
-//                break;
-//            case "left":
-//                sprites = left;
-//                break;
-//            case "right":
-//                sprites = right;
-//                break;
-//        }
-
         if (sprites != null && spriteNum >= 1 && spriteNum <= sprites.length) {
             BufferedImage image = sprites[spriteNum - 1];
-            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            int size = gp.tileSize * 3;
+            g2.drawImage(image, screenX, screenY, size, size, null);
         }
     }
-//    public void draw(Graphics2D g2) {
-//
-//        BufferedImage image = null;
-//        switch (direction) {
-//            case "up":
-//                if(spriteNum == 1) {
-//                    image = up1;
-//                }
-//                if (spriteNum == 2) {
-//                    image = up2;
-//                }
-//                break;
-//            case "down":
-//                if(spriteNum == 1) {
-//                    image = down1;
-//                }
-//                if (spriteNum == 2) {
-//                    image = down2;
-//                }
-//                break;
-//            case "left":
-//                if(spriteNum == 1) {
-//                    image = left1;
-//                }
-//                if (spriteNum == 2) {
-//                    image = left2;
-//                }
-//                break;
-//            case "right":
-//                if(spriteNum == 1) {
-//                    image = right1;
-//                }
-//                if (spriteNum == 2) {
-//                    image = right2;
-//                }
-//                break;
-//        }
-//        g2.drawImage(image, screenX, screenY,gp.tileSize,gp.tileSize, null);
-//    }
 }
