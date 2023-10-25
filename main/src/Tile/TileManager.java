@@ -110,14 +110,11 @@ public class TileManager {
     public void checkHoe() {
         int col = gp.player.landTileX;
         int row = gp.player.landTileY;
-        System.out.println(col);
-        System.out.println(row);
         int hoeCounter = 0;
         if(row >= 8 && row <= 11) {
             if(col >= 15 && col <= 16 ) {
                 hoeCounter++;
                 changeTileImage(col, row, 46);
-                System.out.println("hoe...");
                 System.out.println(hoeCounter);
             }
         }

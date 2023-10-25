@@ -11,6 +11,8 @@ public class MouseHandler implements MouseListener {
         this.gp = gp;
     }
 
+    public boolean isDrag = false;
+
     @Override
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
@@ -33,12 +35,14 @@ public class MouseHandler implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        isDrag = true;
+        System.out.println(isDrag);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        isDrag = false;
+        System.out.println(isDrag);
     }
 
     @Override

@@ -2,9 +2,12 @@ package main;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 import Object.*;
+
+import javax.imageio.ImageIO;
 
 public class UI {
     GamePanel gp;
@@ -39,7 +42,11 @@ public class UI {
         g2.setColor(Color.WHITE);
 
         if(gp.gameState == gp.playState) {
-            // do playstate stuff later
+            // do playstate stuff late
+            if(gp.inventory == gp.inventoryOn) {
+                drawInventory("/res/ui/Menu.png", g2);
+                drawSelectItem("/res/ui/SelectMenu.png", g2, gp.selectItem);
+            }
         }
         if(gp.gameState == gp.pauseState) {
             drawPauseScreen();
@@ -58,5 +65,33 @@ public class UI {
         int textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth / 2 - textLength / 2;
         return x;
+    }
+
+    public void drawInventory(String filePath, Graphics2D g2) {
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int width = gp.tileSize * 16; // tileSize = 48
+        int height = gp.tileSize * 3;
+        int x = (gp.screenWidth - width) / 2; // screenWidth = 1152
+        int y = gp.screenHeight - 160; // screenHeight = 768
+        g2.drawImage(image, x, y, width, height, null);
+    }
+
+    public void drawSelectItem(String filePath, Graphics2D g2, int index) {
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int width = gp.tileSize * 2; // tileSize = 48
+        int height = gp.tileSize * 2;
+        int x = width * 2 + 14 + (80 * (index - 1)); // screenWidth = 1152
+        int y = gp.screenHeight - 140; // screenHeight = 768
+        g2.drawImage(image, x, y, width, height, null);
     }
 }

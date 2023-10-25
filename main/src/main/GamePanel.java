@@ -16,11 +16,11 @@ public class GamePanel extends JPanel implements  Runnable {
 
     // screen settings
     final int originalTileSize = 16;
-    final int scale = 4;
+    final int scale = 3;
 
     public final int tileSize = originalTileSize * scale; // tile = 16 * 3
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
+    public final int maxScreenCol = 24;
+    public final int maxScreenRow = 16;
     public final int screenWidth = tileSize * maxScreenCol; // 768 px
     public final int screenHeight = tileSize * maxScreenRow; // 576 px
 
@@ -66,6 +66,12 @@ public class GamePanel extends JPanel implements  Runnable {
     public final int playState = 1;
     public final int pauseState = 2;
 
+    public int inventory;
+    public final int inventoryOn = 1;
+    public final int inventoryOff = 2;
+
+    public int selectItem;
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
@@ -93,6 +99,8 @@ public class GamePanel extends JPanel implements  Runnable {
         playMusic(0); // 0 is main song
         stopMusic();
         gameState = playState;
+        inventory = inventoryOff;
+        selectItem = 1;
     }
 
     public void startGameThread() {
