@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.util.Random;
 
-public class Animal_Cow extends  Entity {
+public class Animal_Cow extends Entity {
     public Animal_Cow(GamePanel gp) {
         super(gp);
         direction = "right";

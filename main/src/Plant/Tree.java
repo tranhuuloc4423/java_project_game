@@ -4,8 +4,10 @@ import Entity.Entity;
 import main.GamePanel;
 import main.UtilityTool;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Tree {
 
@@ -16,7 +18,39 @@ public class Tree {
     public String name;
     public boolean collision = false;
     public int worldX, worldY;
-    UtilityTool tool = new UtilityTool();
+//    UtilityTool tool = new UtilityTool();
+
+    private int imageChangeInterval; // Khoảng thời gian thay đổi hình ảnh (tính bằng mili giây)
+    private long lastImageChangeTime;
+    private int currentImageIndex;
+
+    public boolean isHarvested;
+
+
+    public Tree(BufferedImage[]treeImages, int imageChangeInterval) {
+        this.treeImages = treeImages;
+        this.imageChangeInterval = imageChangeInterval;
+        this.currentImageIndex = 0;
+        this.image = treeImages[currentImageIndex];
+        this.lastImageChangeTime = System.currentTimeMillis();
+    }
+
+    public void update() {
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - lastImageChangeTime;
+
+        if (elapsedTime >= imageChangeInterval) {
+            // Đổi hình ảnh
+            if (currentImageIndex < treeImages.length - 1) {
+                currentImageIndex++;
+            }
+
+            image = treeImages[currentImageIndex];
+
+            // Cập nhật thời điểm thay đổi hình ảnh cuối cùng
+            lastImageChangeTime = currentTime;
+        }
+    }
 
     public void draw(Graphics2D g2, GamePanel gp) {
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
@@ -28,5 +62,19 @@ public class Tree {
         ) {
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
+    }
+
+//    public BufferedImage setupImage(String fileName) {
+//        BufferedImage image = null;
+//        try {
+//            image = ImageIO.read(getClass().getResourceAsStream("/res/plants/" + fileName + ".png"));
+//        } catch(IOException e) {
+//            e.printStackTrace();
+//        }
+//        return image;
+//    }
+
+    public void harvest() {
+        isHarvested = true;
     }
 }

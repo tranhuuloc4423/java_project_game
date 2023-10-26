@@ -57,7 +57,6 @@ public class TileManager {
 
 
         // placeholder
-
         setup(10, "W01", true);
         setup(11, "H03", false);
         setup(12, "H12", false);
@@ -115,7 +114,6 @@ public class TileManager {
     }
 
     public void checkHoe() {
-
         int col = gp.player.landTileX;
         int row = gp.player.landTileY;
         if (!isDigging) {
@@ -135,27 +133,14 @@ public class TileManager {
         }
     }
 
-    public void checkPlant(Graphics2D g2) {
-        int col = gp.player.landTileX;
-        int row = gp.player.landTileY;
-        if(row >= 8 && row <= 11) {
-            if(col >= 15 && col <= 16) {
-                BufferedImage image = null;
-                try {
-                    image =  ImageIO.read(getClass().getResourceAsStream("/res/plants/ezgif-2-d5eaddec43-png-16x32-sprite-png/tile002.png"));
-                } catch(IOException e) {
-                    e.printStackTrace();
-                }
-                g2.drawImage(image, col, row , gp.tileSize, gp.tileSize * 2, null);
-            }
-        }
-    }
-
     public void update() {
         if(gp.keyH.isHoe) {
             checkHoe();
         }
         plantCrop();
+        for (Tree plant : plantList) {
+            plant.update();
+        }
     }
 
     public void drawPlants(Graphics2D g2) {
@@ -164,18 +149,32 @@ public class TileManager {
         }
     }
 
+    public BufferedImage setupPlantImage(String fileName) {
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream("/res/plants/" + fileName + ".png"));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
     public void plantCrop() {
         if(gp.keyH.isPlant) {
             int col = gp.player.landTileX;
             int row = gp.player.landTileY;
             if(gp.tileM.mapTileNum[col][row] == 46) {
-                Plant_1 plant = new Plant_1(gp, "plant_1_1");
+                BufferedImage[] plantImages = new BufferedImage[5];
+                for(int i = 0; i < plantImages.length; i++) {
+                    String pathName = "plant_2_" + (i + 1);
+                    plantImages[i] = setupPlantImage(pathName);
+                }
+                Plant_1 plant = new Plant_1(plantImages, 3000);
                 plant.worldX = gp.tileSize * col;
                 plant.worldY = gp.tileSize * row;
                 plantList.add(plant);
             }
         }
-
     }
 
     public void loadMap(String filePath) {

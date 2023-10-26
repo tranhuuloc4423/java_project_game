@@ -113,6 +113,8 @@ public class GamePanel extends JPanel implements  Runnable {
     }
 
 
+
+    // game loop
 //    @Override
 //    public void run() {
 //        while(gameThread != null) {

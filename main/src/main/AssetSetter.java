@@ -25,12 +25,4 @@ public class AssetSetter {
         gp.npc[0].worldX = gp.tileSize * 15;
         gp.npc[0].worldY = gp.tileSize * 15;
     }
-
-    public void setPlant(int x, int y, int index) {
-        if (gp.plants[index] == null) {
-            gp.plants[index] = new Plant_1(gp, "plant_1_1");
-        }
-        gp.plants[index].worldX = gp.tileSize * x;
-        gp.plants[index].worldY = gp.tileSize * y;
-    }
 }
