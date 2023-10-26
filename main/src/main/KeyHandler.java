@@ -27,39 +27,25 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_W) {
             upPressed = true;
-            isHoe = false;
         }
 
         if(code == KeyEvent.VK_S) {
             downPressed = true;
-            isHoe = false;
         }
 
         if(code == KeyEvent.VK_A) {
             leftPressed = true;
-            isHoe = false;
         }
 
         if(code == KeyEvent.VK_D) {
             rightPressed = true;
-            isHoe = false;
         }
 
         if(code == KeyEvent.VK_R) {
-            upPressed = false;
-            downPressed= false;
-            leftPressed = false;
-            rightPressed = false;
-//            isHoe = true;
             int col = gp.player.landTileX;
             int row = gp.player.landTileY;
-//            if(row >= 8 && row <= 11) {
-//                if (col >= 15 && col <= 16) {
-//
-//
-//                }
-//            }
-            if(gp.tileM.mapTileNum[col][row] == 29) {
+            int dirtTileNum = 29;
+            if(gp.tileM.mapTileNum[col][row] == dirtTileNum) {
                 isHoe = true;
             }
         }
@@ -74,7 +60,7 @@ public class KeyHandler implements KeyListener {
         }
 
         // inventory
-        if(code == KeyEvent.VK_B) {
+        if(code == KeyEvent.VK_I) {
             if(gp.inventory == gp.inventoryOn) {
                 gp.inventory = gp.inventoryOff;
             } else  if(gp.inventory == gp.inventoryOff) {

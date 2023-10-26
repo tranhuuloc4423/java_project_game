@@ -3,6 +3,7 @@ package main;
 import Entity.Entity;
 import Entity.Player;
 import Plant.Tree;
+import Tile.PlantCrop;
 import Tile.TileManager;
 
 import javax.imageio.ImageIO;
@@ -61,7 +62,7 @@ public class GamePanel extends JPanel implements  Runnable {
     public Entity npc[] = new Entity[10];
 
     // tiles
-    TileManager tileM = new TileManager(this);
+    public TileManager tileM = new TileManager(this);
 
     // game state
     public int gameState;
@@ -176,10 +177,9 @@ public class GamePanel extends JPanel implements  Runnable {
 //
 //                mouseH.isMouseClicked = false;
 //            }
+            // tiles
             tileM.update();
-            for(int i = 0; i < plants.length; i++) {
-                tileM.drawPlant(i);
-            }
+
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null) {
                     npc[i].update();
@@ -205,9 +205,6 @@ public class GamePanel extends JPanel implements  Runnable {
 
         // tiles
         tileM.draw(g2);
-//        if(keyH.isPlant) {
-//            tileM.checkPlant(g2);
-//        }
 
         // objects
         for(int i = 0;i < obj.length; i++) {
@@ -236,6 +233,9 @@ public class GamePanel extends JPanel implements  Runnable {
 
         // ui
         ui.draw(g2);
+
+        // plantcrop
+//        plantcrop.draw(g2);
 
         // debug
         if(keyH.checkDrawTime) {

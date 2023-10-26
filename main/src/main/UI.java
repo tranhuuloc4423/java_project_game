@@ -48,8 +48,8 @@ public class UI {
             if(gp.inventory == gp.inventoryOn) {
                 drawInventory("/res/ui/Menu.png", g2);
                 drawSelectItem("/res/ui/SelectMenu.png", g2, gp.selectItem);
-                drawItem("/res/plants/tile000.png", g2, 1);
-                drawItem("/res/plants/tile006.png", g2, 2);
+                drawItem("/res/plants/seed_1.png", g2, 1);
+                drawItem("/res/plants/seed_2.png", g2, 2);
                 drawItem("/res/Object/tile000.png", g2, 8);
                 drawItem("/res/Object/tile002.png", g2, 9);
 

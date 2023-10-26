@@ -1,5 +1,6 @@
 package Entity;
 
+import Tile.Tile;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
@@ -67,29 +68,61 @@ public class Player extends Entity {
     }
 
     public void setPlayerImage() {
-        try {
-            for (int i = 1; i <= spritesNum; i++) {
-                // move
-                up[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/up_" + i + ".png"));
-                down[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/down_" + i + ".png"));
-                left[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/left_" + i + ".png"));
-                right[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/right_" + i + ".png"));
+//        try {
+//
+//        } catch(IOException e) {
+//            e.printStackTrace();
+//        }
 
-                // idle
-                idleUp[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_up_" + i + ".png"));
-                idleDown[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_down_" + i + ".png"));
-                idleLeft[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_left_" + i + ".png"));
-                idleRight[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_right_" + i + ".png"));
+        for (int i = 1; i <= spritesNum; i++) {
+            // move
+//                up[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/up_" + i + ".png"));
+//                down[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/down_" + i + ".png"));
+//                left[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/left_" + i + ".png"));
+//                right[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/right_" + i + ".png"));
+//
+//                // idle
+//                idleUp[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_up_" + i + ".png"));
+//                idleDown[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_down_" + i + ".png"));
+//                idleLeft[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_left_" + i + ".png"));
+//                idleRight[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_right_" + i + ".png"));
+//
+//                // hoe
+//                hoeUp[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/t" + i + ".png"));
+//                hoeDown[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/b" + i + ".png"));
+//                hoeLeft[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/l" + i + ".png"));
+//                hoeRight[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/r" + i + ".png"));
 
-                // hoe
-                hoeUp[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/t" + i + ".png"));
-                hoeDown[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/b" + i + ".png"));
-                hoeLeft[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/l" + i + ".png"));
-                hoeRight[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/r" + i + ".png"));
-            }
+            up[i - 1] = setup("rabit/up_" + i);
+            down[i - 1] = setup("rabit/down_" + i);
+            left[i - 1] = setup("rabit/left_" + i);
+            right[i- 1] = setup("rabit/right_" + i);
+
+            // idle
+            idleUp[i - 1] = setup("rabit/idle_up_" + i);
+            idleDown[i - 1] = setup("rabit/idle_down_" + i);
+            idleLeft[i - 1] = setup("rabit/idle_left_" + i);
+            idleRight[i- 1] = setup("rabit/idle_right_" + i);
+
+            // hoe
+            hoeUp[i - 1] = setup("action/t" + i);
+            hoeDown[i - 1] = setup("action/b" + i);
+            hoeLeft[i - 1] = setup("action/l" + i);
+            hoeRight[i- 1] = setup("action/r" + i);
+        }
+    }
+
+    public BufferedImage setup(String imageName) {
+        BufferedImage image = null;
+//        int size = gp.tileSize * 3;
+        try{
+            image =  ImageIO.read(getClass().getResourceAsStream("/res/Player/" + imageName +".png"));
+//            image = UtilityTool.scaleImage(image, size, size);
         } catch(IOException e) {
             e.printStackTrace();
         }
+
+        return image;
     }
 
     public void drawBorder() {
@@ -180,7 +213,7 @@ public class Player extends Entity {
         }
 
         spriteCounter++;
-        if(spriteCounter > 20) {
+        if(spriteCounter > 15) {
             if(spriteNum == 1) {
                 spriteNum = 2;
             } else if(spriteNum == 2) {
