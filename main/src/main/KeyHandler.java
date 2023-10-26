@@ -10,6 +10,7 @@ public class KeyHandler implements KeyListener {
     public boolean isHoe;
     // debug
     boolean checkDrawTime = false;
+    public boolean isPlant = false;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -26,22 +27,41 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_W) {
             upPressed = true;
+            isHoe = false;
         }
 
         if(code == KeyEvent.VK_S) {
             downPressed = true;
+            isHoe = false;
         }
 
         if(code == KeyEvent.VK_A) {
             leftPressed = true;
+            isHoe = false;
         }
 
         if(code == KeyEvent.VK_D) {
             rightPressed = true;
+            isHoe = false;
         }
 
         if(code == KeyEvent.VK_R) {
-            isHoe = true;
+            upPressed = false;
+            downPressed= false;
+            leftPressed = false;
+            rightPressed = false;
+//            isHoe = true;
+            int col = gp.player.landTileX;
+            int row = gp.player.landTileY;
+//            if(row >= 8 && row <= 11) {
+//                if (col >= 15 && col <= 16) {
+//
+//
+//                }
+//            }
+            if(gp.tileM.mapTileNum[col][row] == 29) {
+                isHoe = true;
+            }
         }
 
         // game state
@@ -65,6 +85,7 @@ public class KeyHandler implements KeyListener {
         switch (code) {
             case KeyEvent.VK_1:
                 gp.selectItem = 1;
+                isPlant = true;
                 break;
             case KeyEvent.VK_2:
                 gp.selectItem = 2;
@@ -122,6 +143,37 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_R) {
             isHoe = false;
+        }
+
+        switch (code) {
+            case KeyEvent.VK_1:
+                gp.selectItem = 1;
+                isPlant = false;
+                break;
+            case KeyEvent.VK_2:
+                gp.selectItem = 2;
+                break;
+            case KeyEvent.VK_3:
+                gp.selectItem = 3;
+                break;
+            case KeyEvent.VK_4:
+                gp.selectItem = 4;
+                break;
+            case KeyEvent.VK_5:
+                gp.selectItem = 5;
+                break;
+            case KeyEvent.VK_6:
+                gp.selectItem = 6;
+                break;
+            case KeyEvent.VK_7:
+                gp.selectItem = 7;
+                break;
+            case KeyEvent.VK_8:
+                gp.selectItem = 8;
+                break;
+            case KeyEvent.VK_9:
+                gp.selectItem = 9;
+                break;
         }
     }
 }

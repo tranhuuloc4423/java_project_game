@@ -47,7 +47,7 @@ public class Player extends Entity {
     public void getTilePositionPlayer() {
 //        worldX = gp.player.worldX - screenX;
 //        worldY = gp.player.worldY - screenY;
-        landTileX = (worldX / gp.tileSize) + 2;
+        landTileX = (worldX / gp.tileSize) + 1;
         landTileY = (worldY / gp.tileSize) + 1;
 //        int tileSize = gp.tileSize;
 //        int x = landTileX * tileSize;
@@ -92,9 +92,14 @@ public class Player extends Entity {
         }
     }
 
+    public void drawBorder() {
+        gp.aSetter.setObject(landTileX, landTileY);
+    }
+
 
     public void update() {
         getTilePositionPlayer();
+        drawBorder();
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
             if(keyH.upPressed) {
                 direction = "up";
@@ -173,8 +178,6 @@ public class Player extends Entity {
                     break;
             }
         }
-
-
 
         spriteCounter++;
         if(spriteCounter > 20) {

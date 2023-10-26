@@ -19,6 +19,9 @@ public class TileManager {
     public Tile[] tile;
     public int mapTileNum[][];
     public MouseHandler mouseH;
+    private long startTime; // Thời điểm bắt đầu nhấn giữ phím đào đất
+    private boolean isDigging; // Biến đánh dấu việc đang đào đất
+    private static final long DIGGING_DURATION = 3000;
     public TileManager(GamePanel gp) {
         this.gp = gp;
         tile = new Tile[100];
@@ -108,21 +111,68 @@ public class TileManager {
     }
 
     public void checkHoe() {
+
         int col = gp.player.landTileX;
         int row = gp.player.landTileY;
-        int hoeCounter = 0;
         if(row >= 8 && row <= 11) {
-            if(col >= 15 && col <= 16 ) {
-                hoeCounter++;
-                changeTileImage(col, row, 46);
-                System.out.println(hoeCounter);
+            if(col >= 15 && col <= 16) {
+                if (!isDigging) {
+                    // Bắt đầu đếm thời gian nếu chưa đào đất
+                    startTime = System.currentTimeMillis();
+                    isDigging = true;
+                } else {
+                    // Đã đang đào đất
+                    long currentTime = System.currentTimeMillis();
+                    long elapsedTime = currentTime - startTime;
+
+                    if (elapsedTime >= DIGGING_DURATION) {
+                        changeTileImage(col, row, 46);
+                        isDigging = false;
+                        startTime = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    public void checkPlant(Graphics2D g2) {
+        int col = gp.player.landTileX;
+        int row = gp.player.landTileY;
+        if(row >= 8 && row <= 11) {
+            if(col >= 15 && col <= 16) {
+                BufferedImage image = null;
+                try {
+                    image =  ImageIO.read(getClass().getResourceAsStream("/res/plants/ezgif-2-d5eaddec43-png-16x32-sprite-png/tile002.png"));
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+                g2.drawImage(image, col, row , gp.tileSize, gp.tileSize * 2, null);
             }
         }
     }
 
     public void update() {
         if(gp.keyH.isHoe) {
+
             checkHoe();
+        }
+    }
+
+    public void drawPlant(int index) {
+        if(gp.keyH.isPlant) {
+            int col = gp.player.landTileX;
+            int row = gp.player.landTileY;
+            if(row >= 8 && row <= 11) {
+                if(col >= 15 && col <= 16) {
+                    gp.aSetter.setPlant(col, row, index);
+                }
+            }
+        }
+    }
+
+    public void drawPlant(Graphics2D g2) {
+        if(gp.keyH.isPlant) {
+            checkPlant(g2);
         }
     }
 
@@ -198,6 +248,5 @@ public class TileManager {
                 worldRow++;
             }
         }
-
     }
 }

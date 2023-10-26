@@ -2,6 +2,7 @@ package main;
 
 import Entity.Entity;
 import Entity.Player;
+import Plant.Tree;
 import Tile.TileManager;
 
 import javax.imageio.ImageIO;
@@ -56,6 +57,7 @@ public class GamePanel extends JPanel implements  Runnable {
     public Player player = new Player(this, keyH);
 
     public SuperObject obj[] = new SuperObject[10];
+    public Tree plants[] = new Tree[10];
     public Entity npc[] = new Entity[10];
 
     // tiles
@@ -94,8 +96,9 @@ public class GamePanel extends JPanel implements  Runnable {
     }
 
     public void setupGame() {
-        aSetter.setObject();
+//        aSetter.setObject();
         aSetter.setNPC();
+
         playMusic(0); // 0 is main song
         stopMusic();
         gameState = playState;
@@ -174,6 +177,9 @@ public class GamePanel extends JPanel implements  Runnable {
 //                mouseH.isMouseClicked = false;
 //            }
             tileM.update();
+            for(int i = 0; i < plants.length; i++) {
+                tileM.drawPlant(i);
+            }
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null) {
                     npc[i].update();
@@ -199,6 +205,9 @@ public class GamePanel extends JPanel implements  Runnable {
 
         // tiles
         tileM.draw(g2);
+//        if(keyH.isPlant) {
+//            tileM.checkPlant(g2);
+//        }
 
         // objects
         for(int i = 0;i < obj.length; i++) {
@@ -207,6 +216,12 @@ public class GamePanel extends JPanel implements  Runnable {
             }
         }
 
+        // plants
+        for(int i = 0;i < plants.length; i++) {
+            if(plants[i] != null) {
+                plants[i].draw(g2, this);
+            }
+        }
 
 
         // npc

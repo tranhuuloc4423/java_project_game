@@ -19,6 +19,8 @@ public class UI {
     int messageCounter = 0;
     public boolean gameFinished = false;
     double playTime;
+
+    final int inventorySeparate = 78;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -46,6 +48,12 @@ public class UI {
             if(gp.inventory == gp.inventoryOn) {
                 drawInventory("/res/ui/Menu.png", g2);
                 drawSelectItem("/res/ui/SelectMenu.png", g2, gp.selectItem);
+                drawItem("/res/plants/tile000.png", g2, 1);
+                drawItem("/res/plants/tile006.png", g2, 2);
+                drawItem("/res/Object/tile000.png", g2, 8);
+                drawItem("/res/Object/tile002.png", g2, 9);
+
+
             }
         }
         if(gp.gameState == gp.pauseState) {
@@ -91,8 +99,23 @@ public class UI {
         int width = gp.tileSize * 2; // tileSize = 48
         int height = gp.tileSize * 2;
         int initX = width * 2 + 22;
-        int x = initX + (78 * (index - 1)); // screenWidth = 1152
+        int x = initX + (inventorySeparate * (index - 1)); // screenWidth = 1152
         int y = gp.screenHeight - 140; // screenHeight = 768
+        g2.drawImage(image, x, y, width, height, null);
+    }
+
+    public void drawItem(String filePath, Graphics2D g2 , int index) {
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int width = gp.tileSize; // tileSize = 48
+        int height = gp.tileSize;
+        int initX = width * 5 - 2;
+        int x = initX + (inventorySeparate * (index - 1)); // screenWidth = 1152
+        int y = gp.screenHeight - 112; // screenHeight = 768
         g2.drawImage(image, x, y, width, height, null);
     }
 }
