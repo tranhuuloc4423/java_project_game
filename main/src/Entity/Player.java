@@ -46,8 +46,6 @@ public class Player extends Entity {
     }
 
     public void getTilePositionPlayer() {
-//        worldX = gp.player.worldX - screenX;
-//        worldY = gp.player.worldY - screenY;
         landTileX = (worldX / gp.tileSize) + 1;
         landTileY = (worldY / gp.tileSize) + 1;
 //        int tileSize = gp.tileSize;
@@ -68,31 +66,7 @@ public class Player extends Entity {
     }
 
     public void setPlayerImage() {
-//        try {
-//
-//        } catch(IOException e) {
-//            e.printStackTrace();
-//        }
-
         for (int i = 1; i <= spritesNum; i++) {
-            // move
-//                up[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/up_" + i + ".png"));
-//                down[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/down_" + i + ".png"));
-//                left[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/left_" + i + ".png"));
-//                right[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/right_" + i + ".png"));
-//
-//                // idle
-//                idleUp[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_up_" + i + ".png"));
-//                idleDown[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_down_" + i + ".png"));
-//                idleLeft[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_left_" + i + ".png"));
-//                idleRight[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/rabit/idle_right_" + i + ".png"));
-//
-//                // hoe
-//                hoeUp[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/t" + i + ".png"));
-//                hoeDown[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/b" + i + ".png"));
-//                hoeLeft[i - 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/l" + i + ".png"));
-//                hoeRight[i- 1] = ImageIO.read(getClass().getResourceAsStream("/res/Player/action/r" + i + ".png"));
-
             up[i - 1] = setup("rabit/up_" + i);
             down[i - 1] = setup("rabit/down_" + i);
             left[i - 1] = setup("rabit/left_" + i);
@@ -117,11 +91,10 @@ public class Player extends Entity {
 //        int size = gp.tileSize * 3;
         try{
             image =  ImageIO.read(getClass().getResourceAsStream("/res/Player/" + imageName +".png"));
-//            image = UtilityTool.scaleImage(image, size, size);
+            image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch(IOException e) {
             e.printStackTrace();
         }
-
         return image;
     }
 
@@ -129,12 +102,20 @@ public class Player extends Entity {
         gp.aSetter.setObject(landTileX, landTileY);
     }
 
-
+    @Override
     public void update() {
         getTilePositionPlayer();
         drawBorder();
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
-            if(keyH.upPressed) {
+            if(keyH.upPressed && keyH.rightPressed) {
+                direction = "upright";
+            }else if(keyH.upPressed && keyH.leftPressed) {
+                direction = "upleft";
+            }else if(keyH.downPressed && keyH.rightPressed) {
+                direction = "downright";
+            }else if(keyH.downPressed && keyH.leftPressed) {
+                direction = "downleft";
+            } else if(keyH.upPressed) {
                 direction = "up";
             } else if(keyH.downPressed) {
                 direction = "down";
@@ -174,11 +155,31 @@ public class Player extends Entity {
                         worldX += speed;
                         sprites = right;
                         break;
+                    case "upleft":
+                        worldY -= speed - 1;
+                        worldX -= speed - 1;
+                        sprites = left;
+                        break;
+                    case "upright":
+                        worldY -= speed - 1;
+                        worldX += speed - 1;
+                        sprites = right;
+                        break;
+                    case "downleft":
+                        worldX -= speed -1;
+                        worldY += speed - 1;
+                        sprites = left;
+                        break;
+                    case "downright":
+                        worldX += speed - 1;
+                        worldY += speed - 1;
+                        sprites = right;
+                        break;
                 }
             }
         }
 
-        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.isHoe) {
+        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.btn9Pressed) {
             switch (direction) {
                 case "up":
                     sprites = idleUp;
@@ -195,7 +196,7 @@ public class Player extends Entity {
             }
         }
 
-        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.isHoe) {
+        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.btn9Pressed) {
             switch (direction) {
                 case "up":
                     sprites = hoeUp;

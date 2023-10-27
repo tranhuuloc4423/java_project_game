@@ -8,11 +8,11 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean btn1Pressed,btn2Pressed, btn3Pressed, btn4Pressed, btn5Pressed, btn6Pressed, btn7Pressed, btn8Pressed, btn9Pressed;
     public boolean escapePressed;
+    public boolean inventoryPressed;
 
     public boolean isHoe;
     // debug
     boolean checkDrawTime = false;
-    public boolean isPlant = false;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -44,12 +44,7 @@ public class KeyHandler implements KeyListener {
         }
 
         if(code == KeyEvent.VK_R) {
-            int col = gp.player.landTileX;
-            int row = gp.player.landTileY;
-            int dirtTileNum = 29;
-            if(gp.tileM.mapTileNum[col][row] == dirtTileNum) {
-                isHoe = true;
-            }
+
         }
 
         if(code == KeyEvent.VK_ESCAPE) {
@@ -67,12 +62,8 @@ public class KeyHandler implements KeyListener {
 
         // inventory
         if(code == KeyEvent.VK_I) {
-            if(gp.inventory == gp.inventoryOn) {
-                gp.inventory = gp.inventoryOff;
-            } else  if(gp.inventory == gp.inventoryOff) {
-                gp.inventory = gp.inventoryOn;
-            }
-            System.out.println(gp.inventory);
+            inventoryPressed = true;
+            gp.invetoryM.inventoryPressed();
         }
 
         if(code == KeyEvent.VK_1) {
@@ -107,7 +98,7 @@ public class KeyHandler implements KeyListener {
             btn8Pressed = true;
         }
 
-        if(code == KeyEvent.VK_8) {
+        if(code == KeyEvent.VK_9) {
             btn9Pressed = true;
         }
 
@@ -177,6 +168,10 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_9) {
             btn9Pressed = false;
+        }
+
+        if(code == KeyEvent.VK_I) {
+            inventoryPressed = false;
         }
     }
 }

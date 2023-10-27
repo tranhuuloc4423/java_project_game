@@ -25,7 +25,7 @@ public class TileManager {
     private long startTime; // Thời điểm bắt đầu nhấn giữ phím đào đất
     private boolean isDigging; // Biến đánh dấu việc đang đào đất
     private static final long DIGGING_DURATION = 3000;
-    public ArrayList<Tree> plantList = new ArrayList<Tree>();
+
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -96,13 +96,12 @@ public class TileManager {
         setup(46, "T10", false);
     }
     public void setup(int index, String imageName, boolean collision) {
-        int size = gp.tileSize;
         try{
             tile[index] = new Tile();
             BufferedImage image =  ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));
             tile[index].collision = collision;
-//            tile[index].image = UtilityTool.scaleImage(image, size, size);
-            tile[index].image = image;
+            tile[index].image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
+//            tile[index].image = image;
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -116,64 +115,29 @@ public class TileManager {
     public void checkHoe() {
         int col = gp.player.landTileX;
         int row = gp.player.landTileY;
-        if (!isDigging) {
-            // Bắt đầu đếm thời gian nếu chưa đào đất
-            startTime = System.currentTimeMillis();
-            isDigging = true;
-        } else {
-            // Đã đang đào đất
-            long currentTime = System.currentTimeMillis();
-            long elapsedTime = currentTime - startTime;
+        int dirtTileNum = 29;
+        if(gp.tileM.mapTileNum[col][row] == dirtTileNum) {
+            if (!isDigging) {
+                // Bắt đầu đếm thời gian nếu chưa đào đất
+                startTime = System.currentTimeMillis();
+                isDigging = true;
+            } else {
+                // Đã đang đào đất
+                long currentTime = System.currentTimeMillis();
+                long elapsedTime = currentTime - startTime;
 
-            if (elapsedTime >= DIGGING_DURATION) {
-                changeTileImage(col, row, 46);
-                isDigging = false;
-                startTime = 0;
+                if (elapsedTime >= DIGGING_DURATION) {
+                    changeTileImage(col, row, 46);
+                    isDigging = false;
+                    startTime = 0;
+                }
             }
         }
     }
 
     public void update() {
-        if(gp.keyH.isHoe) {
+        if(gp.keyH.btn9Pressed) {
             checkHoe();
-        }
-        plantCrop();
-        for (Tree plant : plantList) {
-            plant.update();
-        }
-    }
-
-    public void drawPlants(Graphics2D g2) {
-        for (Tree plant : plantList) {
-            plant.draw(g2, gp);
-        }
-    }
-
-    public BufferedImage setupPlantImage(String fileName) {
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/plants/" + fileName + ".png"));
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        return image;
-    }
-
-    public void plantCrop() {
-        if(gp.keyH.isPlant) {
-            int col = gp.player.landTileX;
-            int row = gp.player.landTileY;
-            if(gp.tileM.mapTileNum[col][row] == 46) {
-                BufferedImage[] plantImages = new BufferedImage[5];
-                for(int i = 0; i < plantImages.length; i++) {
-                    String pathName = "plant_2_" + (i + 1);
-                    plantImages[i] = setupPlantImage(pathName);
-                }
-                Plant_1 plant = new Plant_1(plantImages, 3000);
-                plant.worldX = gp.tileSize * col;
-                plant.worldY = gp.tileSize * row;
-                plantList.add(plant);
-            }
         }
     }
 
@@ -206,26 +170,6 @@ public class TileManager {
         }
     }
 
-    public void plantCrop(int col, int row, Crop crop) {
-        Tile targetTile = tile[mapTileNum[col][row]];
-
-        if (targetTile.crop != null) {
-            System.out.println("This tile is already occupied.");
-        } else {
-            targetTile.crop = crop;
-        }
-    }
-
-    public void loadCropImage(Crop crop) {
-        BufferedImage cropImage = null;
-
-        // Tải hình ảnh cây trồng từ tệp tin
-        try {
-            cropImage = ImageIO.read(getClass().getResourceAsStream("/res/tiles/.png")); // Thay đổi đường dẫn tới tệp tin hình ảnh cây trồng
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     public void draw(Graphics2D g2) {
         int worldCol = 0, worldRow = 0;
         while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
@@ -249,6 +193,5 @@ public class TileManager {
                 worldRow++;
             }
         }
-        drawPlants(g2);
     }
 }
