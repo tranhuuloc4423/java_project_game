@@ -37,7 +37,6 @@ public class UI {
     }
 
     public void draw(Graphics2D g2) {
-
         this.g2 = g2;
 
         g2.setFont(arial_30);
@@ -52,14 +51,11 @@ public class UI {
                 drawItem("/res/plants/seed_2.png", g2, 2);
                 drawItem("/res/Object/tile000.png", g2, 8);
                 drawItem("/res/Object/tile002.png", g2, 9);
-
-
             }
         }
         if(gp.gameState == gp.pauseState) {
             drawPauseScreen();
         }
-
     }
 
     public void drawPauseScreen() {

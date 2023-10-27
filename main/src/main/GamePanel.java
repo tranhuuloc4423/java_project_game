@@ -64,6 +64,8 @@ public class GamePanel extends JPanel implements  Runnable {
     // tiles
     public TileManager tileM = new TileManager(this);
 
+    public Menu menu = new Menu(this);
+
     // game state
     public int gameState;
     public final int playState = 1;
@@ -142,6 +144,8 @@ public class GamePanel extends JPanel implements  Runnable {
 //        }
 //    }
 
+
+    // game loop
     public void run() {
         double drawInterval =  1000000000 / FPS;
         double delta = 0;
@@ -182,6 +186,9 @@ public class GamePanel extends JPanel implements  Runnable {
             // tiles
             tileM.update();
 
+            // menu
+            menu.update();
+
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null) {
                     npc[i].update();
@@ -221,6 +228,9 @@ public class GamePanel extends JPanel implements  Runnable {
                 plants[i].draw(g2, this);
             }
         }
+
+        // menu
+        menu.draw(g2);
 
 
         // npc
