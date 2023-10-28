@@ -101,7 +101,6 @@ public class TileManager {
             BufferedImage image =  ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));
             tile[index].collision = collision;
             tile[index].image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
-//            tile[index].image = image;
         } catch(IOException e) {
             e.printStackTrace();
         }

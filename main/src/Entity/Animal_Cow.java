@@ -11,9 +11,6 @@ import java.util.Random;
 
 public class Animal_Cow extends Entity {
 
-    private int idleNum = 3;
-    private BufferedImage[] idleleft = new BufferedImage[spritesNum];
-    private BufferedImage[] idleright = new BufferedImage[spritesNum];
     public Animal_Cow(GamePanel gp) {
         super(gp);
         direction = "idleright";
@@ -32,13 +29,9 @@ public class Animal_Cow extends Entity {
             right[i - 1] = setup("cow_right_" + i);
             up[i - 1] = setup("cow_left_" + i);
             down[i - 1] = setup("cow_right_" + i);
-            idleleft[i - 1] = setup("cow_idle_left_" + i);
-            idleright[i - 1] = setup("cow_idle_right_" + i);
+            idleLeft[i - 1] = setup("cow_idle_left_" + i);
+            idleRight[i - 1] = setup("cow_idle_right_" + i);
         }
-
-//        for(int i = 1; i <= idleNum; i++) {
-//
-//        }
     }
 
     public BufferedImage setup(String imageName) {
@@ -78,10 +71,10 @@ public class Animal_Cow extends Entity {
                     sprites = right;
                     break;
                 case "idleright":
-                    sprites = idleright;
+                    sprites = idleRight;
                     break;
                 case "idleleft":
-                    sprites = idleleft;
+                    sprites = idleLeft;
                     break;
             }
         }
@@ -154,17 +147,17 @@ public class Animal_Cow extends Entity {
                     sprites = right;
                     break;
                 case "idleright":
-                    sprites = idleright;
+                    sprites = idleRight;
                     break;
                 case "idleleft":
-                    sprites = idleleft;
+                    sprites = idleLeft;
                     break;
             }
 
             if (sprites != null && spriteNum >= 1 && spriteNum <= sprites.length) {
                 BufferedImage image = sprites[spriteNum - 1];
-                int size = gp.tileSize * 2;
-                g2.drawImage(image, screenX, screenY, size, size, null);
+//                int size = gp.tileSize * 2;
+                g2.drawImage(image, screenX, screenY, null);
             }
         }
     }

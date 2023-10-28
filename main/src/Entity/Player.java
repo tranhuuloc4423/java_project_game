@@ -20,6 +20,11 @@ public class Player extends Entity {
     public BufferedImage[] hoeDown = new BufferedImage[spritesNum];
     public BufferedImage[] hoeLeft = new BufferedImage[spritesNum];
     public BufferedImage[] hoeRight = new BufferedImage[spritesNum];
+
+    public BufferedImage[] waterUp = new BufferedImage[spritesNum];
+    public BufferedImage[] waterDown = new BufferedImage[spritesNum];
+    public BufferedImage[] waterLeft = new BufferedImage[spritesNum];
+    public BufferedImage[] waterRight = new BufferedImage[spritesNum];
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
@@ -79,19 +84,25 @@ public class Player extends Entity {
             idleRight[i- 1] = setup("rabit/idle_right_" + i);
 
             // hoe
-            hoeUp[i - 1] = setup("action/t" + i);
-            hoeDown[i - 1] = setup("action/b" + i);
-            hoeLeft[i - 1] = setup("action/l" + i);
-            hoeRight[i- 1] = setup("action/r" + i);
+            hoeUp[i - 1] = setup("action/hoe_up_" + i);
+            hoeDown[i - 1] = setup("action/hoe_down_" + i);
+            hoeLeft[i - 1] = setup("action/hoe_left_" + i);
+            hoeRight[i- 1] = setup("action/hoe_right_" + i);
+
+            // water
+            waterUp[i - 1] = setup("action/water_up_" + i);
+            waterDown[i - 1] = setup("action/water_down_" + i);
+            waterLeft[i - 1] = setup("action/water_left_" + i);
+            waterRight[i- 1] = setup("action/water_right_" + i);
         }
     }
 
     public BufferedImage setup(String imageName) {
         BufferedImage image = null;
-//        int size = gp.tileSize * 3;
+        int size = gp.tileSize * 3;
         try{
             image =  ImageIO.read(getClass().getResourceAsStream("/res/Player/" + imageName +".png"));
-            image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image = UtilityTool.scaleImage(image, size, size);
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -179,7 +190,7 @@ public class Player extends Entity {
             }
         }
 
-        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.btn9Pressed) {
+        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.btn9Pressed && !keyH.btn8Pressed) {
             switch (direction) {
                 case "up":
                     sprites = idleUp;
@@ -213,8 +224,25 @@ public class Player extends Entity {
             }
         }
 
+        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.btn8Pressed) {
+            switch (direction) {
+                case "up":
+                    sprites = waterUp;
+                    break;
+                case "down":
+                    sprites = waterDown;
+                    break;
+                case "left":
+                    sprites = waterLeft;
+                    break;
+                case "right":
+                    sprites = waterRight;
+                    break;
+            }
+        }
+
         spriteCounter++;
-        if(spriteCounter > 15) {
+        if(spriteCounter > 30) {
             if(spriteNum == 1) {
                 spriteNum = 2;
             } else if(spriteNum == 2) {
@@ -233,8 +261,8 @@ public class Player extends Entity {
     public void draw(Graphics2D g2) {
         if (sprites != null && spriteNum >= 1 && spriteNum <= sprites.length) {
             BufferedImage image = sprites[spriteNum - 1];
-            int size = gp.tileSize * 3;
-            g2.drawImage(image, screenX, screenY, size, size, null);
+//            int size = gp.tileSize * 3;
+            g2.drawImage(image, screenX, screenY, null);
         }
     }
 }
