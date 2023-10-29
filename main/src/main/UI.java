@@ -45,9 +45,6 @@ public class UI {
             // do playstate stuff late
 
         }
-        if(gp.gameState == gp.pauseState) {
-            drawPauseScreen();
-        }
     }
 
     public void drawPauseScreen() {

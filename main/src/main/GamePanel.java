@@ -2,7 +2,6 @@ package main;
 
 import Entity.Entity;
 import Entity.Player;
-import Inventory.InventoryManager;
 import Plant.Tree;
 import Tile.PlantCrop;
 import Tile.TileManager;
@@ -18,8 +17,8 @@ import Object.SuperObject;
 public class GamePanel extends JPanel implements  Runnable {
 
     // screen settings
-    public final int originalTileSize = 16;
-    public final int scale = 3;
+    final int originalTileSize = 16;
+    final int scale = 3;
 
     public final int tileSize = originalTileSize * scale; // tile = 16 * 3
     public final int maxScreenCol = 24;
@@ -40,6 +39,7 @@ public class GamePanel extends JPanel implements  Runnable {
     // SYSTEM
     public KeyHandler keyH = new KeyHandler(this);
     public MouseHandler mouseH = new MouseHandler(this);
+
 
     Cursor customCursor;
 
@@ -63,18 +63,19 @@ public class GamePanel extends JPanel implements  Runnable {
 
     // tiles
     public TileManager tileM = new TileManager(this);
-    public PlantCrop plantcrop = new PlantCrop(this);
 
     public Menu menu = new Menu(this);
-
-    public InventoryManager invetoryM = new InventoryManager(this);
 
     // game state
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
 
+    public int inventory;
+    public final int inventoryOn = 1;
+    public final int inventoryOff = 2;
 
+    public int selectItem;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -104,6 +105,8 @@ public class GamePanel extends JPanel implements  Runnable {
         playMusic(0); // 0 is main song
         stopMusic();
         gameState = playState;
+        inventory = inventoryOff;
+        selectItem = 1;
     }
 
     public void startGameThread() {
@@ -178,15 +181,8 @@ public class GamePanel extends JPanel implements  Runnable {
             // tiles
             tileM.update();
 
-            // inventory
-
-            invetoryM.update();
-
             // menu
             menu.update();
-
-            // plant crop
-            plantcrop.update();
 
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null) {
@@ -197,7 +193,6 @@ public class GamePanel extends JPanel implements  Runnable {
         if(gameState == pauseState) {
             // nothing
         }
-
     }
 
     public void paintComponent(Graphics g) {
@@ -228,7 +223,6 @@ public class GamePanel extends JPanel implements  Runnable {
             }
         }
 
-
         // npc
         for(int i = 0; i < npc.length; i++) {
             if(npc[i] != null) {
@@ -242,9 +236,8 @@ public class GamePanel extends JPanel implements  Runnable {
         // ui
         ui.draw(g2);
 
-
         // plantcrop
-        plantcrop.draw(g2);
+//        plantcrop.draw(g2);
 
         // debug
         if(keyH.checkDrawTime) {
@@ -254,8 +247,6 @@ public class GamePanel extends JPanel implements  Runnable {
             g2.drawString("DrawTime : " + passed, 10, 400);
             System.out.println("Draw time : " + passed);
         }
-
-        invetoryM.draw(g2);
 
         // menu
         menu.draw(g2);
