@@ -156,7 +156,6 @@ public class Animal_Cow extends Entity {
 
             if (sprites != null && spriteNum >= 1 && spriteNum <= sprites.length) {
                 BufferedImage image = sprites[spriteNum - 1];
-//                int size = gp.tileSize * 2;
                 g2.drawImage(image, screenX, screenY, null);
             }
         }

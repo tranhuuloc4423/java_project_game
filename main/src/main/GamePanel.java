@@ -175,11 +175,6 @@ public class GamePanel extends JPanel implements  Runnable {
     public void update() {
         if(gameState == playState) {
             player.update();
-//            if(mouseH.isMouseClicked) {
-//                System.out.println("Mouse clicked");
-//
-//                mouseH.isMouseClicked = false;
-//            }
             // tiles
             tileM.update();
 

@@ -14,7 +14,6 @@ public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX, screenY;
     public int landTileX, landTileY;
-    Graphics2D g2;
 
     public BufferedImage[] hoeUp = new BufferedImage[spritesNum];
     public BufferedImage[] hoeDown = new BufferedImage[spritesNum];
@@ -53,15 +52,6 @@ public class Player extends Entity {
     public void getTilePositionPlayer() {
         landTileX = (worldX / gp.tileSize) + 1;
         landTileY = (worldY / gp.tileSize) + 1;
-//        int tileSize = gp.tileSize;
-//        int x = landTileX * tileSize;
-//        int y = landTileY * tileSize;
-//        int width = tileSize;
-//        int height = tileSize;
-//
-//        g2.setColor(Color.BLACK);
-//        g2.setStroke(new BasicStroke(2));
-//        g2.drawRect(x, y, width, height);
     }
 
     public void pickUpObject(int index) {
@@ -71,7 +61,9 @@ public class Player extends Entity {
     }
 
     public void setPlayerImage() {
+        System.out.println("player image");
         for (int i = 1; i <= spritesNum; i++) {
+            // move
             up[i - 1] = setup("rabit/up_" + i);
             down[i - 1] = setup("rabit/down_" + i);
             left[i - 1] = setup("rabit/left_" + i);
@@ -89,7 +81,7 @@ public class Player extends Entity {
             hoeLeft[i - 1] = setup("action/hoe_left_" + i);
             hoeRight[i- 1] = setup("action/hoe_right_" + i);
 
-            // water
+            // watering
             waterUp[i - 1] = setup("action/water_up_" + i);
             waterDown[i - 1] = setup("action/water_down_" + i);
             waterLeft[i - 1] = setup("action/water_left_" + i);
