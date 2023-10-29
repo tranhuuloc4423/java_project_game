@@ -10,6 +10,8 @@ public class KeyHandler implements KeyListener {
     public boolean escapePressed;
 
     public boolean isHoe;
+
+    public boolean inventoryPressed;
     // debug
     boolean checkDrawTime = false;
     public boolean isPlant = false;
@@ -67,12 +69,7 @@ public class KeyHandler implements KeyListener {
 
         // inventory
         if(code == KeyEvent.VK_I) {
-            if(gp.inventory == gp.inventoryOn) {
-                gp.inventory = gp.inventoryOff;
-            } else  if(gp.inventory == gp.inventoryOff) {
-                gp.inventory = gp.inventoryOn;
-            }
-            System.out.println(gp.inventory);
+            inventoryPressed = true;
         }
 
         if(code == KeyEvent.VK_1) {
@@ -177,6 +174,10 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_9) {
             btn9Pressed = false;
+        }
+
+        if(code == KeyEvent.VK_I) {
+            inventoryPressed = false;
         }
     }
 }
