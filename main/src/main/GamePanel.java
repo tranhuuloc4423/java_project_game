@@ -198,7 +198,6 @@ public class GamePanel extends JPanel implements  Runnable {
         if(gameState == pauseState) {
             // nothing
         }
-
     }
 
     public void paintComponent(Graphics g) {
@@ -229,10 +228,6 @@ public class GamePanel extends JPanel implements  Runnable {
             }
         }
 
-        // menu
-        menu.draw(g2);
-
-
         // npc
         for(int i = 0; i < npc.length; i++) {
             if(npc[i] != null) {
@@ -257,6 +252,9 @@ public class GamePanel extends JPanel implements  Runnable {
             g2.drawString("DrawTime : " + passed, 10, 400);
             System.out.println("Draw time : " + passed);
         }
+
+        // menu
+        menu.draw(g2);
 
         g2.dispose();
     }

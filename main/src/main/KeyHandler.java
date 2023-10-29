@@ -8,7 +8,6 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean btn1Pressed,btn2Pressed, btn3Pressed, btn4Pressed, btn5Pressed, btn6Pressed, btn7Pressed, btn8Pressed, btn9Pressed;
     public boolean escapePressed;
-
     public boolean isHoe;
     // debug
     boolean checkDrawTime = false;
@@ -43,25 +42,30 @@ public class KeyHandler implements KeyListener {
             rightPressed = true;
         }
 
+        if(code == KeyEvent.VK_ESCAPE) {
+            escapePressed = true;
+            if(gp.gameState == gp.playState) {
+                gp.gameState = gp.pauseState;
+            } else  if(gp.gameState == gp.pauseState) {
+                gp.gameState = gp.playState;
+            }
+        }
+
+//        if(code == KeyEvent.VK_O) {
+//            optionPressed = true;
+//            if(gp.gameState == gp.playState) {
+//                gp.gameState = gp.optionState;
+//            } else  if(gp.gameState == gp.optionState) {
+//                gp.gameState = gp.playState;
+//            }
+//        }
+
         if(code == KeyEvent.VK_R) {
             int col = gp.player.landTileX;
             int row = gp.player.landTileY;
             int dirtTileNum = 29;
             if(gp.tileM.mapTileNum[col][row] == dirtTileNum) {
                 isHoe = true;
-            }
-        }
-
-        if(code == KeyEvent.VK_ESCAPE) {
-            escapePressed = true;
-        }
-
-        // game state
-        if(code == KeyEvent.VK_P) {
-            if(gp.gameState == gp.playState) {
-                gp.gameState = gp.pauseState;
-            } else  if(gp.gameState == gp.pauseState) {
-                gp.gameState = gp.playState;
             }
         }
 

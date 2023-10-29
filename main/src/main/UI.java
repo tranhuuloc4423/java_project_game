@@ -53,9 +53,6 @@ public class UI {
                 drawItem("/res/Object/tile002.png", g2, 9);
             }
         }
-        if(gp.gameState == gp.pauseState) {
-            drawPauseScreen();
-        }
     }
 
     public void drawPauseScreen() {
