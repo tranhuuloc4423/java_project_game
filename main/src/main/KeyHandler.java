@@ -8,7 +8,6 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean btn1Pressed,btn2Pressed, btn3Pressed, btn4Pressed, btn5Pressed, btn6Pressed, btn7Pressed, btn8Pressed, btn9Pressed;
     public boolean escapePressed;
-
     public boolean isHoe;
 
     public boolean inventoryPressed;
@@ -56,6 +55,11 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_ESCAPE) {
             escapePressed = true;
+            if(gp.gameState == gp.playState) {
+                gp.gameState = gp.pauseState;
+            } else  if(gp.gameState == gp.pauseState) {
+                gp.gameState = gp.playState;
+            }
         }
 
         // game state
@@ -104,7 +108,7 @@ public class KeyHandler implements KeyListener {
             btn8Pressed = true;
         }
 
-        if(code == KeyEvent.VK_8) {
+        if(code == KeyEvent.VK_9) {
             btn9Pressed = true;
         }
 
