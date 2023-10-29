@@ -3,6 +3,7 @@ package main;
 import Entity.Entity;
 import Entity.Player;
 import Inventory.InventoryManager;
+import Object.SuperObject;
 import Plant.Tree;
 import Tile.PlantCrop;
 import Tile.TileManager;
@@ -12,8 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
-import Object.SuperObject;
 
 public class GamePanel extends JPanel implements  Runnable {
 
@@ -64,6 +63,7 @@ public class GamePanel extends JPanel implements  Runnable {
 
     // tiles
     public TileManager tileM = new TileManager(this);
+    public PlantCrop plantcrop = new PlantCrop(this);
 
     public Menu menu = new Menu(this);
 
@@ -74,8 +74,6 @@ public class GamePanel extends JPanel implements  Runnable {
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
-
-    public int selectItem;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -179,6 +177,13 @@ public class GamePanel extends JPanel implements  Runnable {
             // tiles
             tileM.update();
 
+
+            // inventory
+            invetoryM.update();
+
+            // plantcrop
+            plantcrop.update();
+
             // menu
             menu.update();
 
@@ -232,11 +237,14 @@ public class GamePanel extends JPanel implements  Runnable {
         player.draw(g2);
 
         // ui
-        ui.draw(g2);
+//        ui.draw(g2);
+
+        // inventory
+        invetoryM.draw(g2);
 
         // plantcrop
-//        plantcrop.draw(g2);
-
+        plantcrop.draw(g2);
+//
         // debug
         if(keyH.checkDrawTime) {
             long drawEnd = System.nanoTime();

@@ -74,6 +74,7 @@ public class KeyHandler implements KeyListener {
         // inventory
         if(code == KeyEvent.VK_I) {
             inventoryPressed = true;
+            gp.invetoryM.inventoryPressed();
         }
 
         if(code == KeyEvent.VK_1) {

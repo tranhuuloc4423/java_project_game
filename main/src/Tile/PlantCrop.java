@@ -28,7 +28,7 @@ public class PlantCrop {
 
     public void setupPlantcrop() {
         for(int i = 0; i < gp.maxWorldCol; i++) {
-            for(int j = 0;j < gp.maxWorldRow; i++) {
+            for(int j = 0;j < gp.maxWorldRow; j++) {
                 plantcrop[i][j] = 0;
             }
         }
