@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 
 public class UtilityTool {
     public static BufferedImage scaleImage(BufferedImage original, int width, int height) {
-
         int type = BufferedImage.TYPE_INT_ARGB; // Sử dụng kiểu dữ liệu màu sắc ARGB
 
         BufferedImage scaledImage = new BufferedImage(width, height, type);
