@@ -98,31 +98,38 @@ public class InventoryManager {
 
     public void update() {
         if(gp.keyH.btn1Pressed) {
-           selectedItem = 1;
+            setSelectedItem(1);
         }
         if(gp.keyH.btn2Pressed) {
-            selectedItem = 2;
+            setSelectedItem(2);
         }
         if(gp.keyH.btn3Pressed) {
-            selectedItem = 3;
+            setSelectedItem(3);
+
         }
         if(gp.keyH.btn4Pressed) {
-            selectedItem = 4;
+            setSelectedItem(4);
+
         }
         if(gp.keyH.btn5Pressed) {
-            selectedItem = 5;
+            setSelectedItem(5);
+
         }
         if(gp.keyH.btn6Pressed) {
-            selectedItem = 6;
+            setSelectedItem(6);
+
         }
         if(gp.keyH.btn7Pressed) {
-            selectedItem = 7;
+            setSelectedItem(7);
+
         }
         if(gp.keyH.btn8Pressed) {
-            selectedItem = 8;
+            setSelectedItem(8);
+
         }
         if(gp.keyH.btn9Pressed) {
-            selectedItem = 9;
+            setSelectedItem(9);
+
         }
     }
 }

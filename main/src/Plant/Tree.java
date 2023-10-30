@@ -16,7 +16,7 @@ public class Tree {
     public long startTime; // Thời điểm cây bắt đầu mọc
     public BufferedImage image;
     public String name;
-    public boolean collision = false;
+    public boolean collision = true;
     public int worldX, worldY;
 //    UtilityTool tool = new UtilityTool();
 
@@ -33,6 +33,14 @@ public class Tree {
         this.currentImageIndex = 0;
         this.image = treeImages[currentImageIndex];
         this.lastImageChangeTime = System.currentTimeMillis();
+    }
+
+    public BufferedImage[] getPlantImages() {
+        return treeImages;
+    }
+
+    public BufferedImage getCurrentImage() {
+        return image;
     }
 
     public void update() {

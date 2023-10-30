@@ -9,11 +9,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlantCrop {
     GamePanel gp;
     public ArrayList<Tree> plantList = new ArrayList<Tree>();
     public int plantcrop[][];
+    public Map<Point, Tree> plantMap = new HashMap<>();
+
     public PlantCrop(GamePanel gp) {
 
         this.gp = gp;
@@ -21,7 +25,8 @@ public class PlantCrop {
         setupPlantcrop();
     }
     public void drawPlants(Graphics2D g2) {
-        for (Tree plant : plantList) {
+        for (Map.Entry<Point, Tree> entry : plantMap.entrySet()) {
+            Tree plant = entry.getValue();
             plant.draw(g2, gp);
         }
     }
@@ -52,30 +57,62 @@ public class PlantCrop {
             plantCrop("plant_2_");
         }
     }
+
+    public void harvestCrop() {
+        int col = gp.player.landTileX;
+        int row = gp.player.landTileY;
+        if (gp.tileM.mapTileNum[col][row] == 46) {
+            Point position = new Point(col, row);
+            Tree plant = plantMap.get(position);
+            if (plant != null) {
+                BufferedImage[] plantImages = plant.getPlantImages();
+                BufferedImage lastImage = plantImages[plantImages.length - 1];
+                if (plant.getCurrentImage() == lastImage) {
+                    // Thu hoạch cây trồng
+                    plant = null;
+                    plantMap.remove(position);
+                    gp.tileM.mapTileNum[col][row] = 29;
+                }
+            }
+        }
+    }
+
     public void plantCrop(String fileName) {
         int col = gp.player.landTileX;
         int row = gp.player.landTileY;
-        if(gp.tileM.mapTileNum[col][row] == 46) {
-            if(plantcrop[col][row] == 0) {
+        System.out.println("plantcrop 1");
+        if (gp.tileM.mapTileNum[col][row] == 46) {
+            Point position = new Point(col, row);
+            System.out.println("plantcrop 2");
+
+            if (!plantMap.containsKey(position)) {
+                System.out.println("plantcrop 3");
+
                 BufferedImage[] plantImages = new BufferedImage[5];
-                for(int i = 0; i < plantImages.length; i++) {
+                for (int i = 0; i < plantImages.length; i++) {
                     String pathName = fileName + (i + 1);
                     plantImages[i] = setupPlantImage(pathName);
                 }
-                Plant_1 plant = new Plant_1(plantImages, 3000);
+                Tree plant = new Tree(plantImages, 3000);
                 plant.worldX = gp.tileSize * col;
                 plant.worldY = gp.tileSize * row;
-                plantList.add(plant);
+                plantMap.put(position, plant);
             }
-            plantcrop[col][row] = 46;
         }
     }
 
     public void update() {
-        plantcropSetup();
-        for (Tree plant : plantList) {
+        for (Map.Entry<Point, Tree> entry : plantMap.entrySet()) {
+            Tree plant = entry.getValue();
             plant.update();
         }
+        plantcropSetup();
+        harvestCrop();
+//        for (Tree plant : plantList) {
+//            plant.update();
+//        }
+
+
     }
 
     public void draw(Graphics2D g2) {
