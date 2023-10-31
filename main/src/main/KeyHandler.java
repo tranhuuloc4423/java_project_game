@@ -57,17 +57,8 @@ public class KeyHandler implements KeyListener {
             escapePressed = true;
             if(gp.gameState == gp.playState) {
                 gp.gameState = gp.pauseState;
-            } else  if(gp.gameState == gp.pauseState) {
-                gp.gameState = gp.playState;
-            }
-        }
-
-        // game state
-        if(code == KeyEvent.VK_P) {
-            if(gp.gameState == gp.playState) {
-                gp.gameState = gp.pauseState;
-            } else  if(gp.gameState == gp.pauseState) {
-                gp.gameState = gp.playState;
+            } else if(gp.gameState == gp.pauseState) {
+                //gp.gameState = gp.playState;
             }
         }
 
