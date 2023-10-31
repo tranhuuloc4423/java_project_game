@@ -173,7 +173,6 @@ public class CollisionChecker {
                 target[i].solidArea.y = target[i].solidAreaDefaultY;
             }
         }
-
         return index;
     }
 }

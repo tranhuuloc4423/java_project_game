@@ -1,6 +1,5 @@
 package Tile;
 
-import Plant.Plant_1;
 import Plant.Tree;
 import main.GamePanel;
 
@@ -9,11 +8,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlantCrop {
     GamePanel gp;
     public ArrayList<Tree> plantList = new ArrayList<Tree>();
     public int plantcrop[][];
+    public Map<Point, Tree> plantMap = new HashMap<>();
+
     public PlantCrop(GamePanel gp) {
 
         this.gp = gp;
@@ -21,7 +24,8 @@ public class PlantCrop {
         setupPlantcrop();
     }
     public void drawPlants(Graphics2D g2) {
-        for (Tree plant : plantList) {
+        for (Map.Entry<Point, Tree> entry : plantMap.entrySet()) {
+            Tree plant = entry.getValue();
             plant.draw(g2, gp);
         }
     }
@@ -52,30 +56,71 @@ public class PlantCrop {
             plantCrop("plant_2_");
         }
     }
+
+    public void harvestCrop() {
+        int col = gp.player.landTileX;
+        int row = gp.player.landTileY;
+        if (gp.tileM.mapTileNum[col][row] == 46) {
+            Point position = new Point(col, row);
+            Tree plant = plantMap.get(position);
+            if (plant != null) {
+                String name = plant.name;
+                BufferedImage[] plantImages = plant.getPlantImages();
+                BufferedImage lastImage = plantImages[plantImages.length - 1];
+                if (plant.getCurrentImage() == lastImage) {
+                    // Thu hoạch cây trồng
+                    plant = null;
+                    plantMap.remove(position);
+                    gp.tileM.mapTileNum[col][row] = 29;
+                    handleQuantity(name);
+                }
+            }
+        }
+    }
+
+    public void handleQuantity(String name) {
+        for(int i = 0; i < gp.invetoryM.items.size(); i++) {
+            if(gp.invetoryM.items.get(i).name == name) {
+                gp.invetoryM.items.get(i).addQuantity();
+            }
+        }
+        int index = Integer.parseInt(name.split("_")[1]);
+        gp.invetoryM.items.get(index - 1).addQuantity();
+        gp.invetoryM.items.get(index - 1).addQuantity();
+    }
+
     public void plantCrop(String fileName) {
         int col = gp.player.landTileX;
         int row = gp.player.landTileY;
-        if(gp.tileM.mapTileNum[col][row] == 46) {
-            if(plantcrop[col][row] == 0) {
-                BufferedImage[] plantImages = new BufferedImage[5];
-                for(int i = 0; i < plantImages.length; i++) {
-                    String pathName = fileName + (i + 1);
-                    plantImages[i] = setupPlantImage(pathName);
+        int index = Integer.parseInt(fileName.split("_")[1]) - 1;
+        if(gp.invetoryM.items.get(index).quantity > 0) {
+            if (gp.tileM.mapTileNum[col][row] == 46) {
+                Point position = new Point(col, row);
+                if (!plantMap.containsKey(position)) {
+                    BufferedImage[] plantImages = new BufferedImage[5];
+                    for (int i = 0; i < plantImages.length; i++) {
+                        String pathName = fileName + (i + 1);
+                        plantImages[i] = setupPlantImage(pathName);
+                    }
+                    Tree plant = new Tree(plantImages, 3000, fileName);
+                    plant.worldX = gp.tileSize * col;
+                    plant.worldY = gp.tileSize * row;
+                    plantMap.put(position, plant);
+
+                    System.out.println(index);
+                    gp.invetoryM.items.get(index).removeQuantity();
                 }
-                Plant_1 plant = new Plant_1(plantImages, 3000);
-                plant.worldX = gp.tileSize * col;
-                plant.worldY = gp.tileSize * row;
-                plantList.add(plant);
             }
-            plantcrop[col][row] = 46;
         }
     }
 
     public void update() {
-        plantcropSetup();
-        for (Tree plant : plantList) {
+        for (Map.Entry<Point, Tree> entry : plantMap.entrySet()) {
+            Tree plant = entry.getValue();
             plant.update();
         }
+        plantcropSetup();
+        harvestCrop();
     }
 
     public void draw(Graphics2D g2) {

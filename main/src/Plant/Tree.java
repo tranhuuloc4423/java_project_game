@@ -16,7 +16,7 @@ public class Tree {
     public long startTime; // Thời điểm cây bắt đầu mọc
     public BufferedImage image;
     public String name;
-    public boolean collision = false;
+    public boolean collision = true;
     public int worldX, worldY;
 //    UtilityTool tool = new UtilityTool();
 
@@ -27,12 +27,21 @@ public class Tree {
     public boolean isHarvested;
 
 
-    public Tree(BufferedImage[]treeImages, int imageChangeInterval) {
+    public Tree(BufferedImage[]treeImages, int imageChangeInterval, String name) {
         this.treeImages = treeImages;
         this.imageChangeInterval = imageChangeInterval;
         this.currentImageIndex = 0;
         this.image = treeImages[currentImageIndex];
         this.lastImageChangeTime = System.currentTimeMillis();
+        this.name = name;
+    }
+
+    public BufferedImage[] getPlantImages() {
+        return treeImages;
+    }
+
+    public BufferedImage getCurrentImage() {
+        return image;
     }
 
     public void update() {
@@ -63,16 +72,6 @@ public class Tree {
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
     }
-
-//    public BufferedImage setupImage(String fileName) {
-//        BufferedImage image = null;
-//        try {
-//            image = ImageIO.read(getClass().getResourceAsStream("/res/plants/" + fileName + ".png"));
-//        } catch(IOException e) {
-//            e.printStackTrace();
-//        }
-//        return image;
-//    }
 
     public void harvest() {
         isHarvested = true;

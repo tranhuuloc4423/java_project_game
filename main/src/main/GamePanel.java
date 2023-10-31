@@ -58,7 +58,7 @@ public class GamePanel extends JPanel implements  Runnable {
     public Player player = new Player(this, keyH);
 
     public SuperObject obj[] = new SuperObject[10];
-    public Tree plants[] = new Tree[10];
+//    public Tree plants[] = new Tree[10];
     public Entity npc[] = new Entity[10];
 
     // tiles
@@ -220,11 +220,11 @@ public class GamePanel extends JPanel implements  Runnable {
         }
 
         // plants
-        for(int i = 0;i < plants.length; i++) {
-            if(plants[i] != null) {
-                plants[i].draw(g2, this);
-            }
-        }
+//        for(int i = 0;i < plants.length; i++) {
+//            if(plants[i] != null) {
+//                plants[i].draw(g2, this);
+//            }
+//        }
 
         // npc
         for(int i = 0; i < npc.length; i++) {

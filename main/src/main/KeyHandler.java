@@ -13,7 +13,6 @@ public class KeyHandler implements KeyListener {
     public boolean inventoryPressed;
     // debug
     boolean checkDrawTime = false;
-    public boolean isPlant = false;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -42,15 +41,6 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_D) {
             rightPressed = true;
-        }
-
-        if(code == KeyEvent.VK_R) {
-            int col = gp.player.landTileX;
-            int row = gp.player.landTileY;
-            int dirtTileNum = 29;
-            if(gp.tileM.mapTileNum[col][row] == dirtTileNum) {
-                isHoe = true;
-            }
         }
 
         if(code == KeyEvent.VK_ESCAPE) {
