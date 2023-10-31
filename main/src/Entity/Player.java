@@ -36,8 +36,8 @@ public class Player extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        solidArea.width = 64;
-        solidArea.height = 64;
+        solidArea.width = 24;
+        solidArea.height = 24;
         setDefaultValues();
         setPlayerImage();
     }
@@ -51,7 +51,7 @@ public class Player extends Entity {
 
     public void getTilePositionPlayer() {
         landTileX = (worldX / gp.tileSize) + 1;
-        landTileY = (worldY / gp.tileSize) + 1;
+        landTileY = (worldY / gp.tileSize)+ 1;
     }
 
     public void pickUpObject(int index) {
@@ -136,8 +136,8 @@ public class Player extends Entity {
             pickUpObject(objIndex);
 
             // check npc collision
-            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-            interactNPC(npcIndex);
+//            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+//            interactNPC(npcIndex);
 
 
             // IF COLLISON IS FALSE, PLAYER CAN MOVE

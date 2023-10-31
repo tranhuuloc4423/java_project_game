@@ -2,9 +2,6 @@ package Inventory;
 
 import java.awt.image.BufferedImage;
 
-public class ItemUncountable extends Item {
+public class ItemUncountable {
 
-    public ItemUncountable(String name, BufferedImage image) {
-        super(name, image);
-    }
 }

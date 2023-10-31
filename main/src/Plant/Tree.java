@@ -27,12 +27,13 @@ public class Tree {
     public boolean isHarvested;
 
 
-    public Tree(BufferedImage[]treeImages, int imageChangeInterval) {
+    public Tree(BufferedImage[]treeImages, int imageChangeInterval, String name) {
         this.treeImages = treeImages;
         this.imageChangeInterval = imageChangeInterval;
         this.currentImageIndex = 0;
         this.image = treeImages[currentImageIndex];
         this.lastImageChangeTime = System.currentTimeMillis();
+        this.name = name;
     }
 
     public BufferedImage[] getPlantImages() {
@@ -71,16 +72,6 @@ public class Tree {
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
     }
-
-//    public BufferedImage setupImage(String fileName) {
-//        BufferedImage image = null;
-//        try {
-//            image = ImageIO.read(getClass().getResourceAsStream("/res/plants/" + fileName + ".png"));
-//        } catch(IOException e) {
-//            e.printStackTrace();
-//        }
-//        return image;
-//    }
 
     public void harvest() {
         isHarvested = true;

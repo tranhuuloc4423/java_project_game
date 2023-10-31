@@ -1,8 +1,5 @@
 package Tile;
 
-import Entity.Player;
-import Plant.Plant_1;
-import Plant.Tree;
 import main.GamePanel;
 import main.KeyHandler;
 import main.MouseHandler;
@@ -117,11 +114,10 @@ public class TileManager {
         int dirtTileNum = 29;
         if(gp.tileM.mapTileNum[col][row] == dirtTileNum) {
             if (!isDigging) {
-                // Bắt đầu đếm thời gian nếu chưa đào đất
                 startTime = System.currentTimeMillis();
                 isDigging = true;
             } else {
-                // Đã đang đào đất
+
                 long currentTime = System.currentTimeMillis();
                 long elapsedTime = currentTime - startTime;
 

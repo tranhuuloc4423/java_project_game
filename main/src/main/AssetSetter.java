@@ -1,7 +1,6 @@
 package main;
 import Entity.*;
 import Object.*;
-import Plant.Plant_1;
 
 public class AssetSetter {
     GamePanel gp;
@@ -11,12 +10,12 @@ public class AssetSetter {
     }
 
     public void setObject(int x, int y) {
-        gp.obj[0] = null;
-        if(gp.obj[0] == null) {
-            gp.obj[0] = new OBJ_Border(gp);
-            gp.obj[0].worldX = x * gp.tileSize;
-            gp.obj[0].worldY = y * gp.tileSize;
+        if(gp.obj[0] != null) {
+            gp.obj[0] = null;
         }
+        gp.obj[0] = new OBJ_Border(gp);
+        gp.obj[0].worldX = x * gp.tileSize;
+        gp.obj[0].worldY = y * gp.tileSize;
 
     }
 

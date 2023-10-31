@@ -4,8 +4,13 @@ import main.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.security.Key;
+import java.util.ArrayList;
 
 public class InventoryManager {
     GamePanel gp;
@@ -15,10 +20,28 @@ public class InventoryManager {
     public final int inventoryOn = 1;
     public final int inventoryOff = 2;
     final int inventorySeparate = 78;
+    public ArrayList<Item> items = new ArrayList<>();
+
     public InventoryManager(GamePanel gp) {
         this.gp = gp;
         selectedItem = 1;
         inventory = inventoryOff;
+        setupInventory();
+    }
+
+    public void setupInventory() {
+        Item item1 = new Item("seed1", "/res/plants/seed_1.png", 4);
+        Item item2 = new Item("seed2", "/res/plants/seed_2.png", 4);
+        Item item3 = new Item("plant_1_", "/res/plants/plant_1_5.png", 4);
+        Item item4 = new Item("plant_2_", "/res/plants/plant_2_5.png", 4);
+        Item item5 = new Item("waterbottle", "/res/Object/tile000.png", 0);
+        Item item6 = new Item("hoe", "/res/Object/tile002.png", 0);
+        items.add(item1);
+        items.add(item2);
+        items.add(item3);
+        items.add(item4);
+        items.add(item5);
+        items.add(item6);
     }
 
     public void setSelectedItem(int index) {
@@ -63,14 +86,24 @@ public class InventoryManager {
         g2.drawImage(image, x, y, width, height, null);
     }
 
-    public void drawItem(Graphics2D g2, String filePath,int index) {
-        BufferedImage image = setupImage(filePath);
+    public void drawItem(Graphics2D g2, Item item ,int index) {
+        BufferedImage image = item.getItemImage();
         int width = getSizeImage(image)[0];
         int height = getSizeImage(image)[1];
         int initX = width * 5 - 2;
         int x = initX + (inventorySeparate * (index - 1));
         int y = gp.screenHeight - 112;
         g2.drawImage(image, x, y, width, height, null);
+
+        int itemCount = item.quantity; // Số lượng item
+        if(itemCount == 0) return;
+        String countText = String.valueOf(itemCount);
+        Font font = new Font("Arial", Font.BOLD, 20);
+        g2.setFont(font);
+        g2.setColor(Color.DARK_GRAY);
+        int cornerX = x + width - 5; // Vị trí X của góc (10 là khoảng cách từ viền)
+        int cornerY = y + height + 5; // Vị trí Y của góc (10 là khoảng cách từ viền)
+        g2.drawString(countText, cornerX, cornerY);
     }
 
     public void draw(Graphics2D g2) {
@@ -78,15 +111,16 @@ public class InventoryManager {
             if(gp.invetoryM.inventory == gp.invetoryM.inventoryOn) {
                 drawInventoryBar(g2);
                 drawSelectItem(g2, "/res/ui/SelectMenu.png" , selectedItem);
-                drawItem(g2, "/res/plants/seed_1.png", 1);
-                drawItem(g2, "/res/plants/seed_2.png", 2);
-                drawItem(g2, "/res/Object/tile000.png", 8);
-                drawItem( g2,"/res/Object/tile002.png", 9);
+                for(int i = 0 ; i < items.size(); i++) {
+                    Item item = items.get(i);
+                    drawItem(g2, item, i + 1);
+                }
             }
         }
     }
 
     public void inventoryPressed() {
+        System.out.println("inventory pressed");
         if(gp.keyH.inventoryPressed) {
             if(inventory == inventoryOn) {
                 inventory = inventoryOff;
@@ -105,31 +139,24 @@ public class InventoryManager {
         }
         if(gp.keyH.btn3Pressed) {
             setSelectedItem(3);
-
         }
         if(gp.keyH.btn4Pressed) {
             setSelectedItem(4);
-
         }
         if(gp.keyH.btn5Pressed) {
             setSelectedItem(5);
-
         }
         if(gp.keyH.btn6Pressed) {
             setSelectedItem(6);
-
         }
         if(gp.keyH.btn7Pressed) {
             setSelectedItem(7);
-
         }
         if(gp.keyH.btn8Pressed) {
             setSelectedItem(8);
-
         }
         if(gp.keyH.btn9Pressed) {
             setSelectedItem(9);
-
         }
     }
 }
