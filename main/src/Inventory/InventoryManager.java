@@ -68,6 +68,7 @@ public class InventoryManager {
     }
 
     public void drawInventoryBar(Graphics2D g2) {
+        System.out.println("inventory");
         BufferedImage image = setupImage("/res/ui/Menu.png");
         int width = getSizeImage(image)[0];
         int height = getSizeImage(image)[1];
