@@ -13,23 +13,27 @@ import javax.swing.Timer;
 public class Menu {
     GamePanel gp;
     private boolean drawSubMenu = false;
-    private boolean drawSubmitMenu = false;
     private boolean drawMainMenu = true;
-    private boolean isOptionEnabled = false;
+    private boolean drawSubmitMenu = false;
     private boolean isPlayEnabled = false;
+    private boolean isOptionEnabled = false;
     private boolean isQuitEnabled = false;
     private boolean isMusicEnabled = false;
     private boolean isSoundEffectEnabled = false;
     private boolean isSubmit = false;
     private boolean isCancel = false;
-
+    private boolean isSubmitExit = false;
+    private boolean isCancelExit = false;
     public Menu(GamePanel gp) {
         this.gp = gp;
         MouseClickListener mouseClickListener = new MouseClickListener();
         gp.addMouseListener(mouseClickListener);
     }
-
     public void update() {
+
+    }
+
+    public void drawStartMenu(Graphics2D g2) {
 
     }
 
@@ -66,6 +70,20 @@ public class Menu {
             isSubmit = false;
             isCancel = false;
         }
+        public int[] getBoundPosition(BufferedImage image, int xSize , int ySize, int size) {
+            int width = image.getWidth() * gp.scale * size;
+            int height = image.getHeight() * gp.scale;
+            int x = (gp.screenWidth - width) / 2 + xSize;
+            int y = (gp.screenHeight - height) / 2 + ySize;
+
+            int[] arr = new int[4];
+            arr[0] = width;
+            arr[1] = height;
+            arr[2] = x;
+            arr[3] = y;
+
+            return arr;
+        }
         @Override
         public void mousePressed(MouseEvent e) {
             int mouseX = e.getX();
@@ -95,6 +113,42 @@ public class Menu {
                 e2.printStackTrace();
             }
 
+
+
+            if (drawSubmitMenu) {
+                int[] position = getBoundPosition(imageSubmitExit,-80,50,1 );
+                if (mouseX >= position[2] && mouseX <= position[2] + position[0] && mouseY >= position[3] && mouseY <= position[3] + position[1]) {
+                    isSubmitExit = !isSubmitExit;
+
+                    int delay = 200;
+                    ActionListener emptyAction = new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            System.exit(0);
+                        }
+                    };
+                    Timer timer = new Timer(delay, emptyAction);
+                    timer.setRepeats(false);
+                    timer.start();
+                }
+
+                int widthCancel = imageCancelExit.getWidth() * gp.scale;
+                int heightCancel = imageCancelExit.getHeight() * gp.scale;
+                int xCancel = (gp.screenWidth - widthCancel) / 2 + 80;
+                int yCancel = (gp.screenHeight - heightCancel) / 2 + 50;
+                if (mouseX >= xCancel && mouseX <= xCancel + widthCancel && mouseY >= yCancel && mouseY <= yCancel + heightCancel) {
+                    isCancelExit = !isCancelExit;
+                    int delay = 200;
+                    ActionListener emptyAction = new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            gp.gameState = gp.playState;
+                        }
+                    };
+                    Timer timer = new Timer(delay, emptyAction);
+                    timer.setRepeats(false);
+                    timer.start();
+                }
+            }
+
             if (drawSubMenu) {
                 int widthMusic = imageMusicIcon.getWidth() * gp.scale;
                 int heightMusic = imageMusicIcon.getHeight() * gp.scale;
@@ -120,7 +174,15 @@ public class Menu {
                 int ySubmit = (gp.screenHeight - heightSubmit) / 2 + 120;
                 if (mouseX >= xSubmit && mouseX <= xSubmit + widthSubmit && mouseY >= ySubmit && mouseY <= ySubmit + heightSubmit) {
                     isSubmit = !isSubmit;
-                    gp.gameState = gp.playState;
+                    int delay = 200;
+                    ActionListener emptyAction = new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            gp.gameState = gp.playState;
+                        }
+                    };
+                    Timer timer = new Timer(delay, emptyAction);
+                    timer.setRepeats(false);
+                    timer.start();
                 }
 
                 int widthCancel = imageCancel.getWidth() * gp.scale;
@@ -129,12 +191,20 @@ public class Menu {
                 int yCancel = (gp.screenHeight - heightCancel) / 2 + 120;
                 if (mouseX >= xCancel && mouseX <= xCancel + widthCancel && mouseY >= yCancel && mouseY <= yCancel + heightCancel) {
                     isCancel = !isCancel;
-                    gp.gameState = gp.playState;
+                    int delay = 200;
+                    ActionListener emptyAction = new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            gp.gameState = gp.playState;
+                        }
+                    };
+                    Timer timer = new Timer(delay, emptyAction);
+                    timer.setRepeats(false);
+                    timer.start();
                 }
             }
             if (drawMainMenu) {
-                int widthPlay = imagePlay.getWidth() * gp.scale * 8/10;
-                int heightPlay = imagePlay.getHeight() * gp.scale * 8/10;
+                int widthPlay = imagePlay.getWidth() * gp.scale;
+                int heightPlay = imagePlay.getHeight() * gp.scale;
                 int xPlay = (gp.screenWidth - widthPlay) / 2;
                 int yPlay = (gp.screenHeight - heightPlay) / 2 - 90;
 
@@ -151,8 +221,8 @@ public class Menu {
                     timer.start();
                 }
 
-                int widthOption = imageOption.getWidth() * gp.scale * 8/10;
-                int heightOption = imageOption.getHeight() * gp.scale * 8/10;
+                int widthOption = imageOption.getWidth() * gp.scale ;
+                int heightOption = imageOption.getHeight() * gp.scale;
                 int xOption = (gp.screenWidth - widthOption) / 2;
                 int yOption = (gp.screenHeight - heightOption) / 2;
 
@@ -169,35 +239,25 @@ public class Menu {
                     timer.start();
                 }
 
-                int widthQuit = imageQuit.getWidth() * gp.scale * 8/10;
-                int heightQuit = imageQuit.getHeight() * gp.scale * 8/10;
+                int widthQuit = imageQuit.getWidth() * gp.scale;
+                int heightQuit = imageQuit.getHeight() * gp.scale;
                 int xQuit = (gp.screenWidth - widthQuit) / 2;
                 int yQuit = (gp.screenHeight - heightQuit) / 2 + 90;
 
                 if (mouseX >= xQuit && mouseX <= xQuit + widthQuit && mouseY >= yQuit && mouseY <= yQuit + heightQuit) {
-                    drawSubmitMenu = true;
-                    drawMainMenu = !drawMainMenu;
+                    isQuitEnabled = true;
+                    int delay = 200;
+                    ActionListener emptyAction = new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            drawMainMenu = !drawMainMenu;
+                            drawSubmitMenu = true;
+                        }
+                    };
+                    Timer timer = new Timer(delay, emptyAction);
+                    timer.setRepeats(false);
+                    timer.start();
                 }
             }
-            if (drawSubmitMenu) {
-                int widthSubmitExit = imageSubmitExit.getWidth() * gp.scale;
-                int heightSubmitExit = imageSubmitExit.getHeight() * gp.scale;
-                int xSubmitExit = (gp.screenWidth - widthSubmitExit) / 2 - 80;
-                int ySubmitExit = (gp.screenHeight - heightSubmitExit) / 2 + 50;
-                if (mouseX >= xSubmitExit && mouseX <= xSubmitExit + widthSubmitExit && mouseY >= ySubmitExit && mouseY <= ySubmitExit + heightSubmitExit) {
-                    System.exit(0);
-                }
-
-                int widthCancel = imageCancelExit.getWidth() * gp.scale;
-                int heightCancel = imageCancelExit.getHeight() * gp.scale;
-                int xCancel = (gp.screenWidth - widthCancel) / 2 + 80;
-                int yCancel = (gp.screenHeight - heightCancel) / 2 + 50;
-                if (mouseX >= xCancel && mouseX <= xCancel + widthCancel && mouseY >= yCancel && mouseY <= yCancel + heightCancel) {
-                    isCancel = !isCancel;
-                    gp.gameState = gp.playState;
-                }
-            }
-
         }
     }
 
@@ -216,6 +276,8 @@ public class Menu {
         BufferedImage imageQuit = null;
 
         try {
+            imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/setting2.png"));
+
             if(isPlayEnabled) {
                 imagePlay = ImageIO.read(getClass().getResourceAsStream("/res/menu/play2.png"));
             } else {
@@ -227,44 +289,24 @@ public class Menu {
             } else {
                 imageOption = ImageIO.read(getClass().getResourceAsStream("/res/menu/option1.png"));
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
 
-        try {
-            imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/setting2.png"));
-            imageQuit = ImageIO.read(getClass().getResourceAsStream("/res/menu/quit1.png"));
+            if(isQuitEnabled) {
+                imageQuit = ImageIO.read(getClass().getResourceAsStream("/res/menu/quit2.png"));
+            } else {
+                imageQuit = ImageIO.read(getClass().getResourceAsStream("/res/menu/quit1.png"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        int widthSetting = imageSetting.getWidth() * gp.scale;
-        int heightSetting = imageSetting.getHeight() * gp.scale;
-        int xSetting = (gp.screenWidth - widthSetting) / 2;
-        int ySetting = (gp.screenHeight - heightSetting) / 2;
-        g2.drawImage(imageSetting, xSetting, ySetting, widthSetting, heightSetting, null);
-
-
-        int widthPlay = imagePlay.getWidth() * gp.scale * 8/10;
-        int heightPlay = imagePlay.getHeight() * gp.scale * 8/10;
-        int xPlay = (gp.screenWidth - widthPlay) / 2;
-        int yPlay = (gp.screenHeight - heightPlay) / 2 - 90;
-        g2.drawImage(imagePlay, xPlay, yPlay, widthPlay, heightPlay, null);
-
-        int widthOption = imageOption.getWidth() * gp.scale * 8/10;
-        int heightOption = imageOption.getHeight() * gp.scale * 8/10;
-        int xOption = (gp.screenWidth - widthOption) / 2;
-        int yOption = (gp.screenHeight - heightOption) / 2;
-        g2.drawImage(imageOption, xOption, yOption, widthOption, heightOption, null);
-
-        int widthQuit = imageQuit.getWidth() * gp.scale * 8/10;
-        int heightQuit = imageQuit.getHeight() * gp.scale * 8/10;
-        int xQuit = (gp.screenWidth - widthQuit) / 2;
-        int yQuit = (gp.screenHeight - heightQuit) / 2 + 90;
-        g2.drawImage(imageQuit, xQuit, yQuit, widthQuit, heightQuit, null);
+        drawImage(g2, imageSetting, 0, 0 , 1);
+        drawImage(g2, imagePlay, 0, -90 , 1);
+        drawImage(g2, imageOption, 0, 0 , 1);
+        drawImage(g2, imageQuit, 0, 90 , 1);
 
         isOptionEnabled = false;
         isPlayEnabled = false;
+        isQuitEnabled = false;
     }
 
     public void drawSubMenuSetting(Graphics2D g2) {
@@ -291,33 +333,24 @@ public class Menu {
             }
 
             if (isSubmit) {
-                if (isMusicEnabled) {
-                    imageMusicIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/on2.png"));
-                } else {
-                    imageMusicIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/off1.png"));
-                }
-
-                if (isSoundEffectEnabled) {
-                    imageSoundEffectIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/on2.png"));
-                }
-                else {
-                    imageSoundEffectIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/off1.png"));
-                }
+                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit2.png"));
+            } else {
+                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit1.png"));
             }
 
             if (isCancel) {
-
+                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel2.png"));
+            } else {
+                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel1.png"));
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
         try {
-            imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/setting1.png"));
+            imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/setting2.png"));
             imageMusic = ImageIO.read(getClass().getResourceAsStream("/res/menu/music.png"));
             imageSoundEffect = ImageIO.read(getClass().getResourceAsStream("/res/menu/se.png"));
-            imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit1.png"));
-            imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel1.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -335,8 +368,16 @@ public class Menu {
         BufferedImage imageCancel = null;
         try {
             imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/setting3.png"));
-            imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit1.png"));
-            imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel1.png"));
+            if (isSubmitExit) {
+                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit2.png"));
+            } else {
+                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit1.png"));
+            }
+            if (isCancelExit) {
+                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel2.png"));
+            } else {
+                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel1.png"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

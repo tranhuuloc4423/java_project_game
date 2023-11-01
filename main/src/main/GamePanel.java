@@ -39,41 +39,28 @@ public class GamePanel extends JPanel implements  Runnable {
     // SYSTEM
     public KeyHandler keyH = new KeyHandler(this);
     public MouseHandler mouseH = new MouseHandler(this);
-
-
     Cursor customCursor;
-
-
-
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public Sound music = new Sound();
     public Sound se = new Sound();
     public UI ui = new UI(this);
-
     Thread gameThread;
-
-
-    // entity and object
     public Player player = new Player(this, keyH);
-
     public SuperObject obj[] = new SuperObject[10];
 //    public Tree plants[] = new Tree[10];
     public Entity npc[] = new Entity[10];
-
     // tiles
     public TileManager tileM = new TileManager(this);
     public PlantCrop plantcrop = new PlantCrop(this);
-
     public Menu menu = new Menu(this);
-
     // inventory
     public InventoryManager invetoryM = new InventoryManager(this);
-
     // game state
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int startState = 3;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -82,10 +69,8 @@ public class GamePanel extends JPanel implements  Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true);
         addMouseListener(mouseH);
-
         customCursor();
     }
-
     public void customCursor() {
         try {
             BufferedImage cursorImage = ImageIO.read(getClass().getResourceAsStream("/res/mouse/custom_mouse_1.png"));
@@ -95,23 +80,17 @@ public class GamePanel extends JPanel implements  Runnable {
             e.printStackTrace();
         }
     }
-
     public void setupGame() {
 //        aSetter.setObject();
         aSetter.setNPC();
-
         playMusic(0); // 0 is main song
         stopMusic();
         gameState = playState;
     }
-
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
-
-
-
     // game loop
 //    @Override
 //    public void run() {
@@ -139,8 +118,6 @@ public class GamePanel extends JPanel implements  Runnable {
 //            }
 //        }
 //    }
-
-
     // game loop
     public void run() {
         double drawInterval =  1000000000 / FPS;
@@ -154,7 +131,6 @@ public class GamePanel extends JPanel implements  Runnable {
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
             lastTime = currentTime;
-
             if(delta >= 1) {
                 update();
                 repaint();
@@ -167,26 +143,19 @@ public class GamePanel extends JPanel implements  Runnable {
                 drawCount = 0;
                 timer = 0;
             }
-
         }
     }
-
     public void update() {
         if(gameState == playState) {
             player.update();
             // tiles
             tileM.update();
-
-
             // inventory
             invetoryM.update();
-
             // plantcrop
             plantcrop.update();
-
             // menu
             menu.update();
-
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null) {
                     npc[i].update();
@@ -197,79 +166,71 @@ public class GamePanel extends JPanel implements  Runnable {
             // nothing
         }
     }
-
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D)g;
-
         // debug
-        long drawStart = 0;
-        if(keyH.checkDrawTime) {
-            drawStart =  System.nanoTime();
-        }
+        if(gameState == startState) {
+            menu.drawStartMenu(g2);
+        } else if(gameState == playState || gameState == pauseState) {
+            long drawStart = 0;
 
-        // tiles
-        tileM.draw(g2);
-
-        // objects
-        for(int i = 0;i < obj.length; i++) {
-            if(obj[i] != null) {
-                obj[i].draw(g2, this);
+            if(keyH.checkDrawTime) {
+                drawStart =  System.nanoTime();
             }
-        }
 
-        // plants
+            // tiles
+            tileM.draw(g2);
+
+            // objects
+            for(int i = 0;i < obj.length; i++) {
+                if(obj[i] != null) {
+                    obj[i].draw(g2, this);
+                }
+            }
+            // plants
 //        for(int i = 0;i < plants.length; i++) {
 //            if(plants[i] != null) {
 //                plants[i].draw(g2, this);
 //            }
 //        }
+            // npc
+            for(int i = 0; i < npc.length; i++) {
+                if(npc[i] != null) {
+                    npc[i].draw(g2);
+                }
+            }
 
-        // npc
-        for(int i = 0; i < npc.length; i++) {
-            if(npc[i] != null) {
-                npc[i].draw(g2);
+            // player
+            player.draw(g2);
+
+            // inventory
+            invetoryM.draw(g2);
+
+            // plantcrop
+            plantcrop.draw(g2);
+
+            // debug
+            if(keyH.checkDrawTime) {
+                long drawEnd = System.nanoTime();
+                long passed = drawEnd - drawStart;
+                g2.setColor(Color.WHITE);
+                g2.drawString("DrawTime : " + passed, 10, 400);
+                System.out.println("Draw time : " + passed);
             }
         }
-
-        // player
-        player.draw(g2);
-
-        // ui
-//        ui.draw(g2);
-
-        // inventory
-        invetoryM.draw(g2);
-
-        // plantcrop
-        plantcrop.draw(g2);
-//
-        // debug
-        if(keyH.checkDrawTime) {
-            long drawEnd = System.nanoTime();
-            long passed = drawEnd - drawStart;
-            g2.setColor(Color.WHITE);
-            g2.drawString("DrawTime : " + passed, 10, 400);
-            System.out.println("Draw time : " + passed);
-        }
-
         // menu
         menu.draw(g2);
-
         g2.dispose();
     }
-
     public void playMusic(int i) {
         music.setFile(i);
         music.play();
         music.loop();
     }
-
     public void stopMusic() {
         music.stop();
     }
-
     public void playSE(int i) {
         se.setFile(i);
         se.play();
