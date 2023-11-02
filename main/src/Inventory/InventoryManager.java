@@ -20,6 +20,7 @@ public class InventoryManager {
     public final int inventoryOn = 1;
     public final int inventoryOff = 2;
     final int inventorySeparate = 78;
+    public BufferedImage compare;
     public ArrayList<Item> items = new ArrayList<>();
 
     public InventoryManager(GamePanel gp) {
@@ -67,7 +68,7 @@ public class InventoryManager {
         return size;
     }
 
-    public void drawInventoryBar(Graphics2D g2) {
+    public BufferedImage drawInventoryBar(Graphics2D g2) {
         System.out.println("inventory");
         BufferedImage image = setupImage("/res/ui/Menu.png");
         int width = getSizeImage(image)[0];
@@ -75,6 +76,7 @@ public class InventoryManager {
         int x = (gp.screenWidth - width) / 2; // screenWidth = 1152
         int y = gp.screenHeight - 160; // screenHeight = 768
         g2.drawImage(image, x, y, width, height, null);
+        return image;
     }
 
     public void drawSelectItem(Graphics2D g2, String filePath,int index) {
@@ -110,7 +112,7 @@ public class InventoryManager {
     public void draw(Graphics2D g2) {
         if(gp.gameState == gp.playState) {
             if(gp.invetoryM.inventory == gp.invetoryM.inventoryOn) {
-                drawInventoryBar(g2);
+                compare = drawInventoryBar(g2);
                 drawSelectItem(g2, "/res/ui/SelectMenu.png" , selectedItem);
                 for(int i = 0 ; i < items.size(); i++) {
                     Item item = items.get(i);

@@ -270,6 +270,7 @@ public class Menu {
     }
 
     public void drawMenuSetting(Graphics2D g2) {
+        System.out.println("menu");
         BufferedImage imageSetting = null;
         BufferedImage imagePlay = null;
         BufferedImage imageOption = null;
