@@ -221,6 +221,7 @@ public class GamePanel extends JPanel implements  Runnable {
                 g2Buffer.drawString("DrawTime : " + passed, 10, 400);
                 System.out.println("Draw time : " + passed);
             }
+            menu.draw(g2Buffer);
         }
 
         // Sao chép bộ đệm ẩn lên màn hình

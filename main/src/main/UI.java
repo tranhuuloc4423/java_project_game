@@ -76,7 +76,7 @@ public class UI {
 
     void setupImages() {
         try {
-            mission = ImageIO.read(getClass().getResourceAsStream("/res/menu/setting1.png"));
+            mission = ImageIO.read(getClass().getResourceAsStream("/res/menu/MissonMenunew.png"));
         } catch(IOException e) {
             e.printStackTrace();
         }
