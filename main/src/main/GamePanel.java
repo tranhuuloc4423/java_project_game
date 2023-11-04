@@ -2,21 +2,27 @@ package main;
 
 import Entity.Entity;
 import Entity.Player;
+import Inventory.InventoryManager;
+import Object.SuperObject;
+import Plant.Tree;
+import Tile.PlantCrop;
 import Tile.TileManager;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import Object.SuperObject;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class GamePanel extends JPanel implements  Runnable {
 
     // screen settings
     final int originalTileSize = 16;
-    final int scale = 4;
+    public final int scale = 3;
 
     public final int tileSize = originalTileSize * scale; // tile = 16 * 3
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
+    public final int maxScreenCol = 24;
+    public final int maxScreenRow = 16;
     public final int screenWidth = tileSize * maxScreenCol; // 768 px
     public final int screenHeight = tileSize * maxScreenRow; // 576 px
 
@@ -31,29 +37,30 @@ public class GamePanel extends JPanel implements  Runnable {
     public int FPS = 60;
 
     // SYSTEM
-    KeyHandler keyH = new KeyHandler(this);
-    MouseHandler mouseH = new MouseHandler(this);
-    TileManager tileM = new TileManager(this, mouseH);
-
+    public KeyHandler keyH = new KeyHandler(this);
+    public MouseHandler mouseH = new MouseHandler(this);
+    Cursor customCursor;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public Sound music = new Sound();
     public Sound se = new Sound();
     public UI ui = new UI(this);
-
     Thread gameThread;
-
-
-    // entity and object
     public Player player = new Player(this, keyH);
-
     public SuperObject obj[] = new SuperObject[10];
+//    public Tree plants[] = new Tree[10];
     public Entity npc[] = new Entity[10];
-
+    // tiles
+    public TileManager tileM = new TileManager(this);
+    public PlantCrop plantcrop = new PlantCrop(this);
+    public Menu menu = new Menu(this);
+    // inventory
+    public InventoryManager invetoryM = new InventoryManager(this);
     // game state
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int startState = 3;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -62,22 +69,29 @@ public class GamePanel extends JPanel implements  Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true);
         addMouseListener(mouseH);
+        customCursor();
     }
-
+    public void customCursor() {
+        try {
+            BufferedImage cursorImage = ImageIO.read(getClass().getResourceAsStream("/res/mouse/custom_mouse_1.png"));
+            customCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "customCursor");
+            setCursor(customCursor);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void setupGame() {
-        aSetter.setObject();
+//        aSetter.setObject();
         aSetter.setNPC();
         playMusic(0); // 0 is main song
         stopMusic();
         gameState = playState;
     }
-
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
-
-
+    // game loop
 //    @Override
 //    public void run() {
 //        while(gameThread != null) {
@@ -104,7 +118,7 @@ public class GamePanel extends JPanel implements  Runnable {
 //            }
 //        }
 //    }
-
+    // game loop
     public void run() {
         double drawInterval =  1000000000 / FPS;
         double delta = 0;
@@ -117,7 +131,6 @@ public class GamePanel extends JPanel implements  Runnable {
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
             lastTime = currentTime;
-
             if(delta >= 1) {
                 update();
                 repaint();
@@ -130,18 +143,20 @@ public class GamePanel extends JPanel implements  Runnable {
                 drawCount = 0;
                 timer = 0;
             }
-
         }
     }
 
     public void update() {
         if(gameState == playState) {
             player.update();
-            if(mouseH.isMouseClicked) {
-                System.out.println("Mouse clicked");
-                tileM.update();
-                mouseH.isMouseClicked = false;
-            }
+            // tiles
+            tileM.update();
+            // inventory
+            invetoryM.update();
+            // plantcrop
+            plantcrop.update();
+            // menu
+            menu.update();
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null) {
                     npc[i].update();
@@ -151,64 +166,77 @@ public class GamePanel extends JPanel implements  Runnable {
         if(gameState == pauseState) {
             // nothing
         }
-
     }
-
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
 
-        Graphics2D g2 = (Graphics2D)g;
+        // Tạo một BufferedImage là bộ đệm ẩn
+        BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2Buffer = buffer.createGraphics();
 
         // debug
-        long drawStart = 0;
-        if(keyH.checkDrawTime) {
-            drawStart =  System.nanoTime();
-        }
-        // tiles
-        tileM.draw(g2);
+        if (gameState == startState) {
+            menu.drawStartMenu(g2Buffer);
+        } else if (gameState == playState || gameState == pauseState) {
+            long drawStart = 0;
 
-        // objects
-        for(int i = 0;i < obj.length; i++) {
-            if(obj[i] != null) {
-                obj[i].draw(g2, this);
+            if (keyH.checkDrawTime) {
+                drawStart = System.nanoTime();
+            }
+
+            // tiles
+            tileM.draw(g2Buffer);
+
+            // objects
+            for (int i = 0; i < obj.length; i++) {
+                if (obj[i] != null) {
+                    obj[i].draw(g2Buffer, this);
+                }
+            }
+
+            // npc
+            for (int i = 0; i < npc.length; i++) {
+                if (npc[i] != null) {
+                    npc[i].draw(g2Buffer);
+                }
+            }
+
+            // player
+            player.draw(g2Buffer);
+
+            // inventory
+            invetoryM.draw(g2Buffer);
+
+            // plantcrop
+            plantcrop.draw(g2Buffer);
+
+            ui.draw(g2Buffer);
+
+            // debug
+            if (keyH.checkDrawTime) {
+                long drawEnd = System.nanoTime();
+                long passed = drawEnd - drawStart;
+                g2Buffer.setColor(Color.WHITE);
+                g2Buffer.drawString("DrawTime : " + passed, 10, 400);
+                System.out.println("Draw time : " + passed);
             }
         }
 
-        // npc
-        for(int i = 0; i < npc.length; i++) {
-            if(npc[i] != null) {
-                npc[i].draw(g2);
-            }
-        }
+        // Sao chép bộ đệm ẩn lên màn hình
+        g2.drawImage(buffer, 0, 0, null);
 
-        // player
-        player.draw(g2);
-
-        // ui
-        ui.draw(g2);
-
-        // debug
-        if(keyH.checkDrawTime) {
-            long drawEnd = System.nanoTime();
-            long passed = drawEnd - drawStart;
-            g2.setColor(Color.WHITE);
-            g2.drawString("DrawTime : " + passed, 10, 400);
-            System.out.println("Draw time : " + passed);
-        }
-
+        g2Buffer.dispose();
         g2.dispose();
     }
-
     public void playMusic(int i) {
         music.setFile(i);
         music.play();
         music.loop();
     }
-
     public void stopMusic() {
         music.stop();
     }
-
     public void playSE(int i) {
         se.setFile(i);
         se.play();

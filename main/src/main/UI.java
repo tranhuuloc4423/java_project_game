@@ -1,10 +1,15 @@
 package main;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 import Object.*;
+
+import javax.imageio.ImageIO;
 
 public class UI {
     GamePanel gp;
@@ -15,7 +20,13 @@ public class UI {
     public String message = "";
     int messageCounter = 0;
     public boolean gameFinished = false;
+    public boolean isMission = false;
+    public boolean isMissionDrawn = false;
     double playTime;
+
+    BufferedImage mission;
+
+
     DecimalFormat dFormat = new DecimalFormat("#0.00");
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -24,6 +35,7 @@ public class UI {
 
 //        OBJ_Key key = new OBJ_Key(gp);
 //        keyImage = key.image;
+        setupImages();
     }
 
     public void showMessage(String text) {
@@ -32,19 +44,21 @@ public class UI {
     }
 
     public void draw(Graphics2D g2) {
-
         this.g2 = g2;
 
-        g2.setFont(arial_30);
-        g2.setColor(Color.WHITE);
-
         if(gp.gameState == gp.playState) {
-            // do playstate stuff later
-        }
-        if(gp.gameState == gp.pauseState) {
-            drawPauseScreen();
+
         }
 
+        if(isMission) {
+            drawImage(mission, gp.tileSize * (gp.maxScreenCol - 3) - mission.getWidth(), gp.tileSize);
+        }
+    }
+
+    public void drawImage(BufferedImage image, int x, int y) {
+        int width = image.getWidth() * gp.scale;
+        int height = image.getHeight() * gp.scale;
+        g2.drawImage(image, x, y, width, height, null);
     }
 
     public void drawPauseScreen() {
@@ -59,4 +73,14 @@ public class UI {
         int x = gp.screenWidth / 2 - textLength / 2;
         return x;
     }
+
+    void setupImages() {
+        try {
+            mission = ImageIO.read(getClass().getResourceAsStream("/res/menu/setting1.png"));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

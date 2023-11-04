@@ -1,6 +1,7 @@
 package Tile;
 
 import main.GamePanel;
+import main.KeyHandler;
 import main.MouseHandler;
 import main.UtilityTool;
 
@@ -11,21 +12,27 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class TileManager {
     GamePanel gp;
     public Tile[] tile;
     public int mapTileNum[][];
     public MouseHandler mouseH;
-    public TileManager(GamePanel gp, MouseHandler mouseH) {
+    private long startTime; // Thời điểm bắt đầu nhấn giữ phím đào đất
+    private boolean isDigging; // Biến đánh dấu việc đang đào đất
+    private static final long DIGGING_DURATION = 3000;
+
+
+    public TileManager(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[50];
+        tile = new Tile[100];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileManager();
 //        loadMap("/res/maps/worldV2.txt");
         loadMap("/res/maps/Map_farm.txt");
 
-        this.mouseH = mouseH;
+        this.mouseH = gp.mouseH;
     }
 
     public int getTileNumber(int x, int y) {
@@ -47,7 +54,6 @@ public class TileManager {
 
 
         // placeholder
-
         setup(10, "W01", true);
         setup(11, "H03", false);
         setup(12, "H12", false);
@@ -87,14 +93,11 @@ public class TileManager {
         setup(46, "T10", false);
     }
     public void setup(int index, String imageName, boolean collision) {
-        UtilityTool tool = new UtilityTool();
         try{
             tile[index] = new Tile();
             BufferedImage image =  ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));
-//            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));
-//            tile[index].image = tool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
             tile[index].collision = collision;
-            tile[index].image = image;
+            tile[index].image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -105,15 +108,32 @@ public class TileManager {
         mapTileNum[col][row] = tileIndex;
     }
 
-    public void update() {
-        int col = mouseH.tileX;
-        int row = mouseH.tileY;
-        if(row >= 8 && row <= 11) {
-            if(col >= 15 && col <= 16 ) {
-                changeTileImage(col, row, 46);
+    public void checkHoe() {
+        int col = gp.player.landTileX;
+        int row = gp.player.landTileY;
+        int dirtTileNum = 29;
+        if(gp.tileM.mapTileNum[col][row] == dirtTileNum) {
+            if (!isDigging) {
+                startTime = System.currentTimeMillis();
+                isDigging = true;
+            } else {
+
+                long currentTime = System.currentTimeMillis();
+                long elapsedTime = currentTime - startTime;
+
+                if (elapsedTime >= DIGGING_DURATION) {
+                    changeTileImage(col, row, 46);
+                    isDigging = false;
+                    startTime = 0;
+                }
             }
         }
+    }
 
+    public void update() {
+        if(gp.keyH.btn9Pressed) {
+            checkHoe();
+        }
     }
 
     public void loadMap(String filePath) {
@@ -145,30 +165,10 @@ public class TileManager {
         }
     }
 
-    public void plantCrop(int col, int row, Crop crop) {
-        Tile targetTile = tile[mapTileNum[col][row]];
-
-        if (targetTile.crop != null) {
-            System.out.println("This tile is already occupied.");
-        } else {
-            targetTile.crop = crop;
-        }
-    }
-
-    public void loadCropImage(Crop crop) {
-        BufferedImage cropImage = null;
-
-        // Tải hình ảnh cây trồng từ tệp tin
-        try {
-            cropImage = ImageIO.read(getClass().getResourceAsStream("/res/tiles/.png")); // Thay đổi đường dẫn tới tệp tin hình ảnh cây trồng
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     public void draw(Graphics2D g2) {
         int worldCol = 0, worldRow = 0;
         while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
-            int tileNum = mapTileNum[worldCol][worldRow];
+            int tileNum = gp.tileM.mapTileNum[worldCol][worldRow];
 
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
@@ -179,7 +179,7 @@ public class TileManager {
                     && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
                     && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY
             ) {
-                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(gp.tileM.tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
             worldCol++;
 
@@ -188,6 +188,5 @@ public class TileManager {
                 worldRow++;
             }
         }
-
     }
 }

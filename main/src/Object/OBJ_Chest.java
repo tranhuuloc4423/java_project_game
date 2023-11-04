@@ -1,6 +1,7 @@
 package Object;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class OBJ_Chest extends SuperObject {
         name = "Chest";
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/res/Object/chest.png"));
-            tool.scaleImage(image, gp.tileSize, gp.tileSize);
+            UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch(IOException e) {
             e.printStackTrace();
         }

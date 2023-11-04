@@ -13,6 +13,7 @@ public class Entity {
     GamePanel gp;
     public int worldX, worldY;
     public int speed;
+    public int lowspeed = speed - 1;
 
 //    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public int spritesNum = 2;
@@ -72,11 +73,6 @@ public class Entity {
                 g2.drawImage(image, screenX, screenY, size, size, null);
             }
         }
-
-
-
-
-
     }
 
 
