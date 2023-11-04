@@ -15,7 +15,7 @@ public class Menu {
     private boolean drawSubMenu = false;
     private boolean drawMainMenu = true;
     private boolean drawSubmitMenu = false;
-    private boolean isPlayEnabled = false;
+    private boolean isPauseEnabled = false;
     private boolean isOptionEnabled = false;
     private boolean isQuitEnabled = false;
     private boolean isMusicEnabled = false;
@@ -100,20 +100,18 @@ public class Menu {
             BufferedImage imageCancelExit = null;
 
             try {
-                imagePlay = ImageIO.read(getClass().getResourceAsStream("/res/menu/play1.png"));
-                imageOption = ImageIO.read(getClass().getResourceAsStream("/res/menu/option1.png"));
-                imageQuit = ImageIO.read(getClass().getResourceAsStream("/res/menu/quit1.png"));
-                imageMusicIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/off1.png"));
-                imageSoundEffectIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/off1.png"));
-                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit1.png"));
-                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel1.png"));
-                imageSubmitExit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit1.png"));
-                imageCancelExit = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel1.png"));
+                imagePlay = ImageIO.read(getClass().getResourceAsStream("/res/menu/Resume.png"));
+                imageOption = ImageIO.read(getClass().getResourceAsStream("/res/menu/Option.png"));
+                imageQuit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Quit.png"));
+                imageMusicIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/OffActive.png"));
+                imageSoundEffectIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/OffActive.png"));
+                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Submit.png"));
+                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
+                imageSubmitExit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Submit.png"));
+                imageCancelExit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
-
-
 
             if (drawSubmitMenu) {
                 int[] position = getBoundPosition(imageSubmitExit,-80,50,1 );
@@ -209,7 +207,7 @@ public class Menu {
                 int yPlay = (gp.screenHeight - heightPlay) / 2 - 90;
 
                 if (mouseX >= xPlay && mouseX <= xPlay + widthPlay && mouseY >= yPlay && mouseY <= yPlay + heightPlay) {
-                    isPlayEnabled = true;
+                    isPauseEnabled = true;
                     int delay = 200;
                     ActionListener emptyAction = new ActionListener() {
                         public void actionPerformed(ActionEvent evt) {
@@ -271,41 +269,41 @@ public class Menu {
 
     public void drawMenuSetting(Graphics2D g2) {
         BufferedImage imageSetting = null;
-        BufferedImage imagePlay = null;
+        BufferedImage imagePause = null;
         BufferedImage imageOption = null;
         BufferedImage imageQuit = null;
 
         try {
-            imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/setting2.png"));
+            imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/BasicSetting.png"));
 
-            if(isPlayEnabled) {
-                imagePlay = ImageIO.read(getClass().getResourceAsStream("/res/menu/play2.png"));
+            if(isPauseEnabled) {
+                imagePause = ImageIO.read(getClass().getResourceAsStream("/res/menu/ResumeActive.png"));
             } else {
-                imagePlay = ImageIO.read(getClass().getResourceAsStream("/res/menu/play1.png"));
+                imagePause = ImageIO.read(getClass().getResourceAsStream("/res/menu/Resume.png"));
             }
 
             if(isOptionEnabled) {
-                imageOption = ImageIO.read(getClass().getResourceAsStream("/res/menu/option2.png"));
+                imageOption = ImageIO.read(getClass().getResourceAsStream("/res/menu/OptionActive.png"));
             } else {
-                imageOption = ImageIO.read(getClass().getResourceAsStream("/res/menu/option1.png"));
+                imageOption = ImageIO.read(getClass().getResourceAsStream("/res/menu/Option.png"));
             }
 
             if(isQuitEnabled) {
-                imageQuit = ImageIO.read(getClass().getResourceAsStream("/res/menu/quit2.png"));
+                imageQuit = ImageIO.read(getClass().getResourceAsStream("/res/menu/QuitActive.png"));
             } else {
-                imageQuit = ImageIO.read(getClass().getResourceAsStream("/res/menu/quit1.png"));
+                imageQuit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Quit.png"));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         drawImage(g2, imageSetting, 0, 0 , 1);
-        drawImage(g2, imagePlay, 0, -90 , 1);
+        drawImage(g2, imagePause, 0, -90 , 1);
         drawImage(g2, imageOption, 0, 0 , 1);
         drawImage(g2, imageQuit, 0, 90 , 1);
 
+        isPauseEnabled = false;
         isOptionEnabled = false;
-        isPlayEnabled = false;
         isQuitEnabled = false;
     }
 
@@ -320,40 +318,41 @@ public class Menu {
 
         try {
             if (isMusicEnabled) {
-                imageMusicIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/on2.png"));
+                imageMusicIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/OnActive.png"));
             } else {
-                imageMusicIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/off1.png"));
+                imageMusicIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/OffActive.png"));
             }
 
             if (isSoundEffectEnabled) {
-                imageSoundEffectIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/on2.png"));
+                imageSoundEffectIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/OnActive.png"));
             }
             else {
-                imageSoundEffectIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/off1.png"));
+                imageSoundEffectIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/OffActive.png"));
             }
 
             if (isSubmit) {
-                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit2.png"));
+                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/SubmitActive.png"));
             } else {
-                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit1.png"));
+                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Submit.png"));
             }
 
             if (isCancel) {
-                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel2.png"));
+                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/CancelActive.png"));
             } else {
-                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel1.png"));
+                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
         try {
-            imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/setting2.png"));
-            imageMusic = ImageIO.read(getClass().getResourceAsStream("/res/menu/music.png"));
-            imageSoundEffect = ImageIO.read(getClass().getResourceAsStream("/res/menu/se.png"));
+            imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/OptionSetting.png"));
+            imageMusic = ImageIO.read(getClass().getResourceAsStream("/res/menu/Music.png"));
+            imageSoundEffect = ImageIO.read(getClass().getResourceAsStream("/res/menu/soundeffect.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         drawImage(g2, imageSetting, 0, 0 , 1);
         drawImage(g2, imageMusic, -85, -45 , 1);
         drawImage(g2, imageMusicIcon, 80, -45 , 1);
@@ -361,22 +360,25 @@ public class Menu {
         drawImage(g2, imageSoundEffectIcon, 80, 35 , 1);
         drawImage(g2, imageSubmit, -100, 120 , 1);
         drawImage(g2, imageCancel, 95, 120 , 1);
+
+        isSubmit = false;
+        isCancel = false;
     }
     public void drawSubmitMenuSetting(Graphics2D g2) {
         BufferedImage imageSetting = null;
         BufferedImage imageSubmit = null;
         BufferedImage imageCancel = null;
         try {
-            imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/setting3.png"));
+            imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/SubmitExitSetting.png"));
             if (isSubmitExit) {
-                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit2.png"));
+                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/SubmitActive.png"));
             } else {
-                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/submit1.png"));
+                imageSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Submit.png"));
             }
             if (isCancelExit) {
-                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel2.png"));
+                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/CancelActive.png"));
             } else {
-                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/cancel1.png"));
+                imageCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -384,5 +386,8 @@ public class Menu {
         drawImage(g2, imageSetting, 0, 0 , 1);
         drawImage(g2, imageSubmit, -80, 50 , 1);
         drawImage(g2, imageCancel, 80, 50 , 1);
+
+        isSubmitExit = false;
+        isCancelExit = false;
     }
 }
