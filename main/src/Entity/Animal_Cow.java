@@ -50,7 +50,7 @@ public class Animal_Cow extends Entity {
     public void update() {
         setAction();
         collisionOn = false;
-        gp.cChecker.checkTile(this);
+//        gp.cChecker.checkTile(this);
 
         if(!collisionOn) {
             switch (direction){

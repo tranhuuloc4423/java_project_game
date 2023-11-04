@@ -21,15 +21,15 @@ public class GamePanel extends JPanel implements  Runnable {
     public final int scale = 3;
 
     public final int tileSize = originalTileSize * scale; // tile = 16 * 3
-    public final int maxScreenCol = 24;
-    public final int maxScreenRow = 16;
+    public final int maxScreenCol = 16;
+    public final int maxScreenRow = 12;
     public final int screenWidth = tileSize * maxScreenCol; // 768 px
     public final int screenHeight = tileSize * maxScreenRow; // 576 px
 
 
     // world setting
-    public final int maxWorldCol = 30;
-    public final int maxWorldRow = 30;
+    public final int maxWorldCol = 70;
+    public final int maxWorldRow = 70;
 
 
 
@@ -139,7 +139,7 @@ public class GamePanel extends JPanel implements  Runnable {
             }
 
             if(timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
+//                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -172,12 +172,12 @@ public class GamePanel extends JPanel implements  Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         // Tạo một BufferedImage là bộ đệm ẩn
-        BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2Buffer = buffer.createGraphics();
+//        BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+//        Graphics2D g2Buffer = buffer.createGraphics();
 
         // debug
         if (gameState == startState) {
-            menu.drawStartMenu(g2Buffer);
+            menu.drawStartMenu(g2);
         } else if (gameState == playState || gameState == pauseState) {
             long drawStart = 0;
 
@@ -186,48 +186,48 @@ public class GamePanel extends JPanel implements  Runnable {
             }
 
             // tiles
-            tileM.draw(g2Buffer);
-            plantcrop.draw(g2Buffer);
+            tileM.draw(g2);
+            plantcrop.draw(g2);
 
             // objects
             for (int i = 0; i < obj.length; i++) {
                 if (obj[i] != null) {
-                    obj[i].draw(g2Buffer, this);
+                    obj[i].draw(g2, this);
                 }
             }
 
             // npc
             for (int i = 0; i < npc.length; i++) {
                 if (npc[i] != null) {
-                    npc[i].draw(g2Buffer);
+                    npc[i].draw(g2);
                 }
             }
 
             // player
-            player.draw(g2Buffer);
+            player.draw(g2);
 
             // inventory
-            invetoryM.draw(g2Buffer);
+            invetoryM.draw(g2);
 
             // plantcrop
 
 
-            ui.draw(g2Buffer);
+            ui.draw(g2);
 
             // debug
             if (keyH.checkDrawTime) {
                 long drawEnd = System.nanoTime();
                 long passed = drawEnd - drawStart;
-                g2Buffer.setColor(Color.WHITE);
-                g2Buffer.drawString("DrawTime : " + passed, 10, 400);
+                g2.setColor(Color.WHITE);
+                g2.drawString("DrawTime : " + passed, 10, 400);
                 System.out.println("Draw time : " + passed);
             }
         }
 
         // Sao chép bộ đệm ẩn lên màn hình
-        g2.drawImage(buffer, 0, 0, null);
+//        g2.drawImage(g2, 0, 0, null);
 
-        g2Buffer.dispose();
+//        g2.dispose();
         g2.dispose();
     }
     public void playMusic(int i) {

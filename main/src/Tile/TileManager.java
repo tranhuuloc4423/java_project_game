@@ -18,7 +18,7 @@ public class TileManager {
     GamePanel gp;
     public Tile[] tile;
     public int mapTileNum[][];
-    public MouseHandler mouseH;
+//    public MouseHandler mouseH;
     private long startTime; // Thời điểm bắt đầu nhấn giữ phím đào đất
     private boolean isDigging; // Biến đánh dấu việc đang đào đất
     private static final long DIGGING_DURATION = 3000;
@@ -26,13 +26,15 @@ public class TileManager {
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[100];
+        tile = new Tile[1000];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileManager();
+        setupCollisionTiles();
 //        loadMap("/res/maps/worldV2.txt");
-        loadMap("/res/maps/Map_farm.txt");
+        loadMap("/res/maps/Map.txt");
 
-        this.mouseH = gp.mouseH;
+//        this.mouseH = gp.mouseH;
+
     }
 
     public int getTileNumber(int x, int y) {
@@ -40,63 +42,50 @@ public class TileManager {
     }
 
     public void getTileManager() {
-        // place holder
-        setup(0, "grass00", false);
-        setup(1, "grass00", false);
-        setup(2, "grass00", false);
-        setup(3, "grass00", false);
-        setup(4, "grass00", false);
-        setup(5, "grass00", false);
-        setup(6, "grass00", false);
-        setup(7, "grass00", false);
-        setup(8, "grass00", false);
-        setup(9, "grass00", false);
+        for(int i = 298; i <= 328; i++) {
+            if(i >= 301 && i <= 316) {
+                setup(i, String.valueOf(i),true);
+            } else {
+                setup(i, String.valueOf(i),false);
+            }
+        }
+        for(int i = 478; i <= 512; i++) {
+            setup(i, String.valueOf(i),false);
+        }
+        for(int i = 600; i <= 657; i++) {
+            if(i >= 613 && i <= 628) {
+                setup(i, String.valueOf(i),true);
+            } else {
+                setup(i, String.valueOf(i),false);
+            }
 
+        }
+        setup(658, "659",false);
 
-        // placeholder
-        setup(10, "W01", true);
-        setup(11, "H03", false);
-        setup(12, "H12", false);
-        setup(13, "H15", false);
-        setup(14, "H29", false);
-        setup(15, "H30", false);
-        setup(16, "H36", false);
-        setup(17, "H37", false);
-        setup(18, "H38", false);
-        setup(19, "H40", false);
-        setup(20, "H42", false);
-        setup(21, "H43", false);
-        setup(22, "H44", false);
-        setup(23, "H45", false);
-        setup(24, "H47", false);
-        setup(25, "H48", false);
-        setup(26, "H49", false);
-        setup(27, "H50", false);
-        setup(28, "H51", false);
-        setup(29, "T09", false);
-        setup(30, "T65", false);
-        setup(31, "T66", false);
-        setup(32, "T67", false);
-        setup(33, "T68", false);
-        setup(34, "T69", false);
-        setup(35, "T70", false);
-        setup(36, "T71", false);
-        setup(37, "T72", false);
-        setup(38, "T73", false);
-        setup(39, "T74", false);
-        setup(40, "H05", false);
-        setup(41, "H06", false);
-        setup(42, "H39", false);
-        setup(43, "H35", false);
-        setup(44, "H41", false);
-        setup(45, "H46", false);
-        setup(46, "T10", false);
+        setup(659, "659",false);
+        for(int i = 994; i <= 996; i++) {
+            setup(i, String.valueOf(i),false);
+        }
+        setup(998, "998",true);
+        setup(999, "999",true);
+    }
+
+    public void setupCollisionTiles() {
+        tile[303].solidArea.x = 32;
+        tile[303].solidArea.y = 0;
+        tile[303].solidArea.width = 16;
+        tile[303].solidArea.height = 48;
     }
     public void setup(int index, String imageName, boolean collision) {
         try{
-            tile[index] = new Tile();
+            Rectangle solidArea = new Rectangle(0 ,0, 48, 48);
+            tile[index] = new Tile(solidArea, collision);
             BufferedImage image =  ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));
-            tile[index].collision = collision;
+//            tile[index].collision = collision;
+//            tile[index].solidArea.x = 0;
+//            tile[index].solidArea.y = 0;
+//            tile[index].solidArea.width = 48;
+//            tile[index].solidArea.height = 48;
             tile[index].image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch(IOException e) {
             e.printStackTrace();
@@ -111,7 +100,7 @@ public class TileManager {
     public void checkHoe() {
         int col = gp.player.landTileX;
         int row = gp.player.landTileY;
-        int dirtTileNum = 29;
+        int dirtTileNum = 600;
         if(gp.tileM.mapTileNum[col][row] == dirtTileNum) {
             if (!isDigging) {
                 startTime = System.currentTimeMillis();
@@ -122,7 +111,29 @@ public class TileManager {
                 long elapsedTime = currentTime - startTime;
 
                 if (elapsedTime >= DIGGING_DURATION) {
-                    changeTileImage(col, row, 46);
+                    changeTileImage(col, row, 601);
+                    isDigging = false;
+                    startTime = 0;
+                }
+            }
+        }
+    }
+
+    public void checkWater() {
+        int col = gp.player.landTileX;
+        int row = gp.player.landTileY;
+        int dirtHoed = 601;
+        if(gp.tileM.mapTileNum[col][row] == dirtHoed) {
+            if (!isDigging) {
+                startTime = System.currentTimeMillis();
+                isDigging = true;
+            } else {
+
+                long currentTime = System.currentTimeMillis();
+                long elapsedTime = currentTime - startTime;
+
+                if (elapsedTime >= DIGGING_DURATION) {
+                    changeTileImage(col, row, 602);
                     isDigging = false;
                     startTime = 0;
                 }
@@ -133,6 +144,9 @@ public class TileManager {
     public void update() {
         if(gp.keyH.btn9Pressed) {
             checkHoe();
+        }
+        if(gp.keyH.btn8Pressed) {
+            checkWater();
         }
     }
 
@@ -179,7 +193,7 @@ public class TileManager {
                     && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
                     && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY
             ) {
-                g2.drawImage(gp.tileM.tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(gp.tileM.tile[tileNum].image, screenX, screenY, null);
             }
             worldCol++;
 
