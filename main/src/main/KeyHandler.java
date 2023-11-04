@@ -101,6 +101,10 @@ public class KeyHandler implements KeyListener {
                 checkDrawTime = false;
             }
         }
+
+        if(code == KeyEvent.VK_M) {
+            gp.ui.isMission = !gp.ui.isMission;
+        }
     }
 
     @Override

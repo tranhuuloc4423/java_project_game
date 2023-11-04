@@ -51,7 +51,7 @@ public class Player extends Entity {
 
     public void getTilePositionPlayer() {
         landTileX = (worldX / gp.tileSize) + 1;
-        landTileY = (worldY / gp.tileSize)+ 1;
+        landTileY = (worldY / gp.tileSize) + 1;
     }
 
     public void pickUpObject(int index) {
@@ -109,6 +109,7 @@ public class Player extends Entity {
     public void update() {
         getTilePositionPlayer();
         drawBorder();
+
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
             if(keyH.upPressed && keyH.rightPressed) {
                 direction = "upright";
@@ -127,6 +128,7 @@ public class Player extends Entity {
             } else if(keyH.rightPressed) {
                 direction = "right";
             }
+
 
 
             // check tile collision

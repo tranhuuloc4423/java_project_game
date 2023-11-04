@@ -145,6 +145,7 @@ public class GamePanel extends JPanel implements  Runnable {
             }
         }
     }
+
     public void update() {
         if(gameState == playState) {
             player.update();
@@ -168,59 +169,64 @@ public class GamePanel extends JPanel implements  Runnable {
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
+
+        // Tạo một BufferedImage là bộ đệm ẩn
+        BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2Buffer = buffer.createGraphics();
+
         // debug
-        if(gameState == startState) {
-            menu.drawStartMenu(g2);
-        } else if(gameState == playState || gameState == pauseState) {
+        if (gameState == startState) {
+            menu.drawStartMenu(g2Buffer);
+        } else if (gameState == playState || gameState == pauseState) {
             long drawStart = 0;
 
-            if(keyH.checkDrawTime) {
-                drawStart =  System.nanoTime();
+            if (keyH.checkDrawTime) {
+                drawStart = System.nanoTime();
             }
 
             // tiles
-            tileM.draw(g2);
+            tileM.draw(g2Buffer);
 
             // objects
-            for(int i = 0;i < obj.length; i++) {
-                if(obj[i] != null) {
-                    obj[i].draw(g2, this);
+            for (int i = 0; i < obj.length; i++) {
+                if (obj[i] != null) {
+                    obj[i].draw(g2Buffer, this);
                 }
             }
-            // plants
-//        for(int i = 0;i < plants.length; i++) {
-//            if(plants[i] != null) {
-//                plants[i].draw(g2, this);
-//            }
-//        }
+
             // npc
-            for(int i = 0; i < npc.length; i++) {
-                if(npc[i] != null) {
-                    npc[i].draw(g2);
+            for (int i = 0; i < npc.length; i++) {
+                if (npc[i] != null) {
+                    npc[i].draw(g2Buffer);
                 }
             }
 
             // player
-            player.draw(g2);
+            player.draw(g2Buffer);
 
             // inventory
-            invetoryM.draw(g2);
+            invetoryM.draw(g2Buffer);
 
             // plantcrop
-            plantcrop.draw(g2);
+            plantcrop.draw(g2Buffer);
+
+            ui.draw(g2Buffer);
 
             // debug
-            if(keyH.checkDrawTime) {
+            if (keyH.checkDrawTime) {
                 long drawEnd = System.nanoTime();
                 long passed = drawEnd - drawStart;
-                g2.setColor(Color.WHITE);
-                g2.drawString("DrawTime : " + passed, 10, 400);
+                g2Buffer.setColor(Color.WHITE);
+                g2Buffer.drawString("DrawTime : " + passed, 10, 400);
                 System.out.println("Draw time : " + passed);
             }
         }
-        // menu
-        menu.draw(g2);
+
+        // Sao chép bộ đệm ẩn lên màn hình
+        g2.drawImage(buffer, 0, 0, null);
+
+        g2Buffer.dispose();
         g2.dispose();
     }
     public void playMusic(int i) {
