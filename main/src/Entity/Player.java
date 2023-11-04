@@ -61,7 +61,6 @@ public class Player extends Entity {
     }
 
     public void setPlayerImage() {
-        System.out.println("player image");
         for (int i = 1; i <= spritesNum; i++) {
             // move
             up[i - 1] = setup("rabit/up_" + i);

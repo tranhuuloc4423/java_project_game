@@ -51,7 +51,7 @@ public class UI {
         }
 
         if(isMission) {
-            drawImage(mission, gp.tileSize * (gp.maxScreenCol - 3) - mission.getWidth(), gp.tileSize);
+            drawImage(mission, gp.tileSize * (gp.maxScreenCol - 5) - mission.getWidth(), 0);
         }
     }
 
@@ -76,11 +76,9 @@ public class UI {
 
     void setupImages() {
         try {
-            mission = ImageIO.read(getClass().getResourceAsStream("/res/menu/setting1.png"));
+            mission = ImageIO.read(getClass().getResourceAsStream("/res/menu/MissonMenunew.png"));
         } catch(IOException e) {
             e.printStackTrace();
         }
     }
-
-
 }

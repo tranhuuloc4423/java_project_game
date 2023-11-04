@@ -187,6 +187,7 @@ public class GamePanel extends JPanel implements  Runnable {
 
             // tiles
             tileM.draw(g2Buffer);
+            plantcrop.draw(g2Buffer);
 
             // objects
             for (int i = 0; i < obj.length; i++) {
@@ -209,7 +210,7 @@ public class GamePanel extends JPanel implements  Runnable {
             invetoryM.draw(g2Buffer);
 
             // plantcrop
-            plantcrop.draw(g2Buffer);
+
 
             ui.draw(g2Buffer);
 
