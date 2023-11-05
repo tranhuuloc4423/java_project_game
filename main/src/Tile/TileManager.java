@@ -30,6 +30,7 @@ public class TileManager {
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileManager();
         setupCollisionTiles();
+//        setCollisonTile();
 //        loadMap("/res/maps/worldV2.txt");
         loadMap("/res/maps/Map.txt");
 
@@ -95,6 +96,13 @@ public class TileManager {
     //
     public void changeTileImage(int col, int row, int tileIndex) {
         mapTileNum[col][row] = tileIndex;
+    }
+
+    public void setCollisonTile() {
+        tile[999].solidArea.x = 0;
+        tile[999].solidArea.y = 0;
+        tile[999].solidArea.width = 0;
+        tile[999].solidArea.height = 0;
     }
 
     public void checkHoe() {
