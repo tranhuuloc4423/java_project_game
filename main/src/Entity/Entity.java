@@ -13,9 +13,6 @@ public class Entity {
     GamePanel gp;
     public int worldX, worldY;
     public int speed;
-    public int lowspeed = speed - 1;
-
-//    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public int spritesNum = 2;
     public BufferedImage[] sprites;
     public BufferedImage[] up = new BufferedImage[spritesNum];
@@ -27,7 +24,6 @@ public class Entity {
     public BufferedImage[] idleDown = new BufferedImage[spritesNum];
     public BufferedImage[] idleLeft = new BufferedImage[spritesNum];
     public BufferedImage[] idleRight = new BufferedImage[spritesNum];
-    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
 
     public String direction;
     public int spriteCounter = 0;

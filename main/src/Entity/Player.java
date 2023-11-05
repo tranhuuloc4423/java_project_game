@@ -37,14 +37,14 @@ public class Player extends Entity {
         solidAreaDefaultY = solidArea.y;
 
         solidArea.width = 24;
-        solidArea.height = 24;
+        solidArea.height = 32;
         setDefaultValues();
         setPlayerImage();
     }
 
     public void setDefaultValues() {
-        worldX = gp.tileSize * 15;
-        worldY = gp.tileSize * 16;
+        worldX = gp.tileSize * 33;
+        worldY = gp.tileSize * 30;
         speed = 4;
         direction = "down";
     }
@@ -61,7 +61,6 @@ public class Player extends Entity {
     }
 
     public void setPlayerImage() {
-        System.out.println("player image");
         for (int i = 1; i <= spritesNum; i++) {
             // move
             up[i - 1] = setup("rabit/up_" + i);

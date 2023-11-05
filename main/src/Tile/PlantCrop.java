@@ -60,7 +60,7 @@ public class PlantCrop {
     public void harvestCrop() {
         int col = gp.player.landTileX;
         int row = gp.player.landTileY;
-        if (gp.tileM.mapTileNum[col][row] == 46) {
+        if (gp.tileM.mapTileNum[col][row] == 602) {
             Point position = new Point(col, row);
             Tree plant = plantMap.get(position);
             if (plant != null) {
@@ -71,7 +71,7 @@ public class PlantCrop {
                     // Thu hoạch cây trồng
                     plant = null;
                     plantMap.remove(position);
-                    gp.tileM.mapTileNum[col][row] = 29;
+                    gp.tileM.mapTileNum[col][row] = 600;
                     handleQuantity(name);
                 }
             }
@@ -94,7 +94,7 @@ public class PlantCrop {
         int row = gp.player.landTileY;
         int index = Integer.parseInt(fileName.split("_")[1]) - 1;
         if(gp.invetoryM.items.get(index).quantity > 0) {
-            if (gp.tileM.mapTileNum[col][row] == 46) {
+            if (gp.tileM.mapTileNum[col][row] == 602) {
                 Point position = new Point(col, row);
                 if (!plantMap.containsKey(position)) {
                     BufferedImage[] plantImages = new BufferedImage[5];
@@ -107,7 +107,7 @@ public class PlantCrop {
                     plant.worldY = gp.tileSize * row;
                     plantMap.put(position, plant);
 
-                    System.out.println(index);
+//                    System.out.println(index);
                     gp.invetoryM.items.get(index).removeQuantity();
                 }
             }
