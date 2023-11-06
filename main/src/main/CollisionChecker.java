@@ -78,19 +78,19 @@ public class CollisionChecker {
                 tileNum4 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
                 break;
         }
-//        if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision ||
-//                (tileNum3 != 0 && gp.tileM.tile[tileNum3].collision) ||
-//                (tileNum4 != 0 && gp.tileM.tile[tileNum4].collision)) {
-//            entity.collisionOn = true;
-//        }
-
-        if (entity.solidArea.intersects(gp.tileM.tile[tileNum1].solidArea) ||
-                entity.solidArea.intersects(gp.tileM.tile[tileNum2].solidArea) ||
-                (tileNum3 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum3].solidArea)) ||
-                (tileNum4 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum4].solidArea))) {
-            System.out.println("collision");
+        if (tileNum1 != 0 && gp.tileM.tile[tileNum1].collision || tileNum2 != 0 && gp.tileM.tile[tileNum2].collision ||
+                (tileNum3 != 0 && gp.tileM.tile[tileNum3].collision) ||
+                (tileNum4 != 0 && gp.tileM.tile[tileNum4].collision)) {
             entity.collisionOn = true;
         }
+
+//        if (entity.solidArea.intersects(gp.tileM.tile[tileNum1].solidArea) ||
+//                entity.solidArea.intersects(gp.tileM.tile[tileNum2].solidArea) ||
+//                (tileNum3 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum3].solidArea)) ||
+//                (tileNum4 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum4].solidArea))) {
+//            System.out.println("collision");
+//            entity.collisionOn = true;
+//        }
 
 //        if(gp.tileM.tile[tileNum1].solidArea.intersects(entity.solidArea)) {
 //            gp.tileM.tile[tileNum1].collision = true;
