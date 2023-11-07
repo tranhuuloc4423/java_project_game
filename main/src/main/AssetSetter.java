@@ -21,7 +21,11 @@ public class AssetSetter {
 
     public void setNPC() {
         gp.npc[0] = new Animal_Cow(gp);
-        gp.npc[0].worldX = gp.tileSize * 15;
-        gp.npc[0].worldY = gp.tileSize * 15;
+        gp.npc[0].worldX = gp.tileSize * 28;
+        gp.npc[0].worldY = gp.tileSize * 40;
+
+        gp.npc[1] = new Animal_Cow(gp);
+        gp.npc[1].worldX = gp.tileSize * 26;
+        gp.npc[1].worldY = gp.tileSize * 39;
     }
 }

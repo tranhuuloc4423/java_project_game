@@ -16,9 +16,9 @@ public class Animal_Cow extends Entity {
         direction = "idleright";
         speed = 1;
         setImage();
-        solidArea.x = 48;
+        solidArea.x = 0;
         solidArea.y = 48;
-        solidArea.width = 48;
+        solidArea.width = 80;
         solidArea.height = 48;
     }
 
@@ -50,7 +50,7 @@ public class Animal_Cow extends Entity {
     public void update() {
         setAction();
         collisionOn = false;
-//        gp.cChecker.checkTile(this);
+        gp.cChecker.checkTile(this);
 
         if(!collisionOn) {
             switch (direction){
