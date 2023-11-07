@@ -85,7 +85,7 @@ public class GamePanel extends JPanel implements  Runnable {
         aSetter.setNPC();
         playMusic(0); // 0 is main song
         stopMusic();
-        gameState = playState;
+        gameState = startState;
     }
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -222,7 +222,7 @@ public class GamePanel extends JPanel implements  Runnable {
                 g2.drawString("DrawTime : " + passed, 10, 400);
                 System.out.println("Draw time : " + passed);
             }
-            menu.draw(g2Buffer);
+            menu.draw(g2);
         }
 
         // Sao chép bộ đệm ẩn lên màn hình
