@@ -162,7 +162,6 @@ public class GamePanel extends JPanel implements  Runnable {
                     npc[i].update();
                 }
             }
-            cChecker.checkHitbox();
         }
         if(gameState == pauseState) {
             // nothing
