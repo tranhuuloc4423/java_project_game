@@ -29,7 +29,7 @@ public class TileManager {
         tile = new Tile[1000];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileManager();
-        setupCollisionTiles();
+//        setupCollisionTiles();
 //        setCollisonTile();
 //        loadMap("/res/maps/worldV2.txt");
         loadMap("/res/maps/Map.txt");
@@ -71,22 +71,17 @@ public class TileManager {
         setup(999, "999",true);
     }
 
-    public void setupCollisionTiles() {
-        tile[303].solidArea.x = 32;
-        tile[303].solidArea.y = 0;
-        tile[303].solidArea.width = 16;
-        tile[303].solidArea.height = 48;
-    }
+//    public void setupCollisionTiles() {
+//        tile[303].solidArea.x = 32;
+//        tile[303].solidArea.y = 0;
+//        tile[303].solidArea.width = 16;
+//        tile[303].solidArea.height = 48;
+//    }
     public void setup(int index, String imageName, boolean collision) {
         try{
             Rectangle solidArea = new Rectangle(0 ,0, 48, 48);
             tile[index] = new Tile(solidArea, collision);
             BufferedImage image =  ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));
-//            tile[index].collision = collision;
-//            tile[index].solidArea.x = 0;
-//            tile[index].solidArea.y = 0;
-//            tile[index].solidArea.width = 48;
-//            tile[index].solidArea.height = 48;
             tile[index].image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch(IOException e) {
             e.printStackTrace();

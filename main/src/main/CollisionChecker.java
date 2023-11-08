@@ -84,13 +84,13 @@ public class CollisionChecker {
             entity.collisionOn = true;
         }
 
-//        if (entity.solidArea.intersects(gp.tileM.tile[tileNum1].solidArea) ||
-//                entity.solidArea.intersects(gp.tileM.tile[tileNum2].solidArea) ||
-//                (tileNum3 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum3].solidArea)) ||
-//                (tileNum4 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum4].solidArea))) {
-//            System.out.println("collision");
-//            entity.collisionOn = true;
-//        }
+        if (entity.solidArea.intersects(gp.tileM.tile[tileNum1].solidArea) ||
+                entity.solidArea.intersects(gp.tileM.tile[tileNum2].solidArea) ||
+                (tileNum3 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum3].solidArea)) ||
+                (tileNum4 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum4].solidArea))) {
+            System.out.println("collision intersects");
+            entity.collisionOn = true;
+        }
 
 //        if(gp.tileM.tile[tileNum1].solidArea.intersects(entity.solidArea)) {
 //            gp.tileM.tile[tileNum1].collision = true;
