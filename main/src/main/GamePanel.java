@@ -191,7 +191,7 @@ public class GamePanel extends JPanel implements  Runnable {
 
         // debug
         if (gameState == startState) {
-            menu.drawStartMenu(g2);
+            menu.draw(g2);
         } else if (gameState == playState || gameState == pauseState) {
             long drawStart = 0;
 
