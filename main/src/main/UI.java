@@ -35,7 +35,6 @@ public class UI {
 
 //        OBJ_Key key = new OBJ_Key(gp);
 //        keyImage = key.image;
-        setupImages();
     }
 
     public void showMessage(String text) {
@@ -48,10 +47,6 @@ public class UI {
 
         if(gp.gameState == gp.playState) {
 
-        }
-
-        if(isMission) {
-            drawImage(mission, gp.tileSize * (gp.maxScreenCol - 5) - mission.getWidth(), 0);
         }
     }
 
@@ -72,13 +67,5 @@ public class UI {
         int textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth / 2 - textLength / 2;
         return x;
-    }
-
-    void setupImages() {
-        try {
-            mission = ImageIO.read(getClass().getResourceAsStream("/res/menu/MissonMenunew.png"));
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
     }
 }

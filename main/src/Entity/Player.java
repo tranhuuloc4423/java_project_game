@@ -36,7 +36,7 @@ public class Player extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        solidArea.width = 24;
+        solidArea.width = 16;
         solidArea.height = 32;
         setDefaultValues();
         setPlayerImage();
@@ -45,7 +45,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         worldX = gp.tileSize * 33;
         worldY = gp.tileSize * 30;
-        speed = 4;
+        speed = 3;
         direction = "down";
     }
 
@@ -107,7 +107,7 @@ public class Player extends Entity {
     @Override
     public void update() {
         getTilePositionPlayer();
-        drawBorder();
+
 
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
             if(keyH.upPressed && keyH.rightPressed) {
@@ -133,9 +133,12 @@ public class Player extends Entity {
             // check tile collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
-            int objIndex = gp.cChecker.checkObject(this, true);
-            pickUpObject(objIndex);
+//            int objIndex = gp.cChecker.checkObject(this, true);
+//            pickUpObject(objIndex);
 
+
+//            gp.cChecker.checkHitbox(this);
+            gp.cChecker.checkHitbox2(this);
             // check npc collision
 //            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 //            interactNPC(npcIndex);
@@ -170,7 +173,7 @@ public class Player extends Entity {
                         sprites = right;
                         break;
                     case "downleft":
-                        worldX -= speed -1;
+                        worldX -= speed - 1;
                         worldY += speed - 1;
                         sprites = left;
                         break;
@@ -183,7 +186,7 @@ public class Player extends Entity {
             }
         }
 
-        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.btn9Pressed && !keyH.btn8Pressed) {
+        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && !keyH.waterPressed) {
             switch (direction) {
                 case "up":
                     sprites = idleUp;
@@ -200,7 +203,7 @@ public class Player extends Entity {
             }
         }
 
-        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.btn9Pressed) {
+        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.hoePressed) {
             switch (direction) {
                 case "up":
                     sprites = hoeUp;
@@ -217,7 +220,7 @@ public class Player extends Entity {
             }
         }
 
-        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.btn8Pressed) {
+        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.waterPressed) {
             switch (direction) {
                 case "up":
                     sprites = waterUp;
@@ -252,9 +255,11 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2) {
+        if(gp.drawBorder) {
+            drawBorder();
+        }
         if (sprites != null && spriteNum >= 1 && spriteNum <= sprites.length) {
             BufferedImage image = sprites[spriteNum - 1];
-//            int size = gp.tileSize * 3;
             g2.drawImage(image, screenX, screenY, null);
         }
     }

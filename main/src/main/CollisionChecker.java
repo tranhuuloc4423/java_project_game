@@ -3,6 +3,7 @@ package main;
 import Entity.Entity;
 
 import java.sql.SQLOutput;
+import java.util.Arrays;
 
 public class CollisionChecker {
     GamePanel gp;
@@ -78,19 +79,23 @@ public class CollisionChecker {
                 tileNum4 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
                 break;
         }
-        if (tileNum1 != 0 && gp.tileM.tile[tileNum1].collision || tileNum2 != 0 && gp.tileM.tile[tileNum2].collision ||
+
+        if (
+                (tileNum1 != 0 && gp.tileM.tile[tileNum1].collision) ||
+                        (tileNum2 != 0 && gp.tileM.tile[tileNum2].collision) ||
                 (tileNum3 != 0 && gp.tileM.tile[tileNum3].collision) ||
-                (tileNum4 != 0 && gp.tileM.tile[tileNum4].collision)) {
+                (tileNum4 != 0 && gp.tileM.tile[tileNum4].collision)
+        ) {
             entity.collisionOn = true;
         }
 
-        if (entity.solidArea.intersects(gp.tileM.tile[tileNum1].solidArea) ||
-                entity.solidArea.intersects(gp.tileM.tile[tileNum2].solidArea) ||
-                (tileNum3 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum3].solidArea)) ||
-                (tileNum4 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum4].solidArea))) {
-            System.out.println("collision intersects");
-            entity.collisionOn = true;
-        }
+//        if (tileNum1 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum1].solidArea) ||
+//                (tileNum2 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum2].solidArea)) ||
+//                (tileNum3 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum3].solidArea)) ||
+//                (tileNum4 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum4].solidArea))) {
+//            System.out.println("collision intersects");
+//            entity.collisionOn = true;
+//        }
 
 //        if(gp.tileM.tile[tileNum1].solidArea.intersects(entity.solidArea)) {
 //            gp.tileM.tile[tileNum1].collision = true;
@@ -105,6 +110,88 @@ public class CollisionChecker {
 //        entity.collisionOn = true;
     }
 
+
+    public void checkHitbox(Entity entity) {
+//        System.out.println("run checkhitbox");
+        for(int i = 0; i < Arrays.stream(gp.tileM.tile).count(); i++) {
+            if(gp.tileM.tile[i] != null) {
+                // entity
+                entity.solidArea.x = entity.worldX + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+
+                // tile
+                gp.tileM.tile[i].solidArea.x = gp.tileM.tile[i].worldX + gp.tileM.tile[i].solidArea.x;
+                gp.tileM.tile[i].solidArea.y = gp.tileM.tile[i].worldY + gp.tileM.tile[i].solidArea.y;
+
+                switch (entity.direction) {
+                    case "up":
+                        entity.solidArea.y -= entity.speed;
+                        break;
+                    case "down":
+                        entity.solidArea.y += entity.speed;
+
+                        break;
+                    case "left":
+                        entity.solidArea.x -= entity.speed;
+
+                        break;
+                    case "right":
+                        entity.solidArea.x += entity.speed;
+                        break;
+                }
+                if(entity.solidArea.intersects(gp.tileM.tile[i].solidArea)) {
+//                    System.out.println("intersects");
+                    if(gp.tileM.tile[i].collision) {
+                        entity.collisionOn = true;
+                    }
+                }
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                gp.tileM.tile[i].solidArea.x = gp.tileM.tile[i].solidAreaDefaultX;
+                gp.tileM.tile[i].solidArea.y = gp.tileM.tile[i].solidAreaDefaultY;
+            }
+        }
+    }
+
+    public void checkHitbox2(Entity entity) {
+//        System.out.println("run checkhitbox");
+        for(int i = 0; i < gp.hitboxes.length; i++) {
+            if(gp.hitboxes[i] != null) {
+                // entity
+                entity.solidArea.x = entity.worldX + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+
+                // tile
+                gp.hitboxes[i].solidArea.x = gp.hitboxes[i].worldX + gp.hitboxes[i].solidArea.x;
+                gp.hitboxes[i].solidArea.y = gp.hitboxes[i].worldY + gp.hitboxes[i].solidArea.y;
+
+                switch (entity.direction) {
+                    case "up":
+                        entity.solidArea.y -= entity.speed;
+                        break;
+                    case "down":
+                        entity.solidArea.y += entity.speed;
+
+                        break;
+                    case "left":
+                        entity.solidArea.x -= entity.speed;
+
+                        break;
+                    case "right":
+                        entity.solidArea.x += entity.speed;
+                        break;
+                }
+                if(entity.solidArea.intersects(gp.hitboxes[i].solidArea)) {
+                    System.out.println("intersects");
+                    entity.collisionOn = true;
+                }
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                gp.hitboxes[i].solidArea.x = gp.hitboxes[i].solidAreaDefaultX;
+                gp.hitboxes[i].solidArea.y = gp.hitboxes[i].solidAreaDefaultY;
+            }
+        }
+    }
 
     public int checkObject(Entity entity, boolean player) {
         int index = 999;
