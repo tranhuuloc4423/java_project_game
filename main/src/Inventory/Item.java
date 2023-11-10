@@ -1,6 +1,7 @@
 package Inventory;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,7 +25,10 @@ public class Item {
 
     public void drawImage(String filePath) {
         try {
-            itemimage = ImageIO.read(getClass().getResourceAsStream(filePath));
+            BufferedImage image = ImageIO.read(getClass().getResourceAsStream(filePath));
+            int width = image.getWidth() * gp.scale;
+            int height = image.getHeight() * gp.scale;
+            itemimage = UtilityTool.scaleImage(image, width, height);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,8 +55,6 @@ public class Item {
     }
 
     public void draw(Graphics2D g2) {
-        int width = this.itemimage.getWidth() * gp.scale;
-        int height = this.itemimage.getHeight() * gp.scale;
-        g2.drawImage(this.itemimage, x, y, width, height, null);
+        g2.drawImage(this.itemimage, x, y, null);
     }
 }

@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import Object.*;
 
 public class GamePanel extends JPanel implements  Runnable {
 
@@ -48,14 +49,22 @@ public class GamePanel extends JPanel implements  Runnable {
     Thread gameThread;
     public Player player = new Player(this, keyH);
     public SuperObject obj[] = new SuperObject[10];
+    public SuperObject border = new OBJ_Border(this);
+    public boolean drawBorder = true;
 //    public Tree plants[] = new Tree[10];
     public Entity npc[] = new Entity[10];
+
+    // Box - to set hit box in tile
+    public Hitbox hitboxes[] = new Hitbox[10];
+
     // tiles
     public TileManager tileM = new TileManager(this);
     public PlantCrop plantcrop = new PlantCrop(this);
     public Menu menu = new Menu(this);
     // inventory
     public InventoryManager invetoryM = new InventoryManager(this);
+
+    public Mission mission = new Mission(this, invetoryM.items);
     // game state
     public int gameState;
     public final int playState = 1;
@@ -83,6 +92,7 @@ public class GamePanel extends JPanel implements  Runnable {
     public void setupGame() {
 //        aSetter.setObject();
         aSetter.setNPC();
+        aSetter.setBox();
         playMusic(0); // 0 is main song
         stopMusic();
         gameState = startState;
@@ -152,7 +162,9 @@ public class GamePanel extends JPanel implements  Runnable {
             // tiles
             tileM.update();
             // inventory
-            invetoryM.update();
+            if(invetoryM.inventoryOn) {
+                invetoryM.update();
+            }
             // plantcrop
             plantcrop.update();
             // menu
@@ -190,10 +202,14 @@ public class GamePanel extends JPanel implements  Runnable {
             plantcrop.draw(g2);
 
             // objects
-            for (int i = 0; i < obj.length; i++) {
-                if (obj[i] != null) {
-                    obj[i].draw(g2, this);
-                }
+//            for (int i = 0; i < obj.length; i++) {
+//                if (obj[i] != null) {
+//                    obj[i].draw(g2, this);
+//                }
+//            }
+
+            if(drawBorder) {
+                border.draw(g2, this);
             }
 
             // npc
@@ -207,12 +223,17 @@ public class GamePanel extends JPanel implements  Runnable {
             player.draw(g2);
 
             // inventory
-            invetoryM.draw(g2);
+            if(invetoryM.inventoryOn) {
+                invetoryM.draw(g2);
+            }
 
             // plantcrop
 
 
-            ui.draw(g2);
+//            ui.draw(g2);
+            if(mission.missionOn) {
+                mission.draw(g2);
+            }
 
             // debug
             if (keyH.checkDrawTime) {

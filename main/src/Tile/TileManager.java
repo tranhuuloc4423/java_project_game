@@ -23,13 +23,14 @@ public class TileManager {
     private boolean isDigging; // Biến đánh dấu việc đang đào đất
     private static final long DIGGING_DURATION = 3000;
 
+    int worldX, worldY;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
         tile = new Tile[1000];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileManager();
-        setupCollisionTiles();
+//        setupCollisionTiles();
 //        setCollisonTile();
 //        loadMap("/res/maps/worldV2.txt");
         loadMap("/res/maps/Map.txt");
@@ -44,11 +45,7 @@ public class TileManager {
 
     public void getTileManager() {
         for(int i = 298; i <= 328; i++) {
-            if(i >= 301 && i <= 316) {
-                setup(i, String.valueOf(i),true);
-            } else {
-                setup(i, String.valueOf(i),false);
-            }
+            setup(i, String.valueOf(i),false);
         }
         for(int i = 478; i <= 512; i++) {
             setup(i, String.valueOf(i),false);
@@ -70,23 +67,13 @@ public class TileManager {
         setup(998, "998",true);
         setup(999, "999",true);
     }
-
-    public void setupCollisionTiles() {
-        tile[303].solidArea.x = 32;
-        tile[303].solidArea.y = 0;
-        tile[303].solidArea.width = 16;
-        tile[303].solidArea.height = 48;
-    }
     public void setup(int index, String imageName, boolean collision) {
         try{
-            Rectangle solidArea = new Rectangle(0 ,0, 48, 48);
-            tile[index] = new Tile(solidArea, collision);
+//            Rectangle solidArea = new Rectangle(0 ,0, 48, 48);
+            tile[index] = new Tile();
+            tile[index].solidArea = new Rectangle(0, 0, 48, 48);
             BufferedImage image =  ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));
-//            tile[index].collision = collision;
-//            tile[index].solidArea.x = 0;
-//            tile[index].solidArea.y = 0;
-//            tile[index].solidArea.width = 48;
-//            tile[index].solidArea.height = 48;
+            tile[index].collision = collision;
             tile[index].image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch(IOException e) {
             e.printStackTrace();
@@ -150,12 +137,12 @@ public class TileManager {
     }
 
     public void update() {
-        if(gp.keyH.btn9Pressed) {
-            checkHoe();
-        }
-        if(gp.keyH.btn8Pressed) {
-            checkWater();
-        }
+//        if(gp.keyH.hoePressed) {
+//            checkHoe();
+//        }
+//        if(gp.keyH.btn8Pressed) {
+//            checkWater();
+//        }
     }
 
     public void loadMap(String filePath) {
@@ -192,8 +179,10 @@ public class TileManager {
         while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
             int tileNum = gp.tileM.mapTileNum[worldCol][worldRow];
 
-            int worldX = worldCol * gp.tileSize;
-            int worldY = worldRow * gp.tileSize;
+            worldX = worldCol * gp.tileSize;
+            worldY = worldRow * gp.tileSize;
+            tile[tileNum].worldX = worldX;
+            tile[tileNum].worldY = worldY;
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
             if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX

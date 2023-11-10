@@ -15,9 +15,7 @@ public class InventoryManager implements MouseListener, MouseMotionListener {
     Graphics2D g2;
     public int selectedItem;
 
-    public int inventory;
-    public final int inventoryOn = 1;
-    public final int inventoryOff = 2;
+    public boolean inventoryOn = false;
     final int inventorySeparate = 78;
     private boolean isDragging; // Biến kiểm tra xem có đang kéo item hay không
     private int dragItemIndex; // Chỉ số của item đang được kéo
@@ -34,7 +32,6 @@ public class InventoryManager implements MouseListener, MouseMotionListener {
     public InventoryManager(GamePanel gp) {
         this.gp = gp;
         selectedItem = 1;
-        inventory = inventoryOff;
         setupInventory();
         gp.addMouseListener(this);
         gp.addMouseMotionListener(this);
@@ -63,7 +60,7 @@ public class InventoryManager implements MouseListener, MouseMotionListener {
     @Override
     public void mousePressed(MouseEvent e) {
         // Xử lý khi chuột được nhấn xuống trên inventory
-        if (inventory == inventoryOn) {
+        if (inventoryOn) {
             int mouseX = e.getX();
             int mouseY = e.getY();
 
@@ -184,14 +181,10 @@ public class InventoryManager implements MouseListener, MouseMotionListener {
         Item item2 = new Item("seed2", "/res/plants/seed_2.png", 4, gp);
         Item item3 = new Item("plant_1_", "/res/plants/plant_1_5.png", 4, gp);
         Item item4 = new Item("plant_2_", "/res/plants/plant_2_5.png", 4, gp);
-        Item item5 = new Item("waterbottle", "/res/Object/tile000.png", 0, gp);
-        Item item6 = new Item("hoe", "/res/Object/tile002.png", 0, gp);
         items.add(item1);
         items.add(item2);
         items.add(item3);
         items.add(item4);
-        items.add(item5);
-        items.add(item6);
     }
 
     public void setSelectedItem(int index) {
@@ -259,40 +252,23 @@ public class InventoryManager implements MouseListener, MouseMotionListener {
 
     public void draw(Graphics2D g2) {
         this.g2 = g2;
-        if(gp.gameState == gp.playState) {
-            if (gp.invetoryM.inventory == gp.invetoryM.inventoryOn) {
-                drawInventoryBar(g2);
-                for (int i = 0; i < items.size(); i++) {
-                    Item item = items.get(i);
-                    drawItem(g2, item, i + 1);
-                }
-//                drawSelectItem(g2, "/res/ui/SelectMenu.png", selectedItem);
-                if (isDragging) {
-                    // Vẽ hình ảnh của item đang kéo tại vị trí con trỏ chuột
-                    int itemX = getMouseX() - items.get(dragItemIndex).itemimage.getWidth() / 2;
-                    int itemY = getMouseY() - items.get(dragItemIndex).itemimage.getHeight() / 2;
-                    items.get(dragItemIndex).setX(itemX - dragOffsetX);
-                    items.get(dragItemIndex).setY(itemY- dragOffsetY);
-                    items.get(dragItemIndex).draw(g2);
-                }
-
-            }
-
+        drawInventoryBar(g2);
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+            drawItem(g2, item, i + 1);
         }
-    }
-
-    public void inventoryPressed() {
-        if(gp.keyH.inventoryPressed) {
-            if(inventory == inventoryOn) {
-                inventory = inventoryOff;
-            } else  if(inventory == inventoryOff) {
-                inventory = inventoryOn;
-            }
+//                drawSelectItem(g2, "/res/ui/SelectMenu.png", selectedItem);
+        if (isDragging) {
+            // Vẽ hình ảnh của item đang kéo tại vị trí con trỏ chuột
+            int itemX = getMouseX() - items.get(dragItemIndex).itemimage.getWidth() / 2;
+            int itemY = getMouseY() - items.get(dragItemIndex).itemimage.getHeight() / 2;
+            items.get(dragItemIndex).setX(itemX - dragOffsetX);
+            items.get(dragItemIndex).setY(itemY- dragOffsetY);
+            items.get(dragItemIndex).draw(g2);
         }
     }
 
     public void update() {
-
         if(gp.keyH.btn1Pressed) {
             setSelectedItem(1);
         }

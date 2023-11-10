@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean hoePressed, waterPressed;
     public boolean btn1Pressed,btn2Pressed, btn3Pressed, btn4Pressed, btn5Pressed, btn6Pressed, btn7Pressed, btn8Pressed, btn9Pressed;
     public boolean escapePressed;
     public boolean isHoe;
@@ -54,8 +55,7 @@ public class KeyHandler implements KeyListener {
 
         // inventory
         if(code == KeyEvent.VK_I) {
-            inventoryPressed = true;
-            gp.invetoryM.inventoryPressed();
+            gp.invetoryM.inventoryOn = !gp.invetoryM.inventoryOn;
         }
 
         if(code == KeyEvent.VK_1) {
@@ -95,15 +95,23 @@ public class KeyHandler implements KeyListener {
         }
 
         if(code == KeyEvent.VK_T) {
-            if(!checkDrawTime) {
-                checkDrawTime = true;
-            } else {
-                checkDrawTime = false;
-            }
+            checkDrawTime = !checkDrawTime;
+        }
+        if(code == KeyEvent.VK_M) {
+            gp.mission.missionOn = !gp.mission.missionOn;
         }
 
-        if(code == KeyEvent.VK_M) {
-            gp.ui.isMission = !gp.ui.isMission;
+        if(code == KeyEvent.VK_X) {
+            gp.drawBorder = !gp.drawBorder;
+        }
+
+        if(code == KeyEvent.VK_E) {
+            waterPressed = true;
+            gp.tileM.checkWater();
+        }
+        if(code == KeyEvent.VK_R) {
+            hoePressed = true;
+            gp.tileM.checkHoe();
         }
     }
 
@@ -126,8 +134,11 @@ public class KeyHandler implements KeyListener {
             rightPressed = false;
         }
 
+        if(code == KeyEvent.VK_E) {
+            waterPressed = false;
+        }
         if(code == KeyEvent.VK_R) {
-            isHoe = false;
+            hoePressed = false;
         }
 
         if(code == KeyEvent.VK_1) {
