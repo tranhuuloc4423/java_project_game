@@ -16,11 +16,4 @@ public class Hitbox {
         this.solidArea.width = width;
         this.solidArea.height = height;
     }
-
-//    public void setSolidArea(int x, int y, int width, int height) {
-//        this.solidArea.x = x;
-//        this.solidArea.y = y;
-//        this.solidArea.width = width;
-//        this.solidArea.height = height;
-//    }
 }

@@ -14,9 +14,9 @@ public class Sound {
 
         soundURL[0] = getClass().getResource("/res/sound/BlueBoyAdventure.wav");
         soundURL[1] = getClass().getResource("/res/sound/hoe.wav");
-        soundURL[2] = getClass().getResource("/res/sound/powerup.wav");
-        soundURL[3] = getClass().getResource("/res/sound/unlock.wav");
-        soundURL[4] = getClass().getResource("/res/sound/fanfare.wav");
+        soundURL[2] = getClass().getResource("/res/sound/water.wav");
+        soundURL[3] = getClass().getResource("/res/sound/walk.wav");
+
     }
 
     public void setFile(int i) {
@@ -38,6 +38,8 @@ public class Sound {
     }
 
     public void stop() {
-        clip.stop();
+        if (clip != null) {
+            clip.stop();
+        }
     }
 }

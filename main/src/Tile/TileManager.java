@@ -21,7 +21,7 @@ public class TileManager {
 //    public MouseHandler mouseH;
     private long startTime; // Thời điểm bắt đầu nhấn giữ phím đào đất
     private boolean isDigging; // Biến đánh dấu việc đang đào đất
-    private static final long DIGGING_DURATION = 3000;
+    private static final long DIGGING_DURATION = 1500;
 
     int worldX, worldY;
 

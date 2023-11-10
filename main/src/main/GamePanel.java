@@ -3,6 +3,7 @@ package main;
 import Entity.Entity;
 import Entity.Player;
 import Inventory.InventoryManager;
+import Inventory.Store;
 import Object.SuperObject;
 import Plant.Tree;
 import Tile.PlantCrop;
@@ -24,8 +25,8 @@ public class GamePanel extends JPanel implements  Runnable {
     public final int tileSize = originalTileSize * scale; // tile = 16 * 3
     public final int maxScreenCol = 24;
     public final int maxScreenRow = 16;
-    public final int screenWidth = tileSize * maxScreenCol; // 768 px
-    public final int screenHeight = tileSize * maxScreenRow; // 576 px
+    public final int screenWidth = tileSize * maxScreenCol;
+    public final int screenHeight = tileSize * maxScreenRow;
 
 
     // world setting
@@ -55,7 +56,7 @@ public class GamePanel extends JPanel implements  Runnable {
     public Entity npc[] = new Entity[10];
 
     // Box - to set hit box in tile
-    public Hitbox hitboxes[] = new Hitbox[10];
+    public Hitbox hitboxes[] = new Hitbox[100];
 
     // tiles
     public TileManager tileM = new TileManager(this);
@@ -65,6 +66,7 @@ public class GamePanel extends JPanel implements  Runnable {
     public InventoryManager invetoryM = new InventoryManager(this);
 
     public Mission mission = new Mission(this, invetoryM.items);
+    public Store store = new Store(this);
     // game state
     public int gameState;
     public final int playState = 1;
@@ -219,6 +221,8 @@ public class GamePanel extends JPanel implements  Runnable {
                 }
             }
 
+
+
             // player
             player.draw(g2);
 
@@ -233,6 +237,10 @@ public class GamePanel extends JPanel implements  Runnable {
 //            ui.draw(g2);
             if(mission.missionOn) {
                 mission.draw(g2);
+            }
+
+            if(store.storeOn) {
+                store.draw(g2);
             }
 
             // debug
@@ -263,5 +271,12 @@ public class GamePanel extends JPanel implements  Runnable {
     public void playSE(int i) {
         se.setFile(i);
         se.play();
+        se.loop();
+    }
+
+    public void stopSE() {
+        if (se != null) {
+            se.stop();
+        }
     }
 }

@@ -50,10 +50,10 @@ public class PlantCrop {
 
     public void plantcropSetup() {
         if(gp.keyH.btn1Pressed) {
-            plantCrop("plant_1_");
+            plantCrop("plant_1_", 10000);
         }
         if(gp.keyH.btn2Pressed) {
-            plantCrop("plant_2_");
+            plantCrop("plant_2_", 20000);
         }
     }
 
@@ -89,7 +89,7 @@ public class PlantCrop {
         gp.invetoryM.items.get(index - 1).addQuantity();
     }
 
-    public void plantCrop(String fileName) {
+    public void plantCrop(String fileName, int time) {
         int col = gp.player.landTileX;
         int row = gp.player.landTileY;
         int index = Integer.parseInt(fileName.split("_")[1]) - 1;
@@ -102,7 +102,7 @@ public class PlantCrop {
                         String pathName = fileName + (i + 1);
                         plantImages[i] = setupPlantImage(pathName);
                     }
-                    Tree plant = new Tree(plantImages, 3000, fileName);
+                    Tree plant = new Tree(plantImages, time, fileName);
                     plant.worldX = gp.tileSize * col;
                     plant.worldY = gp.tileSize * row;
                     plantMap.put(position, plant);

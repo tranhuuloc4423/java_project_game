@@ -113,6 +113,9 @@ public class KeyHandler implements KeyListener {
             hoePressed = true;
             gp.tileM.checkHoe();
         }
+        if(code == KeyEvent.VK_B) {
+            gp.store.storeOn = !gp.store.storeOn;
+        }
     }
 
     @Override
