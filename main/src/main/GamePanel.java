@@ -65,7 +65,7 @@ public class GamePanel extends JPanel implements  Runnable {
     // inventory
     public InventoryManager invetoryM = new InventoryManager(this);
 
-    public Mission mission = new Mission(this, invetoryM.items);
+    public Mission mission = new Mission(this);
     public Store store = new Store(this);
     // game state
     public int gameState;
@@ -241,6 +241,12 @@ public class GamePanel extends JPanel implements  Runnable {
 
             if(store.storeOn) {
                 store.draw(g2);
+            }
+
+            for(int i = 0; i < hitboxes.length; i++) {
+                if(hitboxes[i] != null) {
+                    hitboxes[i].draw(g2, this);
+                }
             }
 
             // debug

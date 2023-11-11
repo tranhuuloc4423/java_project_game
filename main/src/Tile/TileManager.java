@@ -67,7 +67,6 @@ public class TileManager {
     }
     public void setup(int index, String imageName, boolean collision) {
         try{
-//            Rectangle solidArea = new Rectangle(0 ,0, 48, 48);
             tile[index] = new Tile();
             tile[index].solidArea = new Rectangle(0, 0, 48, 48);
             BufferedImage image =  ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));

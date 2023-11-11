@@ -46,15 +46,22 @@ public class Item {
         return this.itemimage;
     }
 
-    public void addQuantity() {
-        this.quantity++;
+    public void addQuantity(int quantity) {
+        this.quantity += quantity;
     }
 
-    public void removeQuantity() {
-        this.quantity--;
+    public void removeQuantity(int quantity) {
+        this.quantity -= quantity;
     }
 
     public void draw(Graphics2D g2) {
         g2.drawImage(this.itemimage, x, y, null);
+        String countText = String.valueOf(quantity);
+        Font font = new Font("Arial", Font.BOLD, 20);
+        g2.setFont(font);
+        g2.setColor(Color.DARK_GRAY);
+        int cornerX = x + itemimage.getWidth() - 5;
+        int cornerY = y + itemimage.getHeight() + 5;
+        g2.drawString(countText, cornerX, cornerY);
     }
 }

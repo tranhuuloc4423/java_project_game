@@ -16,6 +16,8 @@ public class InventoryManager {
     Graphics2D g2;
     public int selectedItem;
 
+    public final int size = 6;
+
     public boolean inventoryOn = false;
     final int inventorySeparate = 84;
     private boolean isDragging; // Biến kiểm tra xem có đang kéo item hay không
@@ -41,14 +43,10 @@ public class InventoryManager {
     }
 
     public void setupInventory() {
-        Item item1 = new Item("seed1", "/res/plants/seed_1.png", 4, gp);
-        Item item2 = new Item("seed2", "/res/plants/seed_2.png", 4, gp);
-        Item item3 = new Item("plant_1_", "/res/plants/plant_1_4.png", 4, gp);
-        Item item4 = new Item("plant_2_", "/res/plants/plant_2_4.png", 4, gp);
-        items.add(item1);
-        items.add(item2);
-        items.add(item3);
-        items.add(item4);
+        for(int i = 1; i <= size; i++) {
+            Item item = new Item("seed" + i, "/res/plants/seed_" + i + ".png", 4, gp);
+            items.add(item);
+        }
     }
 
     public void setSelectedItem(int index) {
@@ -72,9 +70,8 @@ public class InventoryManager {
 
     public BufferedImage drawInventoryBar(Graphics2D g2) {
         BufferedImage image = setupImage("/res/ui/inventory_bar.png");
-        int x = (gp.screenWidth - image.getWidth()) / 2; // screenWidth = 1152
-        int y = gp.screenHeight - 160; // screenHeight = 768
-
+        int x = (gp.screenWidth - image.getWidth()) / 2;
+        int y = gp.screenHeight - 160;
         g2.drawImage(image, x, y, null);
         return image;
     }
@@ -88,24 +85,10 @@ public class InventoryManager {
     }
 
     public void drawItem(Graphics2D g2, Item item ,int index) {
-        BufferedImage image = item.getItemImage();
-//        BufferedImage scaleImage = UtilityTool.scaleImage(image, width, height);
-
         int initX = gp.tileSize * 7 + 5;
-        item.setX(initX + (inventorySeparate * (index - 1)));
-        item.setY(gp.screenHeight - 128);
+        item.x = initX + (inventorySeparate * (index - 1));
+        item.y = gp.screenHeight - 128;
         item.draw(g2);
-//        g2.drawImage(image, x, y, null);
-
-        int itemCount = item.quantity; // Số lượng item
-        if(itemCount == 0) return;
-        String countText = String.valueOf(itemCount);
-        Font font = new Font("Arial", Font.BOLD, 20);
-        g2.setFont(font);
-        g2.setColor(Color.DARK_GRAY);
-        int cornerX = item.x + image.getWidth() - 5; // Vị trí X của góc (10 là khoảng cách từ viền)
-        int cornerY = item.y + image.getHeight() + 5; // Vị trí Y của góc (10 là khoảng cách từ viền)
-        g2.drawString(countText, cornerX, cornerY);
     }
 
     public void draw(Graphics2D g2) {

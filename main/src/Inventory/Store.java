@@ -14,11 +14,21 @@ public class Store {
     Graphics2D g2;
     BufferedImage panel;
     public boolean storeOn = false;
+    public final int plantListSize = 6;
     ArrayList<BufferedImage> boardlist = new ArrayList<>();
+    public ArrayList<Item> plantItems = new ArrayList<>();
     public Store(GamePanel gp) {
         this.gp = gp;
         panel = setupImage("storage");
         setupBoard();
+        setupPlantItems();
+    }
+
+    public void setupPlantItems() {
+        for(int i = 1; i <= plantListSize; i++) {
+            Item item = new Item("plant_" + i, "/res/plants/plant_" + i + "_4.png", 0, gp);
+            plantItems.add(item);
+        }
     }
 
     public void draw(Graphics2D g2) {
@@ -26,6 +36,7 @@ public class Store {
 
         drawImage(panel, gp.tileSize, gp.tileSize);
         drawBoard();
+        drawPlantItems();
     }
 
     public void drawImage(BufferedImage image, int x, int y) {
@@ -47,6 +58,22 @@ public class Store {
                 y = initY * 5 + 20;
             }
             drawImage(boardlist.get(i), x, y);
+        }
+    }
+
+    public void drawPlantItems() {
+        int initX = gp.tileSize * 2;
+        int initY = gp.tileSize;
+        for(int i = 0; i < plantListSize; i++) {
+            int index = i + 1;
+            if(index <= 3) {
+                plantItems.get(i).x = index * initX - 6;
+                plantItems.get(i).y = initY * 3 + 34;
+            } else {
+                plantItems.get(i).x = initX * (index - 3) - 6;
+                plantItems.get(i).y = initY * 5 + 34;
+            }
+            plantItems.get(i).draw(g2);
         }
     }
 

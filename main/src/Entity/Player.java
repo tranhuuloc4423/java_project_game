@@ -35,12 +35,12 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - (gp.tileSize/ 2);
 
         solidArea = new Rectangle();
-        solidArea.x = 64;
-        solidArea.y = 64;
+        solidArea.x = 8;
+        solidArea.y = 8;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        solidArea.width = 16;
+        solidArea.width = 32;
         solidArea.height = 32;
         setDefaultValues();
         setPlayerImage();
@@ -54,8 +54,8 @@ public class Player extends Entity {
     }
 
     public void getTilePositionPlayer() {
-        landTileX = (worldX / gp.tileSize) + 1;
-        landTileY = (worldY / gp.tileSize) + 1;
+        landTileX = (worldX / gp.tileSize);
+        landTileY = (worldY / gp.tileSize);
     }
 
     public void pickUpObject(int index) {
@@ -67,34 +67,34 @@ public class Player extends Entity {
     public void setPlayerImage() {
         for (int i = 1; i <= spritesNum; i++) {
             // move
-            up[i - 1] = setup("rabit/up_" + i);
-            down[i - 1] = setup("rabit/down_" + i);
-            left[i - 1] = setup("rabit/left_" + i);
-            right[i- 1] = setup("rabit/right_" + i);
+            up[i - 1] = setup("move/up_" + i, 1);
+            down[i - 1] = setup("move/down_" + i, 1);
+            left[i - 1] = setup("move/left_" + i, 1);
+            right[i- 1] = setup("move/right_" + i, 1);
 
             // idle
-            idleUp[i - 1] = setup("rabit/idle_up_" + i);
-            idleDown[i - 1] = setup("rabit/idle_down_" + i);
-            idleLeft[i - 1] = setup("rabit/idle_left_" + i);
-            idleRight[i- 1] = setup("rabit/idle_right_" + i);
+            idleUp[i - 1] = setup("move/idle_up_" + i, 1);
+            idleDown[i - 1] = setup("move/idle_down_" + i, 1);
+            idleLeft[i - 1] = setup("move/idle_left_" + i, 1);
+            idleRight[i- 1] = setup("move/idle_right_" + i, 1);
 
             // hoe
-            hoeUp[i - 1] = setup("action/hoe_up_" + i);
-            hoeDown[i - 1] = setup("action/hoe_down_" + i);
-            hoeLeft[i - 1] = setup("action/hoe_left_" + i);
-            hoeRight[i- 1] = setup("action/hoe_right_" + i);
+            hoeUp[i - 1] = setup("action/hoe_up_" + i, 3);
+            hoeDown[i - 1] = setup("action/hoe_down_" + i, 3);
+            hoeLeft[i - 1] = setup("action/hoe_left_" + i, 3);
+            hoeRight[i- 1] = setup("action/hoe_right_" + i, 3);
 
             // watering
-            waterUp[i - 1] = setup("action/water_up_" + i);
-            waterDown[i - 1] = setup("action/water_down_" + i);
-            waterLeft[i - 1] = setup("action/water_left_" + i);
-            waterRight[i- 1] = setup("action/water_right_" + i);
+            waterUp[i - 1] = setup("action/water_up_" + i, 3);
+            waterDown[i - 1] = setup("action/water_down_" + i, 3);
+            waterLeft[i - 1] = setup("action/water_left_" + i, 3);
+            waterRight[i- 1] = setup("action/water_right_" + i, 3);
         }
     }
 
-    public BufferedImage setup(String imageName) {
+    public BufferedImage setup(String imageName, int scale) {
         BufferedImage image = null;
-        int size = gp.tileSize * 3;
+        int size = gp.tileSize * scale;
         try{
             image =  ImageIO.read(getClass().getResourceAsStream("/res/Player/" + imageName +".png"));
             image = UtilityTool.scaleImage(image, size, size);
@@ -306,7 +306,15 @@ public class Player extends Entity {
         }
         if (sprites != null && spriteNum >= 1 && spriteNum <= sprites.length) {
             BufferedImage image = sprites[spriteNum - 1];
-            g2.drawImage(image, screenX, screenY, null);
+            if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.waterPressed)  {
+                g2.drawImage(image, screenX - gp.tileSize, screenY - gp.tileSize, null);
+            } else if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.hoePressed) {
+                g2.drawImage(image, screenX - gp.tileSize, screenY - gp.tileSize, null);
+            } else {
+                g2.drawImage(image, screenX, screenY, null);
+            }
+//            g2.setColor(Color.BLACK);
+//            g2.drawRect(screenX, screenY, solidArea.width, solidArea.height);
         }
     }
 }

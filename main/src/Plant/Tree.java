@@ -69,7 +69,13 @@ public class Tree {
                 && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
                 && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY
         ) {
-            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+            if(image.getHeight() == gp.tileSize * 2) {
+                g2.drawImage(image, screenX, screenY - gp.tileSize, null);
+            } else {
+                g2.drawImage(image, screenX, screenY, null);
+
+            }
         }
     }
 

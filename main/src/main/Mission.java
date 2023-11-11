@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class Mission {
     Graphics2D g2;
-    public ArrayList<Item> listItem;
 
     public ArrayList<BufferedImage> listPlantImage = new ArrayList<BufferedImage>();
     GamePanel gp;
@@ -21,21 +20,16 @@ public class Mission {
 
     public boolean missionOn = false;
 
-    public Mission(GamePanel gp, ArrayList<Item> listItem) {
+    public Mission(GamePanel gp) {
         this.gp = gp;
-        this.listItem = listItem;
-        setupPanel();
+        missionPanel = setupImage("/res/menu/mission_panel.png");
         setupPlants();
     }
 
     public void drawItemMission(Graphics2D g2) {
-        for(int i = 0; i < listPlantImage.size(); i++) {
-//            g2.drawImage(listPlantImage.get(i), 0 , 0, null);
-            drawItem(listPlantImage.get(i), i);
-        }
-
-//        for(int i = 0; i < listItem.size(); i++) {
-//            listItem.get(i).draw(g2);
+//        for(int i = 0; i < listPlantImage.size(); i++) {
+////            g2.drawImage(listPlantImage.get(i), 0 , 0, null);
+//            drawItem(listPlantImage.get(i), i);
 //        }
     }
 
@@ -50,35 +44,24 @@ public class Mission {
         g2.drawImage(image, x, y, null);
     }
 
-    public BufferedImage getImage(String imagePath) {
+    public BufferedImage setupImage(String imagePath) {
         BufferedImage image = null;
+        BufferedImage scaleImage = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/plants/" + imagePath + ".png"));
+            image = ImageIO.read(getClass().getResourceAsStream(imagePath));
             int width = image.getWidth() * gp.scale;
             int height = image.getHeight() * gp.scale;
+            scaleImage = UtilityTool.scaleImage(image, width, height);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return image;
+        return scaleImage;
     }
 
     public void setupPlants() {
-        for(int i = 0; i < listItem.size(); i++) {
-            listPlantImage.add(listItem.get(i).itemimage);
-        }
-    }
-
-    public void setupPanel() {
-        try {
-            BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/res/menu/mission_panel.png"));
-            int width = image.getWidth() * gp.scale;
-            int height = image.getHeight() * gp.scale;
-            missionPanel = UtilityTool.scaleImage(image, width, height);
-
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+//        for(int i = 0; i < listItem.size(); i++) {
+//            listPlantImage.add(listItem.get(i).itemimage);
+//        }
     }
 
     public void draw(Graphics2D g2) {
@@ -87,7 +70,11 @@ public class Mission {
         drawItemMission(g2);
     }
 
-    public void createMissionLevel() {
+    public void createMission() {
+
+    }
+
+    public void createMissionLevel(BufferedImage[] images, int[] quantities) {
 
     }
 }
