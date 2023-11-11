@@ -35,20 +35,20 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - (gp.tileSize/ 2);
 
         solidArea = new Rectangle();
-        solidArea.x = 8;
-        solidArea.y = 8;
+        solidArea.x = 12;
+        solidArea.y = 16;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        solidArea.width = 32;
+        solidArea.width = 24;
         solidArea.height = 32;
         setDefaultValues();
         setPlayerImage();
     }
 
     public void setDefaultValues() {
-        worldX = gp.tileSize * 33;
-        worldY = gp.tileSize * 30;
+        worldX = gp.tileSize * 34;
+        worldY = gp.tileSize * 32;
         speed = 3;
         direction = "down";
     }
@@ -313,8 +313,6 @@ public class Player extends Entity {
             } else {
                 g2.drawImage(image, screenX, screenY, null);
             }
-//            g2.setColor(Color.BLACK);
-//            g2.drawRect(screenX, screenY, solidArea.width, solidArea.height);
         }
     }
 }

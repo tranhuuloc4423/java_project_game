@@ -89,6 +89,7 @@ public class InventoryManager {
         item.x = initX + (inventorySeparate * (index - 1));
         item.y = gp.screenHeight - 128;
         item.draw(g2);
+        item.drawQuantity(g2);
     }
 
     public void draw(Graphics2D g2) {

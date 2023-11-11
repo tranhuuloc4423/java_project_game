@@ -5,18 +5,18 @@ import java.awt.*;
 
 
 public class Hitbox {
-    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public Rectangle solidArea = new Rectangle(0 ,0 ,0 ,0);
 
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
 
     public int worldX, worldY;
 
-    public Hitbox(int x, int y, int width, int height) {
-        this.solidArea.x = x;
-        this.solidArea.y = y;
+    public Hitbox(int width, int height) {
         this.solidArea.width = width;
         this.solidArea.height = height;
+        System.out.println("x: "+ solidArea.x);
+        System.out.println("y: "+ solidArea.y);
     }
 
     public void draw(Graphics2D g2, GamePanel gp) {

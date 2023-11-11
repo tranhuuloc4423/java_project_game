@@ -24,12 +24,12 @@ public class AssetSetter {
     }
 
     public void setBox() {
-        gp.hitboxes[0] = new Hitbox(0 , 0 , 48, 48);
+        gp.hitboxes[0] = new Hitbox(48, 48);
         gp.hitboxes[0].worldX = 34 * gp.tileSize;
         gp.hitboxes[0].worldY = 34 * gp.tileSize;
 
-        gp.hitboxes[1] = new Hitbox(32, 0, 16, 192);
-        gp.hitboxes[1].worldX = 32 * gp.tileSize;
+        gp.hitboxes[1] = new Hitbox(16, 192);
+        gp.hitboxes[1].worldX = 31 * gp.tileSize + gp.tileSize;
         gp.hitboxes[1].worldY = 30 * gp.tileSize;
 
 

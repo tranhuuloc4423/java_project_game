@@ -53,9 +53,7 @@ public class Tree {
             if (currentImageIndex < treeImages.length - 1) {
                 currentImageIndex++;
             }
-
             image = treeImages[currentImageIndex];
-
             // Cập nhật thời điểm thay đổi hình ảnh cuối cùng
             lastImageChangeTime = currentTime;
         }
@@ -69,7 +67,6 @@ public class Tree {
                 && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
                 && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY
         ) {
-
             if(image.getHeight() == gp.tileSize * 2) {
                 g2.drawImage(image, screenX, screenY - gp.tileSize, null);
             } else {

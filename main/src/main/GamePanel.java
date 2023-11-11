@@ -65,8 +65,9 @@ public class GamePanel extends JPanel implements  Runnable {
     // inventory
     public InventoryManager invetoryM = new InventoryManager(this);
 
-    public Mission mission = new Mission(this);
+
     public Store store = new Store(this);
+    public Mission mission = new Mission(this);
     // game state
     public int gameState;
     public final int playState = 1;

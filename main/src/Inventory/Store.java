@@ -65,15 +65,17 @@ public class Store {
         int initX = gp.tileSize * 2;
         int initY = gp.tileSize;
         for(int i = 0; i < plantListSize; i++) {
+            Item item = plantItems.get(i);
             int index = i + 1;
             if(index <= 3) {
-                plantItems.get(i).x = index * initX - 6;
-                plantItems.get(i).y = initY * 3 + 34;
+                item.x = index * initX - 6;
+                item.y = initY * 3 + 34;
             } else {
-                plantItems.get(i).x = initX * (index - 3) - 6;
-                plantItems.get(i).y = initY * 5 + 34;
+                item.x = initX * (index - 3) - 6;
+                item.y = initY * 5 + 34;
             }
-            plantItems.get(i).draw(g2);
+            item.draw(g2);
+            item.drawQuantity(g2);
         }
     }
 
