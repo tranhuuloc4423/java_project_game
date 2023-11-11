@@ -17,14 +17,14 @@ public class Store {
     ArrayList<BufferedImage> boardlist = new ArrayList<>();
     public Store(GamePanel gp) {
         this.gp = gp;
-        panel = setupImage("MissonMenunew");
+        panel = setupImage("storage");
         setupBoard();
     }
 
     public void draw(Graphics2D g2) {
         this.g2 = g2;
 
-        drawImage(panel, 0, 0);
+        drawImage(panel, gp.tileSize, gp.tileSize);
         drawBoard();
     }
 
@@ -33,16 +33,18 @@ public class Store {
     }
 
     public void drawBoard() {
+        int initX = gp.tileSize * 2;
+        int initY = gp.tileSize;
         int x,y;
         for(int i = 0; i < boardlist.size(); i++) {
             int index = i + 1;
 
             if(index <= 3) {
-                x = gp.tileSize * 2 * index - 40;
-                y = gp.tileSize * 3;
+                x = index * initX - 22;
+                y = initY * 3 + 20;
             } else {
-                x = gp.tileSize * 2 * (index - 3) - 40;
-                y = gp.tileSize * 5;
+                x = initX * (index - 3) - 22;
+                y = initY * 5 + 20;
             }
             drawImage(boardlist.get(i), x, y);
         }

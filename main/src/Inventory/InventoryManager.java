@@ -17,7 +17,7 @@ public class InventoryManager {
     public int selectedItem;
 
     public boolean inventoryOn = false;
-    final int inventorySeparate = 78;
+    final int inventorySeparate = 84;
     private boolean isDragging; // Biến kiểm tra xem có đang kéo item hay không
     private int dragItemIndex; // Chỉ số của item đang được kéo
     private int dragOffsetX; // Khoảng cách từ vị trí chuột đến vị trí góc trái trên của item khi bắt đầu kéo
@@ -43,8 +43,8 @@ public class InventoryManager {
     public void setupInventory() {
         Item item1 = new Item("seed1", "/res/plants/seed_1.png", 4, gp);
         Item item2 = new Item("seed2", "/res/plants/seed_2.png", 4, gp);
-        Item item3 = new Item("plant_1_", "/res/plants/plant_1_5.png", 4, gp);
-        Item item4 = new Item("plant_2_", "/res/plants/plant_2_5.png", 4, gp);
+        Item item3 = new Item("plant_1_", "/res/plants/plant_1_4.png", 4, gp);
+        Item item4 = new Item("plant_2_", "/res/plants/plant_2_4.png", 4, gp);
         items.add(item1);
         items.add(item2);
         items.add(item3);
@@ -57,55 +57,43 @@ public class InventoryManager {
 
     public BufferedImage setupImage(String filePath) {
         BufferedImage image = null;
+        BufferedImage scaledImage = null;
         try {
             image = ImageIO.read(getClass().getResourceAsStream(filePath));
+            int width = image.getWidth() * gp.scale;
+            int height = image.getHeight() * gp.scale;
+            scaledImage = UtilityTool.scaleImage(image, width, height);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return image;
-    }
-
-    public int[] getSizeImage(BufferedImage image) {
-        int width = image.getWidth() * gp.scale;
-        int height = image.getHeight() * gp.scale;
-        int[] size = new int[2];
-        size[0] = width;
-        size[1] = height;
-        return size;
+        return scaledImage;
     }
 
     public BufferedImage drawInventoryBar(Graphics2D g2) {
-        BufferedImage image = setupImage("/res/ui/Menu.png");
-        int width = getSizeImage(image)[0];
-        int height = getSizeImage(image)[1];
-        BufferedImage scaleImage = UtilityTool.scaleImage(image, width, height);
-        int x = (gp.screenWidth - width) / 2; // screenWidth = 1152
+        BufferedImage image = setupImage("/res/ui/inventory_bar.png");
+        int x = (gp.screenWidth - image.getWidth()) / 2; // screenWidth = 1152
         int y = gp.screenHeight - 160; // screenHeight = 768
 
-        g2.drawImage(scaleImage, x, y, null);
+        g2.drawImage(image, x, y, null);
         return image;
     }
 
-    public void drawSelectItem(Graphics2D g2, String filePath,int index) {
-        BufferedImage image = setupImage(filePath);
-        int width = getSizeImage(image)[0];
-        int height = getSizeImage(image)[1];
-        BufferedImage scaleImage = UtilityTool.scaleImage(image, width, height);
-        int initX = width * 2 + 22;
+    public void drawSelectItem(Graphics2D g2,int index) {
+        BufferedImage image = setupImage("/res/ui/SelectMenu.png");
+        int initX = gp.tileSize * 6 + 30;
         int x = initX + (inventorySeparate * (index - 1));
-        int y = gp.screenHeight - 140;
-        g2.drawImage(scaleImage, x, y, null);
+        int y = gp.screenHeight - 154;
+        g2.drawImage(image, x, y, null);
     }
 
     public void drawItem(Graphics2D g2, Item item ,int index) {
         BufferedImage image = item.getItemImage();
 //        BufferedImage scaleImage = UtilityTool.scaleImage(image, width, height);
 
-        int initX = image.getWidth() * 5 - 2;
-//        int x = initX + (inventorySeparate * (index - 1));
-//        int y = gp.screenHeight - 112;
+        int initX = gp.tileSize * 7 + 5;
         item.setX(initX + (inventorySeparate * (index - 1)));
-        item.setY(gp.screenHeight - 112);
+        item.setY(gp.screenHeight - 128);
         item.draw(g2);
 //        g2.drawImage(image, x, y, null);
 
@@ -123,11 +111,12 @@ public class InventoryManager {
     public void draw(Graphics2D g2) {
         this.g2 = g2;
         drawInventoryBar(g2);
-        drawSelectItem(g2, "/res/ui/SelectMenu.png", selectedItem);
+        drawSelectItem(g2, selectedItem);
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
             drawItem(g2, item, i + 1);
         }
+
     }
 
     public void update() {
@@ -149,15 +138,5 @@ public class InventoryManager {
         if(gp.keyH.btn6Pressed) {
             setSelectedItem(6);
         }
-        if(gp.keyH.btn7Pressed) {
-            setSelectedItem(7);
-        }
-        if(gp.keyH.btn8Pressed) {
-            setSelectedItem(8);
-        }
-        if(gp.keyH.btn9Pressed) {
-            setSelectedItem(9);
-        }
-
     }
 }

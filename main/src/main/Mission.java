@@ -71,7 +71,7 @@ public class Mission {
 
     public void setupPanel() {
         try {
-            BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/res/menu/MissonMenunew.png"));
+            BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/res/menu/mission_panel.png"));
             int width = image.getWidth() * gp.scale;
             int height = image.getHeight() * gp.scale;
             missionPanel = UtilityTool.scaleImage(image, width, height);
@@ -83,7 +83,7 @@ public class Mission {
 
     public void draw(Graphics2D g2) {
         this.g2 = g2;
-        drawImage(missionPanel, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth(), 0);
+        drawImage(missionPanel, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() - gp.tileSize, gp.tileSize);
         drawItemMission(g2);
     }
 

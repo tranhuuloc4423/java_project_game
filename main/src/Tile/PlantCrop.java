@@ -50,10 +50,10 @@ public class PlantCrop {
 
     public void plantcropSetup() {
         if(gp.keyH.btn1Pressed) {
-            plantCrop("plant_1_", 10000);
+            plantCrop("plant_1_", 1000);
         }
         if(gp.keyH.btn2Pressed) {
-            plantCrop("plant_2_", 20000);
+            plantCrop("plant_2_", 2000);
         }
     }
 
@@ -97,7 +97,7 @@ public class PlantCrop {
             if (gp.tileM.mapTileNum[col][row] == 602) {
                 Point position = new Point(col, row);
                 if (!plantMap.containsKey(position)) {
-                    BufferedImage[] plantImages = new BufferedImage[5];
+                    BufferedImage[] plantImages = new BufferedImage[4];
                     for (int i = 0; i < plantImages.length; i++) {
                         String pathName = fileName + (i + 1);
                         plantImages[i] = setupPlantImage(pathName);

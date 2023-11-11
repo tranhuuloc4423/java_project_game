@@ -34,9 +34,7 @@ public class TileManager {
 //        setCollisonTile();
 //        loadMap("/res/maps/worldV2.txt");
         loadMap("/res/maps/Map.txt");
-
 //        this.mouseH = gp.mouseH;
-
     }
 
     public int getTileNumber(int x, int y) {
