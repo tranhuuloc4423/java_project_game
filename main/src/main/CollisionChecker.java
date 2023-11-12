@@ -182,7 +182,7 @@ public class CollisionChecker {
                         break;
                 }
                 if(entity.solidArea.intersects(gp.hitboxes[i].solidArea)) {
-                    System.out.println("intersects");
+//                    System.out.println("intersects");
                     entity.collisionOn = true;
                 }
                 entity.solidArea.x = entity.solidAreaDefaultX;

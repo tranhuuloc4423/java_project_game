@@ -98,6 +98,15 @@ public class Menu {
         g2.drawImage(image, x, y, w, h, null);
     }
 
+    public void drawImage2(Graphics2D g2,BufferedImage image, int xSize , int ySize, int size) {
+        int w = image.getWidth() * gp.scale * size;
+        int h = image.getHeight() * gp.scale * size;
+        int x = (gp.screenWidth - w) / 2 + xSize;
+        int y = (gp.screenHeight - h) / 2 + ySize;
+        BufferedImage scaledImage = UtilityTool.scaleImage(image, w, h);
+        g2.drawImage(scaledImage, x, y, null);
+    }
+
     private class MouseClickListener extends MouseAdapter {
         @Override
         public void mouseReleased(MouseEvent e) {

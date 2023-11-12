@@ -2,6 +2,7 @@ package Tile;
 
 import Plant.Tree;
 import main.GamePanel;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -40,20 +41,36 @@ public class PlantCrop {
 
     public BufferedImage setupPlantImage(String fileName) {
         BufferedImage image = null;
+        BufferedImage scaleImage = null;
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/res/plants/" + fileName + ".png"));
+            int width = image.getWidth() * gp.scale;
+            int height = image.getHeight() * gp.scale;
+            scaleImage = UtilityTool.scaleImage(image, width, height);
         } catch(IOException e) {
             e.printStackTrace();
         }
-        return image;
+        return scaleImage;
     }
 
     public void plantcropSetup() {
         if(gp.keyH.btn1Pressed) {
-            plantCrop("plant_1_");
+            plantCrop("plant_1_", 1000);
         }
         if(gp.keyH.btn2Pressed) {
-            plantCrop("plant_2_");
+            plantCrop("plant_2_", 2000);
+        }
+        if(gp.keyH.btn3Pressed) {
+            plantCrop("plant_3_", 2000);
+        }
+        if(gp.keyH.btn4Pressed) {
+            plantCrop("plant_4_", 1000);
+        }
+        if(gp.keyH.btn5Pressed) {
+            plantCrop("plant_5_", 2000);
+        }
+        if(gp.keyH.btn6Pressed) {
+            plantCrop("plant_6_", 2000);
         }
     }
 
@@ -79,17 +96,12 @@ public class PlantCrop {
     }
 
     public void handleQuantity(String name) {
-        for(int i = 0; i < gp.invetoryM.items.size(); i++) {
-            if(gp.invetoryM.items.get(i).name == name) {
-                gp.invetoryM.items.get(i).addQuantity();
-            }
-        }
         int index = Integer.parseInt(name.split("_")[1]);
-        gp.invetoryM.items.get(index - 1).addQuantity();
-        gp.invetoryM.items.get(index - 1).addQuantity();
+        gp.invetoryM.items.get(index - 1).addQuantity(1);
+        gp.store.plantItems.get(index - 1).addQuantity(2);
     }
 
-    public void plantCrop(String fileName) {
+    public void plantCrop(String fileName, int time) {
         int col = gp.player.landTileX;
         int row = gp.player.landTileY;
         int index = Integer.parseInt(fileName.split("_")[1]) - 1;
@@ -97,18 +109,18 @@ public class PlantCrop {
             if (gp.tileM.mapTileNum[col][row] == 602) {
                 Point position = new Point(col, row);
                 if (!plantMap.containsKey(position)) {
-                    BufferedImage[] plantImages = new BufferedImage[5];
+                    BufferedImage[] plantImages = new BufferedImage[4];
                     for (int i = 0; i < plantImages.length; i++) {
                         String pathName = fileName + (i + 1);
                         plantImages[i] = setupPlantImage(pathName);
                     }
-                    Tree plant = new Tree(plantImages, 3000, fileName);
+                    Tree plant = new Tree(plantImages, time, fileName);
                     plant.worldX = gp.tileSize * col;
                     plant.worldY = gp.tileSize * row;
                     plantMap.put(position, plant);
 
 //                    System.out.println(index);
-                    gp.invetoryM.items.get(index).removeQuantity();
+                    gp.invetoryM.items.get(index).removeQuantity(1);
                 }
             }
         }
