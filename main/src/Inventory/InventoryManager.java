@@ -15,21 +15,9 @@ public class InventoryManager {
     GamePanel gp;
     Graphics2D g2;
     public int selectedItem;
-
     public final int size = 6;
-
     public boolean inventoryOn = false;
     final int inventorySeparate = 84;
-    private boolean isDragging; // Biến kiểm tra xem có đang kéo item hay không
-    private int dragItemIndex; // Chỉ số của item đang được kéo
-    private int dragOffsetX; // Khoảng cách từ vị trí chuột đến vị trí góc trái trên của item khi bắt đầu kéo
-    private int dragOffsetY; // Khoảng cách từ vị trí chuột đến vị trí góc trái trên của item khi bắt đầu kéo
-    private boolean itemPositionChanged = false;
-//    public Item dragItem;
-
-    private int mouseX;
-    private int mouseY;
-//    public BufferedImage compare;
     public ArrayList<Item> items = new ArrayList<>();
 
     public InventoryManager(GamePanel gp) {
@@ -38,13 +26,13 @@ public class InventoryManager {
         setupInventory();
     }
 
-    public void setItemPositionChanged(boolean changed) {
-        itemPositionChanged = changed;
-    }
-
     public void setupInventory() {
         for(int i = 1; i <= size; i++) {
-            Item item = new Item("seed" + i, "/res/plants/seed_" + i + ".png", 4, gp);
+            int initQuantity = 0;
+            if(i == 1) {
+                initQuantity = 4;
+            }
+            Item item = new Item("seed" + i, "/res/plants/seed_" + i + ".png", initQuantity, gp);
             items.add(item);
         }
     }
@@ -100,7 +88,6 @@ public class InventoryManager {
             Item item = items.get(i);
             drawItem(g2, item, i + 1);
         }
-
     }
 
     public void update() {
