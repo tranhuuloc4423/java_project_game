@@ -24,15 +24,81 @@ public class AssetSetter {
     }
 
     public void setBox() {
-        gp.hitboxes[0] = new Hitbox(48, 48);
+        gp.hitboxes[0] = new Hitbox( 4, 48);
         gp.hitboxes[0].worldX = 34 * gp.tileSize;
         gp.hitboxes[0].worldY = 34 * gp.tileSize;
 
-        gp.hitboxes[1] = new Hitbox(16, 192);
-        gp.hitboxes[1].worldX = 31 * gp.tileSize + gp.tileSize;
-        gp.hitboxes[1].worldY = 30 * gp.tileSize;
+        gp.hitboxes[1] = new Hitbox( 4, 48);
+        gp.hitboxes[1].worldX = 34 * gp.tileSize + 40;
+        gp.hitboxes[1].worldY = 34 * gp.tileSize;
 
+        gp.hitboxes[2] = new Hitbox(16, 288);
+        gp.hitboxes[2].worldX = 31 * gp.tileSize + 32;
+        gp.hitboxes[2].worldY = 29 * gp.tileSize;
 
+        gp.hitboxes[3] = new Hitbox( 16, 288);
+        gp.hitboxes[3].worldX = 37 * gp.tileSize;
+        gp.hitboxes[3].worldY = 29 * gp.tileSize;
+
+        gp.hitboxes[4] = new Hitbox( 16, 192);
+        gp.hitboxes[4].worldX = 13 * gp.tileSize;
+        gp.hitboxes[4].worldY = 17 * gp.tileSize;
+
+        gp.hitboxes[5] = new Hitbox( 16, 144);
+        gp.hitboxes[5].worldX = 21 * gp.tileSize + 32;
+        gp.hitboxes[5].worldY = 18 * gp.tileSize;
+
+        gp.hitboxes[6] = new Hitbox( 16, 144);
+        gp.hitboxes[6].worldX = 17 * gp.tileSize;
+        gp.hitboxes[6].worldY = 14 * gp.tileSize;
+
+        gp.hitboxes[7] = new Hitbox( 16, 96);
+        gp.hitboxes[7].worldX = 26 * gp.tileSize + 32;
+        gp.hitboxes[7].worldY = 14 * gp.tileSize;
+
+        gp.hitboxes[8] = new Hitbox( 192, 16);
+        gp.hitboxes[8].worldX = 13 * gp.tileSize;
+        gp.hitboxes[8].worldY = 17 * gp.tileSize;
+
+        gp.hitboxes[9] = new Hitbox( 480, 16);
+        gp.hitboxes[9].worldX = 17 * gp.tileSize;
+        gp.hitboxes[9].worldY = 14 * gp.tileSize;
+
+        gp.hitboxes[10] = new Hitbox( 16, 528);
+        gp.hitboxes[10].worldX = 37 * gp.tileSize + 32;
+        gp.hitboxes[10].worldY = 14 * gp.tileSize;
+
+        gp.hitboxes[11] = new Hitbox( 16, 336);
+        gp.hitboxes[11].worldX = 13 * gp.tileSize ;
+        gp.hitboxes[11].worldY = 43 * gp.tileSize;
+
+        gp.hitboxes[12] = new Hitbox( 16, 144);
+        gp.hitboxes[12].worldX = 18 * gp.tileSize + 32;
+        gp.hitboxes[12].worldY = 43 * gp.tileSize;
+
+        gp.hitboxes[13] = new Hitbox( 16, 192);
+        gp.hitboxes[13].worldX = 20 * gp.tileSize + 32;
+        gp.hitboxes[13].worldY = 46 * gp.tileSize;
+
+        gp.hitboxes[14] = new Hitbox( 96, 16);
+        gp.hitboxes[14].worldX = 19 * gp.tileSize;
+        gp.hitboxes[14].worldY = 46 * gp.tileSize;
+
+        gp.hitboxes[15] = new Hitbox( 16, 336);
+        gp.hitboxes[15].worldX = 13 * gp.tileSize ;
+        gp.hitboxes[15].worldY = 43 * gp.tileSize;
+
+        gp.hitboxes[16] = new Hitbox( 16, 144);
+        gp.hitboxes[16].worldX = 51 * gp.tileSize ;
+        gp.hitboxes[16].worldY = 49 * gp.tileSize;
+
+        gp.hitboxes[17] = new Hitbox( 16, 96);
+        gp.hitboxes[17].worldX = 45 * gp.tileSize ;
+        gp.hitboxes[17].worldY = 53 * gp.tileSize;
+
+        gp.hitboxes[18] = new Hitbox( 16, 96);
+        gp.hitboxes[18].worldX = 54 * gp.tileSize + 32 ;
+        gp.hitboxes[18].worldY = 50 * gp.tileSize;
     }
 
     public void setNPC() {
