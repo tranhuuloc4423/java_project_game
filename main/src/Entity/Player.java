@@ -301,9 +301,7 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2) {
-        if(gp.drawBorder) {
-            drawBorder();
-        }
+
         if (sprites != null && spriteNum >= 1 && spriteNum <= sprites.length) {
             BufferedImage image = sprites[spriteNum - 1];
             if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.waterPressed)  {
@@ -313,6 +311,9 @@ public class Player extends Entity {
             } else {
                 g2.drawImage(image, screenX, screenY, null);
             }
+        }
+        if(gp.drawBorder) {
+            drawBorder();
         }
     }
 }
