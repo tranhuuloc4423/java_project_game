@@ -42,25 +42,46 @@ public class TileManager {
     }
 
     public void getTileManager() {
-        for(int i = 298; i <= 328; i++) {
+        setup(298, "298",false);
+        setup(299, "299",false);
+        setup(300, "300",false);
+        for(int i = 301; i <= 302; i++) {
+            setup(i, String.valueOf(i),true);
+        }
+        for(int i = 303; i <= 304; i++) {
             setup(i, String.valueOf(i),false);
         }
+        for(int i = 307; i <= 308; i++) {
+            setup(i, String.valueOf(i),false);
+        }
+        for(int i = 311; i <= 312; i++) {
+            setup(i, String.valueOf(i),false);
+        }
+        for(int i = 315; i <= 323; i++) {
+            setup(i, String.valueOf(i),true);
+        }
+        setup(324, "324",false);
+        setup(327, "327",true);
+        setup(328, "328",false);
+
         for(int i = 478; i <= 512; i++) {
-            setup(i, String.valueOf(i),false);
+            if(i <= 481 && i>=491)setup(i, String.valueOf(i),true);
+            else setup(i, String.valueOf(i),false);
         }
+
         for(int i = 600; i <= 657; i++) {
-            if(i >= 613 && i <= 628) {
+            if(i >= 613 && i <= 628 || i >= 641 && i <= 643|| i >= 650 && i <= 651) {
                 setup(i, String.valueOf(i),true);
             } else {
                 setup(i, String.valueOf(i),false);
             }
 
         }
-        setup(658, "659",false);
+        setup(657, "657",true);
 
-        setup(659, "659",false);
+        setup(659, "659",true);
         for(int i = 994; i <= 996; i++) {
-            setup(i, String.valueOf(i),false);
+            setup(i, String.valueOf(i),true);
         }
         setup(998, "998",true);
         setup(999, "999",true);
