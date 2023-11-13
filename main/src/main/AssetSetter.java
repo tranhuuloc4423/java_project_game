@@ -11,26 +11,25 @@ public class AssetSetter {
     }
 
 
-    public void setObject(int x, int y) {
-//        if(gp.obj[0] != null) {
-//            gp.obj[0] = null;
-//        }
-//        gp.obj[0] = new OBJ_Border(gp);
-//        gp.obj[0].worldX = x * gp.tileSize;
-//        gp.obj[0].worldY = y * gp.tileSize;
+    public void setObject() {
+//        gp.obj[0] = new OBJ_DoorOpen(gp);
+//        gp.obj[0].worldX = gp.tileSize * 34;
+//        gp.obj[0].worldY = gp.tileSize * 34;
+    }
 
+    public void setBorder(int x, int y) {
         gp.border.worldX = x * gp.tileSize;
         gp.border.worldY = y * gp.tileSize;
     }
 
     public void setBox() {
-        gp.hitboxes[0] = new Hitbox( 4, 48);
-        gp.hitboxes[0].worldX = 34 * gp.tileSize;
-        gp.hitboxes[0].worldY = 34 * gp.tileSize;
+//        gp.hitboxes[0] = new Hitbox( 4, 48);
+//        gp.hitboxes[0].worldX = 34 * gp.tileSize;
+//        gp.hitboxes[0].worldY = 34 * gp.tileSize;
 
-        gp.hitboxes[1] = new Hitbox( 4, 48);
-        gp.hitboxes[1].worldX = 34 * gp.tileSize + 40;
-        gp.hitboxes[1].worldY = 34 * gp.tileSize;
+//        gp.hitboxes[1] = new Hitbox( 4, 48);
+//        gp.hitboxes[1].worldX = 34 * gp.tileSize + 40;
+//        gp.hitboxes[1].worldY = 34 * gp.tileSize;
 
         gp.hitboxes[2] = new Hitbox(16, 288);
         gp.hitboxes[2].worldX = 31 * gp.tileSize + 32;

@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
     GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
-    public boolean hoePressed, waterPressed, plantPressed;
+    public boolean hoePressed, waterPressed, plantPressed, interactpressed;
     public boolean btn1Pressed,btn2Pressed, btn3Pressed, btn4Pressed, btn5Pressed, btn6Pressed, btn7Pressed, btn8Pressed, btn9Pressed;
     public boolean escapePressed;
     public boolean isHoe;
@@ -114,6 +114,9 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_Q) {
             plantPressed = true;
         }
+        if(code == KeyEvent.VK_F) {
+            gp.tileM.interactTile(34, 34, 299, 298);
+        }
         if(code == KeyEvent.VK_B) {
             gp.store.storeOn = !gp.store.storeOn;
         }
@@ -147,6 +150,9 @@ public class KeyHandler implements KeyListener {
 
         if(code == KeyEvent.VK_Q) {
             plantPressed = false;
+        }
+        if(code == KeyEvent.VK_F) {
+            interactpressed = false;
         }
 
         if(code == KeyEvent.VK_1) {
