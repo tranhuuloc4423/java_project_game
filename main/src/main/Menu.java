@@ -288,6 +288,10 @@ public class Menu {
                 }
             }
 
+            if (drawAboutMenuPage2) {
+
+            }
+
             if(drawAboutMenu) {
                 int[] positionMore = getBoundPosition(imageAboutMore,133,235,1 );
                 if (mouseX >= positionMore[2] && mouseX <= positionMore[2] + positionMore[0] && mouseY >= positionMore[3] && mouseY <= positionMore[3] + positionMore[1]) {
@@ -295,8 +299,8 @@ public class Menu {
                     int delay = 150;
                     ActionListener emptyAction = new ActionListener() {
                         public void actionPerformed(ActionEvent evt) {
-                            drawAboutMenu = false;
                             drawAboutMenuPage2 = true;
+                            drawAboutMenu = false;
                         }
                     };
                     Timer timer = new Timer(delay, emptyAction);
@@ -522,7 +526,7 @@ public class Menu {
         BufferedImage aboutMenuClose = null;
 
         try {
-            aboutMenuFrame = ImageIO.read(getClass().getResourceAsStream("/res/menu/AboutSetting_2.png.png"));
+            aboutMenuFrame = ImageIO.read(getClass().getResourceAsStream("/res/menu/AboutSetting_2.png"));
             aboutMenuClose = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
         } catch (IOException e) {
             e.printStackTrace();
