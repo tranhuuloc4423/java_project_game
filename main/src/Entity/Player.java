@@ -112,13 +112,12 @@ public class Player extends Entity {
     public void update() {
         getTilePositionPlayer();
 
+
         walkHandle();
-
-        idleAnimate();
-
         hoeAnimate();
-
         wateringAnimate();
+        idleAnimate();
+//        handleSE();
 
         spriteCounter++;
         if(spriteCounter > 30) {
@@ -131,8 +130,48 @@ public class Player extends Entity {
         }
     }
 
+    public void handleSE() {
+        if((keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && !keyH.waterPressed) {
+            if (!isWalkingSE) {
+                gp.playSE(3);
+                isWalkingSE = true;
+                isHoeSE = false;
+                isWateringSE = false;
+            }
+        } else if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.waterPressed && keyH.hoePressed) {
+            if (!isHoeSE) {
+                gp.playSE(1);
+                isHoeSE = true;
+                isWateringSE = false;
+                isWalkingSE = false;
+            }
+        } else if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && keyH.waterPressed) {
+            if (!isWateringSE) {
+                gp.playSE(2);
+                isWateringSE = true;
+                isHoeSE = false;
+                isWalkingSE = false;
+            }
+        } else {
+            if(isWalkingSE) {
+                gp.stopSE();
+                isWalkingSE = false;
+            } else if(isHoeSE) {
+                gp.stopSE();
+                isHoeSE = false;
+            } else if(isWateringSE) {
+                gp.stopSE();
+                isWateringSE = false;
+            }
+        }
+    }
+
     public void walkHandle() {
-        if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+        if((keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && !keyH.waterPressed) {
+//            if(!isWalkingSE) {
+//                gp.playSE(3);
+//                isWalkingSE = true;
+//            }
             if(keyH.upPressed && keyH.rightPressed) {
                 direction = "upright";
             }else if(keyH.upPressed && keyH.leftPressed) {
@@ -151,8 +190,6 @@ public class Player extends Entity {
                 direction = "right";
             }
 
-
-
             // check tile collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
@@ -168,10 +205,7 @@ public class Player extends Entity {
 
             // IF COLLISON IS FALSE, PLAYER CAN MOVE
             if(!collisionOn) {
-                if(!isWalkingSE) {
-                    gp.playSE(3);
-                    isWalkingSE = true;
-                }
+
                 switch (direction){
                     case "up":
                         worldY -= speed;
@@ -211,20 +245,24 @@ public class Player extends Entity {
                         break;
                 }
             }
-        } else {
-            if (isWalkingSE) {
-                gp.stopSE();
-                isWalkingSE = false;
-            }
+
         }
+//        else {
+//            if (isWalkingSE) {
+//                gp.stopSE();
+//                isWalkingSE = false;
+//            }
+//            hoeAnimate();
+//            wateringAnimate();
+//        }
     }
 
     public void hoeAnimate() {
-        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.hoePressed) {
-            if (!isHoeSE) {
-                gp.playSE(1);
-                isHoeSE = true;
-            }
+        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.waterPressed && keyH.hoePressed) {
+//            if (!isHoeSE) {
+//                gp.playSE(1);
+//                isHoeSE = true;
+//            }
             switch (direction) {
                 case "up":
                     sprites = hoeUp;
@@ -239,16 +277,18 @@ public class Player extends Entity {
                     sprites = hoeRight;
                     break;
             }
-        } else {
-            if (isHoeSE) {
-                gp.stopSE();
-                isHoeSE = false;
-            }
         }
+//        else {
+//            if (isHoeSE) {
+//                gp.stopSE();
+//                isHoeSE = false;
+//            }
+//        }
     }
 
     public void idleAnimate() {
-        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && !keyH.waterPressed) {
+        boolean movePressed = (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed);
+        if((!movePressed && !keyH.hoePressed && !keyH.waterPressed) || (movePressed && keyH.hoePressed) || (movePressed && keyH.waterPressed) || (keyH.hoePressed && keyH.waterPressed)) {
             switch (direction) {
                 case "up":
                     sprites = idleUp;
@@ -267,11 +307,11 @@ public class Player extends Entity {
     }
 
     public void wateringAnimate() {
-        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.waterPressed) {
-            if(!isWateringSE) {
-                gp.playSE(2);
-                isWateringSE = true;
-            }
+        if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && keyH.waterPressed) {
+//            if(!isWateringSE) {
+//                gp.playSE(2);
+//                isWateringSE = true;
+//            }
             switch (direction) {
                 case "up":
                     sprites = waterUp;
@@ -286,12 +326,13 @@ public class Player extends Entity {
                     sprites = waterRight;
                     break;
             }
-        } else {
-            if (isWateringSE) {
-                gp.stopSE();
-                isWateringSE = false;
-            }
         }
+//        else {
+//            if (isWateringSE) {
+//                gp.stopSE();
+//                isWateringSE = false;
+//            }
+//        }
     }
 
     public void interactNPC(int index) {
@@ -304,9 +345,7 @@ public class Player extends Entity {
 
         if (sprites != null && spriteNum >= 1 && spriteNum <= sprites.length) {
             BufferedImage image = sprites[spriteNum - 1];
-            if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.waterPressed)  {
-                g2.drawImage(image, screenX - gp.tileSize, screenY - gp.tileSize, null);
-            } else if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && keyH.hoePressed) {
+            if((keyH.waterPressed || keyH.hoePressed) && !(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !(keyH.hoePressed && keyH.waterPressed))  {
                 g2.drawImage(image, screenX - gp.tileSize, screenY - gp.tileSize, null);
             } else {
                 g2.drawImage(image, screenX, screenY, null);

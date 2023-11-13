@@ -11,12 +11,10 @@ public class Sound {
     URL soundURL[] = new URL[30];
 
     public Sound() {
-
         soundURL[0] = getClass().getResource("/res/sound/BlueBoyAdventure.wav");
         soundURL[1] = getClass().getResource("/res/sound/hoe.wav");
         soundURL[2] = getClass().getResource("/res/sound/water.wav");
         soundURL[3] = getClass().getResource("/res/sound/walk.wav");
-
     }
 
     public void setFile(int i) {
