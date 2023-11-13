@@ -156,7 +156,6 @@ public class Mission {
         for(int i = 0; i < mission.items.size(); i++) {
             Item item = mission.items.get(i);
             int[] targets = mission.targets;
-            Item reward = mission.reward;
             names[i] = item.name;
 
             int index = i + 1;
