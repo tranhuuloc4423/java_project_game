@@ -103,50 +103,52 @@ public class TileManager {
         mapTileNum[col][row] = tileIndex;
     }
 
-    public void setCollisonTile() {
-        tile[999].solidArea.x = 0;
-        tile[999].solidArea.y = 0;
-        tile[999].solidArea.width = 0;
-        tile[999].solidArea.height = 0;
-    }
-
-    public void checkHoe() {
+    public void changTile(int tile,int tileTarget) {
         int col = gp.player.landTileX;
         int row = gp.player.landTileY;
-        int dirtTileNum = 600;
-        if(gp.tileM.mapTileNum[col][row] == dirtTileNum) {
-            if (!isDigging) {
-                startTime = System.currentTimeMillis();
-                isDigging = true;
-            } else {
+        int[][] map = gp.tileM.mapTileNum;
 
-                long currentTime = System.currentTimeMillis();
-                long elapsedTime = currentTime - startTime;
+        int[][] directions = {
+                {0, 0},
+                {-1, -1},
+                {1, 1},
+                {1, 0},
+                {0, 1},
+                {-1, 1},
+                {1, -1},
+                {-1, 0},
+                {0, -1}
+        };
 
-                if (elapsedTime >= DIGGING_DURATION) {
-                    changeTileImage(col, row, 601);
-                    isDigging = false;
-                    startTime = 0;
-                }
+        boolean isDirtNearby = false;
+        for (int[] dir : directions) {
+            int checkCol = col + dir[0];
+            int checkRow = row + dir[1];
+
+            if (checkCol >= 0 && checkCol < map.length &&
+                    checkRow >= 0 && checkRow < map[0].length &&
+                    map[checkCol][checkRow] == tile) {
+                isDirtNearby = true;
+                break;
             }
         }
-    }
 
-    public void checkWater() {
-        int col = gp.player.landTileX;
-        int row = gp.player.landTileY;
-        int dirtHoed = 601;
-        if(gp.tileM.mapTileNum[col][row] == dirtHoed) {
+        if (isDirtNearby) {
             if (!isDigging) {
                 startTime = System.currentTimeMillis();
                 isDigging = true;
             } else {
-
                 long currentTime = System.currentTimeMillis();
                 long elapsedTime = currentTime - startTime;
 
                 if (elapsedTime >= DIGGING_DURATION) {
-                    changeTileImage(col, row, 602);
+                    for (int[] dir : directions) {
+                        int tileCol = col + dir[0];
+                        int tileRow = row + dir[1];
+                        if(map[tileCol][tileRow] == tile) {
+                            changeTileImage(tileCol, tileRow, tileTarget);
+                        }
+                    }
                     isDigging = false;
                     startTime = 0;
                 }
@@ -155,12 +157,12 @@ public class TileManager {
     }
 
     public void update() {
-//        if(gp.keyH.hoePressed) {
-//            checkHoe();
-//        }
-//        if(gp.keyH.btn8Pressed) {
-//            checkWater();
-//        }
+        if(gp.keyH.hoePressed) {
+            changTile(600, 601);
+        }
+        if(gp.keyH.waterPressed) {
+            changTile(601, 602);
+        }
     }
 
     public void loadMap(String filePath) {

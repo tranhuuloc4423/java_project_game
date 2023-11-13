@@ -27,8 +27,8 @@ public class MouseHandler implements MouseListener {
 
         // Kiểm tra xem người chơi đã nhấp chuột vào ô đất nào và thực hiện hành động tương ứng
         tileNum = gp.tileM.getTileNumber(tileX, tileY);
-        System.out.println("Clicked tile position: " + tileX + ", " + tileY);
-        System.out.println("Tile number: " + tileNum);
+//        System.out.println("Clicked tile position: " + tileX + ", " + tileY);
+//        System.out.println("Tile number: " + tileNum);
         isMouseClicked = true;
     }
 
@@ -36,13 +36,13 @@ public class MouseHandler implements MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         isDrag = true;
-        System.out.println(isDrag);
+//        System.out.println(isDrag);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         isDrag = false;
-        System.out.println(isDrag);
+//        System.out.println(isDrag);
     }
 
     @Override

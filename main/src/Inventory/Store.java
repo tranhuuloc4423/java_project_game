@@ -87,13 +87,14 @@ public class Store {
     }
 
     public BufferedImage setupImage(String namePath) {
-        BufferedImage image = null;
+        BufferedImage image;
         BufferedImage scaleImage = null;
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/res/menu/" + namePath + ".png"));
             int width = image.getWidth() * gp.scale;
             int height = image.getHeight() * gp.scale;
             scaleImage = UtilityTool.scaleImage(image, width, height);
+            image = null;
         } catch (IOException e) {
             e.printStackTrace();
         }

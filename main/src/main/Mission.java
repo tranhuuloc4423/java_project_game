@@ -3,22 +3,25 @@ package main;
 import Inventory.Item;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class Mission {
+public class Mission implements MouseListener {
     Graphics2D g2;
 
-    public ArrayList<Item> listPlant = new ArrayList<Item>();
+    public ArrayList<Item> listPlant = new ArrayList<>();
     GamePanel gp;
 
-    BufferedImage missionPanel;
-
+    BufferedImage missionPanel, bar, submitBtn;
+    BufferedImage[] submitBtnArr = new BufferedImage[2];
     public boolean missionOn = false;
     public boolean missionSubmit = false;
 
@@ -30,22 +33,23 @@ public class Mission {
     //    mission 6: 1:100 2:75 3:50 4:30 5:20 6:15 hoàn thành game
     ArrayList<MissionLevel> missionList = new ArrayList<>();
 
-
-
     public Mission(GamePanel gp) {
         this.gp = gp;
         missionPanel = setupImage("/res/menu/mission_panel.png");
+        setupPanel();
+        submitBtn = submitBtnArr[0];
         createMissionList();
         createMissionLevel();
+        gp.addMouseListener(this);
     }
 
     public void createMissionList() {
-        MissionLevel mission1 = new MissionLevel(new ArrayList<Item>(), gp.invetoryM.items.get(1), 4, new int[] {10});
-        MissionLevel mission2 = new MissionLevel(new ArrayList<Item>(), gp.invetoryM.items.get(2), 5 , new int[] {20, 10});
-        MissionLevel mission3 = new MissionLevel(new ArrayList<Item>(), gp.invetoryM.items.get(3), 6, new int[] {15, 10});
-        MissionLevel mission4 = new MissionLevel(new ArrayList<Item>(), gp.invetoryM.items.get(4), 6, new int[] {20, 15, 5});
-        MissionLevel mission5 = new MissionLevel(new ArrayList<Item>(), gp.invetoryM.items.get(5), 4, new int[] {30, 20, 10, 10});
-        MissionLevel mission6 = new MissionLevel(new ArrayList<Item>(), gp.invetoryM.items.get(5), 5, new int[] {90, 70, 50, 30, 20, 10});
+        MissionLevel mission1 = new MissionLevel(new ArrayList<>(), gp.invetoryM.items.get(1), 4, new int[] {10});
+        MissionLevel mission2 = new MissionLevel(new ArrayList<>(), gp.invetoryM.items.get(2), 5 , new int[] {20, 10});
+        MissionLevel mission3 = new MissionLevel(new ArrayList<>(), gp.invetoryM.items.get(3), 6, new int[] {15, 10});
+        MissionLevel mission4 = new MissionLevel(new ArrayList<>(), gp.invetoryM.items.get(4), 6, new int[] {20, 15, 5});
+        MissionLevel mission5 = new MissionLevel(new ArrayList<>(), gp.invetoryM.items.get(5), 4, new int[] {30, 20, 10, 10});
+        MissionLevel mission6 = new MissionLevel(new ArrayList<>(), gp.invetoryM.items.get(5), 5, new int[] {90, 70, 50, 30, 20, 10});
         missionList.add(mission1);
         missionList.add(mission2);
         missionList.add(mission3);
@@ -53,16 +57,15 @@ public class Mission {
         missionList.add(mission5);
         missionList.add(mission6);
     }
-
     public void drawImage(BufferedImage image, int x, int y) {
         g2.drawImage(image, x, y, null);
     }
 
     public BufferedImage setupImage(String imagePath) {
-        BufferedImage image = null;
+        BufferedImage image;
         BufferedImage scaleImage = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream(imagePath));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
             int width = image.getWidth() * gp.scale;
             int height = image.getHeight() * gp.scale;
             scaleImage = UtilityTool.scaleImage(image, width, height);
@@ -72,10 +75,10 @@ public class Mission {
         return scaleImage;
     }
     public BufferedImage setupImage(String imagePath, int scale) {
-        BufferedImage image = null;
+        BufferedImage image;
         BufferedImage scaleImage = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream(imagePath));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
             int width = image.getWidth() * scale;
             int height = image.getHeight() * scale;
             scaleImage = UtilityTool.scaleImage(image, width, height);
@@ -86,9 +89,7 @@ public class Mission {
     }
 
     public void setupPlants() {
-        for(int i = 0; i < gp.store.plantItems.size(); i++) {
-            listPlant.add(gp.store.plantItems.get(i));
-        }
+        listPlant.addAll(gp.store.plantItems);
     }
 
     public void setupMissionLevel() {
@@ -127,16 +128,14 @@ public class Mission {
     public void draw(Graphics2D g2) {
         this.g2 = g2;
         drawImage(missionPanel, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() - gp.tileSize, gp.tileSize);
-        drawSubmitBtn();
-        drawMision(missionList.get(0));
+        drawImage(submitBtn, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() + 22, gp.tileSize * 7);
+        drawMissionLevel(0);
     }
 
-
-    public void drawSubmitBtn() {
-        BufferedImage submitBtn = setupImage("/res/menu/btnSubmit.png", 2);
-        int x = gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() + 22;
-        int y = gp.tileSize * 7;
-        g2.drawImage(submitBtn, x, y, null);
+    public void setupPanel() {
+        submitBtnArr[0] = setupImage("/res/menu/btnSubmit.png", 2);
+        submitBtnArr[1] = setupImage("/res/menu/btnSubmitActive.png", 2);
+        bar = setupImage("/res/menu/bar.png");
     }
 
     public void drawText(Item item, String text) {
@@ -148,15 +147,20 @@ public class Mission {
         g2.drawString(text, cornerX, cornerY);
     }
 
-    public void drawMision(MissionLevel mission) {
-        int initY = gp.tileSize * 2 - 20;
-        int initX = gp.tileSize * gp.maxScreenCol - 344;
+    public void drawMission(MissionLevel mission) {
+        int initX, initY;
+        if(mission.items.size() <= 3) {
+            initX = gp.tileSize * gp.maxScreenCol - 280;
+        } else {
+            initX = gp.tileSize * gp.maxScreenCol - 344;
+        }
+        initY = gp.tileSize * 2 - 20;
+
         boolean pass = true;
         String[] names = new String[mission.items.size()];
         for(int i = 0; i < mission.items.size(); i++) {
             Item item = mission.items.get(i);
             int[] targets = mission.targets;
-            Item reward = mission.reward;
             names[i] = item.name;
 
             int index = i + 1;
@@ -182,35 +186,51 @@ public class Mission {
 
 
         // nếu đủ target và nhấn nút submit
-        if (pass && missionSubmit) {
+        if (pass && missionSubmit) { // missionSubmit
             // lấy số lượng trong kho trừ targets
             for(int i = 0; i < gp.store.plantListSize; i++) {
                 for (int j = 0; j < names.length; j++) {
                     if (gp.store.plantItems.get(i).name.equals(names[j])) {
-                        gp.store.plantItems.get(i).removeQuantity(mission.targets[i]);
+                        gp.store.plantItems.get(i).removeQuantity(mission.targets[j]);
                     }
                 }
             }
 
             // cho hạt giống mới.
             for(int i = 0; i < gp.invetoryM.items.size(); i++) {
-                if(gp.invetoryM.items.get(i).name == mission.reward.name) {
+                if(gp.invetoryM.items.get(i).name.equals(mission.reward.name)) {
                     gp.invetoryM.items.get(i).addQuantity(mission.quantityReward);
                 }
             }
+            mission.isCompleted = true;
         }
     }
 
     public void drawReward(Item item, int quantity, int x, int y) {
-        BufferedImage bar = setupImage("/res/menu/bar.png");
         g2.drawImage(bar, x, y, null);
-        int rewardX = x;
-        int rewardY = y + 15;
-        item.x = rewardX;
-        item.y = rewardY;
-        g2.drawImage(item.itemimage, rewardX, rewardY, null);
-        String text = "x " + String.valueOf(quantity);
+        item.y = y + 15;
+        item.x = x + 34;
+        g2.drawImage(item.itemimage, item.x, item.y, null);
+        String text = "x " + quantity;
         drawText(item, text);
+    }
+
+    public void drawMissionLevel(int missionIndex) {
+        if (missionIndex >= missionList.size()) {
+            System.out.println("Mission completed");
+            return;
+        }
+
+        if (checkCompletedMission(missionIndex)) {
+            drawMissionLevel(missionIndex + 1);
+        }
+    }
+
+    public boolean checkCompletedMission(int index) {
+        if(!missionList.get(index).isCompleted) {
+            drawMission(missionList.get(index));
+        }
+        return missionList.get(index).isCompleted;
     }
 
     public void createMissionLevel() {
@@ -225,6 +245,50 @@ public class Mission {
             //    mission 6: 1:100 2:75 3:50 4:30 5:20 6:15 hoàn thành game
         }
     }
+
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        int imageX = gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() + 22;
+        int imageY = gp.tileSize * 7;
+        int width = submitBtn.getWidth() + x;
+        int height = submitBtn.getHeight() + y;
+        if (x >= imageX && x <= width && y >= imageY && y <= height) {
+            submitBtn = submitBtnArr[1];
+            missionSubmit = true;
+            int delay = 100;
+            ActionListener action = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    submitBtn = submitBtnArr[0];
+                    missionSubmit = false;
+                }
+            };
+            Timer timer = new Timer(delay, action);
+            timer.setRepeats(false);
+            timer.start();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }
 
 
@@ -234,6 +298,7 @@ class MissionLevel {
 
     int quantityReward;
     int[] targets;
+    boolean isCompleted = false;
 
     public MissionLevel(ArrayList<Item> items, Item reward, int quantityReward, int[] targets) {
         this.items = items;

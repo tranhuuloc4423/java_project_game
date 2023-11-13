@@ -54,23 +54,25 @@ public class PlantCrop {
     }
 
     public void plantcropSetup() {
-        if(gp.keyH.btn1Pressed) {
-            plantCrop("plant_1_", 1000);
-        }
-        if(gp.keyH.btn2Pressed) {
-            plantCrop("plant_2_", 2000);
-        }
-        if(gp.keyH.btn3Pressed) {
-            plantCrop("plant_3_", 2000);
-        }
-        if(gp.keyH.btn4Pressed) {
-            plantCrop("plant_4_", 1000);
-        }
-        if(gp.keyH.btn5Pressed) {
-            plantCrop("plant_5_", 2000);
-        }
-        if(gp.keyH.btn6Pressed) {
-            plantCrop("plant_6_", 2000);
+        if(gp.keyH.plantPressed) {
+            if(gp.invetoryM.selectedItem == 1) {
+                plantCrop("plant_1_", 1000);
+            }
+            if(gp.invetoryM.selectedItem == 2) {
+                plantCrop("plant_2_", 2000);
+            }
+            if(gp.invetoryM.selectedItem == 3) {
+                plantCrop("plant_3_", 2000);
+            }
+            if(gp.invetoryM.selectedItem == 4) {
+                plantCrop("plant_4_", 1000);
+            }
+            if(gp.invetoryM.selectedItem == 5) {
+                plantCrop("plant_5_", 1000);
+            }
+            if(gp.invetoryM.selectedItem == 6) {
+                plantCrop("plant_6_", 1000);
+            }
         }
     }
 
@@ -97,7 +99,7 @@ public class PlantCrop {
 
     public void handleQuantity(String name) {
         int index = Integer.parseInt(name.split("_")[1]);
-        gp.invetoryM.items.get(index - 1).addQuantity(1);
+        gp.invetoryM.items.get(index - 1).addQuantity(2);
         gp.store.plantItems.get(index - 1).addQuantity(2);
     }
 

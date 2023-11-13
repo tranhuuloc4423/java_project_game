@@ -15,8 +15,6 @@ public class Hitbox {
     public Hitbox(int width, int height) {
         this.solidArea.width = width;
         this.solidArea.height = height;
-        System.out.println("x: "+ solidArea.x);
-        System.out.println("y: "+ solidArea.y);
     }
 
     public void draw(Graphics2D g2, GamePanel gp) {
