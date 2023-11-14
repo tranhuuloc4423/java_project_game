@@ -77,7 +77,7 @@ public class Menu {
             drawMainMenu = true;
         }
         if (gp.gameState == gp.pauseState) {
-            if (gp.keyH.escapePressed) {
+            if (gp.keyH.menuPressed) {
                 if (drawSubMenu) {
                     drawSubMenuSetting(g2);
                     drawMainMenu = false;
