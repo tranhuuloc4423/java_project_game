@@ -22,7 +22,8 @@ public class Menu {
     private boolean isSoundEffectStartEnabled = false;
     private boolean isSubmitStartEnabled = false;
     private boolean isCancelStartEnabled = false;
-    private  boolean isMoreEnabled = false;
+    private  boolean isAddEnabled = false;
+    private  boolean isMinusEnabled = false;
     private  boolean isCloseEnabled = false;
     private boolean isSubmitExitStart = false;
     private boolean isCancelExitStart = false;
@@ -148,7 +149,10 @@ public class Menu {
             BufferedImage imageCancelStart = null;
 
             BufferedImage imageAboutExit = null;
-            BufferedImage imageAboutMore = null;
+            BufferedImage imageAboutAdd = null;
+
+            BufferedImage imageAboutPage2Close = null;
+            BufferedImage imageAboutPage2Minus = null;
 
             BufferedImage imageSubmitExitStart = null;
             BufferedImage imageCancelExitStart = null;
@@ -174,8 +178,10 @@ public class Menu {
                 imageSoundEffectIconStart = ImageIO.read(getClass().getResourceAsStream("/res/menu/OffActive.png"));
                 imageSubmitStart = ImageIO.read(getClass().getResourceAsStream("/res/menu/Submit.png"));
                 imageCancelStart = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
-                imageAboutMore = ImageIO.read(getClass().getResourceAsStream("/res/menu/Submit.png"));
-                imageAboutExit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
+                imageAboutAdd = ImageIO.read(getClass().getResourceAsStream("/res/menu/Add.png"));
+                imageAboutExit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Close.png"));
+                imageAboutPage2Minus = ImageIO.read(getClass().getResourceAsStream("/res/menu/Minus.png"));
+                imageAboutPage2Close = ImageIO.read(getClass().getResourceAsStream("/res/menu/Close.png"));
                 imageSubmitExitStart = ImageIO.read(getClass().getResourceAsStream("/res/menu/Submit.png"));
                 imageCancelExitStart = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
                 imagePause = ImageIO.read(getClass().getResourceAsStream("/res/menu/Resume.png"));
@@ -193,7 +199,7 @@ public class Menu {
 
             if(drawStartMenu) {
                 int[] positionSetting = getBoundPosition(imageSetting,248,-215,1 );
-                if (mouseX >= positionSetting[2] && mouseX <= positionSetting[2] + positionSetting[0] && mouseY >= positionSetting[3] && mouseY <= positionSetting[3] + positionSetting[1] && !drawAboutMenu && !drawExitMenu) {
+                if (mouseX >= positionSetting[2] && mouseX <= positionSetting[2] + positionSetting[0] && mouseY >= positionSetting[3] && mouseY <= positionSetting[3] + positionSetting[1] && !drawAboutMenu && !drawExitMenu && !drawAboutMenuPage2) {
                     isSettingEnabled = !isSettingEnabled;
                     int delay = 150;
                     ActionListener emptyAction = new ActionListener() {
@@ -206,7 +212,7 @@ public class Menu {
                     timer.start();
                 }
                 int[] positionAbout = getBoundPosition(imageAbout,350,-215,1 );
-                if (mouseX >= positionAbout[2] && mouseX <= positionAbout[2] + positionAbout[0] && mouseY >= positionAbout[3] && mouseY <= positionAbout[3] + positionAbout[1] && !drawSettingMenu && !drawExitMenu) {
+                if (mouseX >= positionAbout[2] && mouseX <= positionAbout[2] + positionAbout[0] && mouseY >= positionAbout[3] && mouseY <= positionAbout[3] + positionAbout[1] && !drawSettingMenu && !drawExitMenu && !drawAboutMenu && !drawAboutMenuPage2) {
                     isAboutEnabled = !isAboutEnabled;
                     int delay = 150;
                     ActionListener emptyAction = new ActionListener() {
@@ -219,7 +225,7 @@ public class Menu {
                     timer.start();
                 }
                 int[] positionExit = getBoundPosition(imageExit,452,-215,1 );
-                if (mouseX >= positionExit[2] && mouseX <= positionExit[2] + positionExit[0] && mouseY >= positionExit[3] && mouseY <= positionExit[3] + positionExit[1] && !drawAboutMenu && !drawSettingMenu) {
+                if (mouseX >= positionExit[2] && mouseX <= positionExit[2] + positionExit[0] && mouseY >= positionExit[3] && mouseY <= positionExit[3] + positionExit[1] && !drawAboutMenu && !drawSettingMenu && !drawAboutMenuPage2) {
                     isExitEnabled = !isExitEnabled;
                     int delay = 150;
                     ActionListener emptyAction = new ActionListener() {
@@ -232,7 +238,7 @@ public class Menu {
                     timer.start();
                 }
                 int[] positionPlay = getBoundPosition(imagePlay,350,-300,1 );
-                if (mouseX >= positionPlay[2] && mouseX <= positionPlay[2] + positionPlay[0] && mouseY >= positionPlay[3] && mouseY <= positionPlay[3] + positionPlay[1] && !drawSettingMenu && !drawAboutMenu && !drawExitMenu) {
+                if (mouseX >= positionPlay[2] && mouseX <= positionPlay[2] + positionPlay[0] && mouseY >= positionPlay[3] && mouseY <= positionPlay[3] + positionPlay[1] && !drawSettingMenu && !drawAboutMenu && !drawExitMenu && !drawAboutMenuPage2) {
                     isPlayEnabled = !isPlayEnabled;
                     int delay = 150;
                     ActionListener emptyAction = new ActionListener() {
@@ -289,13 +295,49 @@ public class Menu {
             }
 
             if (drawAboutMenuPage2) {
+                int wMinus = imageAboutPage2Minus.getWidth() * 2;
+                int hMinus = imageAboutPage2Minus.getHeight() * 2;
+                int xMinus = (gp.screenWidth - wMinus) / 2 - 130;
+                int yMinus = (gp.screenHeight - hMinus) / 2 + 155;
+                if (mouseX >= xMinus && mouseX <= xMinus + wMinus && mouseY >= yMinus && mouseY <= yMinus + hMinus) {
+                    isMinusEnabled = !isMinusEnabled;
+                    int delay = 150;
+                    ActionListener emptyAction = new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            drawAboutMenu = true;
+                            drawAboutMenuPage2 = false;
+                        }
+                    };
+                    Timer timer = new Timer(delay, emptyAction);
+                    timer.setRepeats(false);
+                    timer.start();
+                }
 
+                int wClose = imageAboutPage2Close.getWidth() * 2;
+                int hClose = imageAboutPage2Close.getHeight() * 2;
+                int xClose = (gp.screenWidth - wClose) / 2 - 130;
+                int yClose = (gp.screenHeight - hClose) / 2 + 155;
+                if (mouseX >= xClose && mouseX <= xClose + wClose && mouseY >= yClose && mouseY <= yClose + hClose) {
+                    isCloseEnabled = !isCloseEnabled;
+                    int delay = 150;
+                    ActionListener emptyAction = new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            drawAboutMenuPage2 = false;
+                        }
+                    };
+                    Timer timer = new Timer(delay, emptyAction);
+                    timer.setRepeats(false);
+                    timer.start();
+                }
             }
 
             if(drawAboutMenu) {
-                int[] positionMore = getBoundPosition(imageAboutMore,133,235,1 );
-                if (mouseX >= positionMore[2] && mouseX <= positionMore[2] + positionMore[0] && mouseY >= positionMore[3] && mouseY <= positionMore[3] + positionMore[1]) {
-                    isMoreEnabled = !isMoreEnabled;
+                int wAdd = imageAboutAdd.getWidth() * 2;
+                int hAdd = imageAboutAdd.getHeight() * 2;
+                int xAdd = (gp.screenWidth - wAdd) / 2 + 130;
+                int yAdd = (gp.screenHeight - hAdd) / 2 + 155;
+                if (mouseX >= xAdd && mouseX <= xAdd + wAdd && mouseY >= yAdd && mouseY <= yAdd + hAdd) {
+                    isAddEnabled = !isAddEnabled;
                     int delay = 150;
                     ActionListener emptyAction = new ActionListener() {
                         public void actionPerformed(ActionEvent evt) {
@@ -307,8 +349,12 @@ public class Menu {
                     timer.setRepeats(false);
                     timer.start();
                 }
-                int[] positionExit = getBoundPosition(imageAboutExit,-133,235,1 );
-                if (mouseX >= positionExit[2] && mouseX <= positionExit[2] + positionExit[0] && mouseY >= positionExit[3] && mouseY <= positionExit[3] + positionExit[1]) {
+
+                int wExit = imageAboutExit.getWidth() * 2;
+                int hExit = imageAboutExit.getHeight() * 2;
+                int xExit = (gp.screenWidth - wExit) / 2 - 130;
+                int yExit = (gp.screenHeight - hExit) / 2 + 155;
+                if (mouseX >= xExit && mouseX <= xExit + wExit && mouseY >= yExit && mouseY <= yExit + hExit) {
                     isCloseEnabled = !isCloseEnabled;
                     int delay = 150;
                     ActionListener emptyAction = new ActionListener() {
@@ -524,41 +570,75 @@ public class Menu {
     public void drawAboutMenuStartPage2(Graphics2D g2){
         BufferedImage aboutMenuFrame = null;
         BufferedImage aboutMenuClose = null;
+        BufferedImage aboutMenuMinus = null;
 
         try {
+            if(isMinusEnabled) {
+                aboutMenuMinus = ImageIO.read(getClass().getResourceAsStream("/res/menu/MinusActive.png"));
+            } else {
+                aboutMenuMinus = ImageIO.read(getClass().getResourceAsStream("/res/menu/Minus.png"));
+            }
+            if(isCloseEnabled) {
+                aboutMenuClose = ImageIO.read(getClass().getResourceAsStream("/res/menu/CloseActive.png"));
+
+            } else {
+                aboutMenuClose = ImageIO.read(getClass().getResourceAsStream("/res/menu/Close.png"));
+
+            }
             aboutMenuFrame = ImageIO.read(getClass().getResourceAsStream("/res/menu/AboutSetting_2.png"));
-            aboutMenuClose = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         drawImage(g2, aboutMenuFrame, 0, 0, 1);
-        drawImage(g2, aboutMenuClose, -133, 235, 1);
+        int wMinus = aboutMenuMinus.getWidth() * 2;
+        int hMinus = aboutMenuMinus.getHeight() * 2;
+        int xMinus = (gp.screenWidth - wMinus) / 2 - 130;
+        int yMinus = (gp.screenHeight - hMinus) / 2 + 155;
+        g2.drawImage(aboutMenuMinus, xMinus, yMinus, wMinus, hMinus, null);
+
+        int wClose = aboutMenuClose.getWidth() * 2;
+        int hClose = aboutMenuClose.getHeight() * 2;
+        int xClose = (gp.screenWidth - wClose) / 2 + 130;
+        int yClose = (gp.screenHeight - hClose) / 2 + 155;
+        g2.drawImage(aboutMenuClose, xClose, yClose, wClose, hClose, null);
+
+        isMinusEnabled = false;
+        isCloseEnabled = false;
     }
     public void drawAboutMenuStart(Graphics2D g2){
         BufferedImage aboutMenuFrame = null;
         BufferedImage aboutMenuClose = null;
-        BufferedImage aboutMenuMore = null;
+        BufferedImage aboutMenuAdd = null;
 
         try {
             aboutMenuFrame = ImageIO.read(getClass().getResourceAsStream("/res/menu/AboutSetting.png"));
             if(isCloseEnabled) {
-                aboutMenuClose = ImageIO.read(getClass().getResourceAsStream("/res/menu/CancelActive.png"));
+                aboutMenuClose = ImageIO.read(getClass().getResourceAsStream("/res/menu/CloseActive.png"));
             } else {
-                aboutMenuClose = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
+                aboutMenuClose = ImageIO.read(getClass().getResourceAsStream("/res/menu/Close.png"));
             }
-            if(isMoreEnabled) {
-                aboutMenuMore = ImageIO.read(getClass().getResourceAsStream("/res/menu/SubmitActive.png"));
+            if(isAddEnabled) {
+                aboutMenuAdd = ImageIO.read(getClass().getResourceAsStream("/res/menu/AddActive.png"));
             } else {
-                aboutMenuMore = ImageIO.read(getClass().getResourceAsStream("/res/menu/Submit.png"));
+                aboutMenuAdd = ImageIO.read(getClass().getResourceAsStream("/res/menu/Add.png"));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         drawImage(g2, aboutMenuFrame, 0, 0, 1);
-        drawImage(g2, aboutMenuClose, -133, 235, 1);
-        drawImage(g2, aboutMenuMore, 133, 235, 1);
+        int wAdd = aboutMenuAdd.getWidth() * 2;
+        int hAdd = aboutMenuAdd.getHeight() * 2;
+        int xAdd = (gp.screenWidth - wAdd) / 2 + 130;
+        int yAdd = (gp.screenHeight - hAdd) / 2 + 155;
+        g2.drawImage(aboutMenuAdd, xAdd, yAdd, wAdd, hAdd, null);
 
-        isMoreEnabled = false;
+        int wClose = aboutMenuClose.getWidth() * 2;
+        int hClose = aboutMenuClose.getHeight() * 2;
+        int xClose = (gp.screenWidth - wClose) / 2 - 130;
+        int yClose = (gp.screenHeight - hClose) / 2 + 155;
+        g2.drawImage(aboutMenuClose, xClose, yClose, wClose, hClose, null);
+
+        isAddEnabled = false;
         isCloseEnabled = false;
     }
 
