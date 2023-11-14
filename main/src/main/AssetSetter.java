@@ -108,5 +108,21 @@ public class AssetSetter {
         gp.npc[1] = new Animal_Cow(gp);
         gp.npc[1].worldX = gp.tileSize * 26;
         gp.npc[1].worldY = gp.tileSize * 39;
+
+        gp.npc[2] = new Animal_Chicken(gp);
+        gp.npc[2].worldX = gp.tileSize * 28;
+        gp.npc[2].worldY = gp.tileSize * 32;
+
+        gp.npc[3] = new Animal_Chicken(gp);
+        gp.npc[3].worldX = gp.tileSize * 25;
+        gp.npc[3].worldY = gp.tileSize * 32;
+
+        gp.npc[4] = new Animal_Chicken(gp);
+        gp.npc[4].worldX = gp.tileSize * 26;
+        gp.npc[4].worldY = gp.tileSize * 31;
+
+        gp.npc[5] = new Animal_Chicken(gp);
+        gp.npc[5].worldX = gp.tileSize * 27;
+        gp.npc[5].worldY = gp.tileSize * 29;
     }
 }

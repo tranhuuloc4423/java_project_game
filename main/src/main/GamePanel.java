@@ -97,7 +97,7 @@ public class GamePanel extends JPanel implements  Runnable {
         aSetter.setNPC();
         aSetter.setBox();
         playMusic(0); // 0 is main song
-        stopMusic();
+//        stopMusic();
         gameState = startState;
     }
     public void startGameThread() {
@@ -281,7 +281,14 @@ public class GamePanel extends JPanel implements  Runnable {
         se.loop();
     }
 
+    public void playSEOnce(int i) {
+        se.setFile(i);
+        se.play();
+    }
+
     public void stopSE() {
-        se.stop();
+        if(se != null) {
+            se.stop();
+        }
     }
 }

@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.event.MouseAdapter;
+import java.util.Objects;
 import javax.swing.Timer;
 
 public class Menu {
@@ -18,7 +19,7 @@ public class Menu {
     private  boolean drawAboutMenuPage2 = false;
     private  boolean drawExitMenu = false;
 
-    private boolean isMusicStartEnabled = false;
+    private boolean isMusicStartEnabled = true;
     private boolean isSoundEffectStartEnabled = false;
     private boolean isSubmitStartEnabled = false;
     private boolean isCancelStartEnabled = false;
@@ -41,7 +42,7 @@ public class Menu {
     private boolean isOptionEnabled = false;
     private boolean isQuitEnabled = false;
 
-    private boolean isMusicEnabled = false;
+    private boolean isMusicEnabled;
     private boolean isSoundEffectEnabled = false;
     private boolean isSubmit = false;
     private boolean isCancel = false;
@@ -54,7 +55,16 @@ public class Menu {
         gp.addMouseListener(mouseClickListener);
     }
     public void update() {
-
+//        if(!isMusicEnabled) {
+//            gp.music.mute();
+//        } else {
+//            gp.music.play();
+//        }
+        if(isMusicStartEnabled) {
+            isMusicEnabled = true;
+        } else if(!isMusicEnabled) {
+            isMusicEnabled = false;
+        }
     }
 
     public void draw(Graphics2D g2) {
@@ -170,7 +180,7 @@ public class Menu {
             BufferedImage imageCancelExit = null;
 
             try {
-                imagePlay = ImageIO.read(getClass().getResourceAsStream("/res/menu/Play.png"));
+                imagePlay = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/menu/Play.png")));
                 imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/Setting.png"));
                 imageAbout = ImageIO.read(getClass().getResourceAsStream("/res/menu/About.png"));
                 imageExit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
@@ -256,6 +266,12 @@ public class Menu {
                 int[] positionMusicStart = getBoundPosition(imageMusicIconStart,80,-45,1 );
                 if (mouseX >= positionMusicStart[2] && mouseX <= positionMusicStart[2] + positionMusicStart[0] && mouseY >= positionMusicStart[3] && mouseY <= positionMusicStart[3] + positionMusicStart[1]) {
                     isMusicStartEnabled = !isMusicStartEnabled;
+                    if(!isMusicStartEnabled) {
+                        gp.stopMusic();
+                    } else {
+                        gp.playMusic(0);
+                    }
+
                 }
 
                 int[] positionSEStart = getBoundPosition(imageSoundEffectIconStart,80,35,1 );
@@ -284,6 +300,7 @@ public class Menu {
                     ActionListener emptyAction = new ActionListener() {
                         public void actionPerformed(ActionEvent evt) {
                             isMusicStartEnabled = false;
+                            gp.stopMusic();
                             isSoundEffectStartEnabled = false;
                             drawSettingMenu = false;
                         }
@@ -431,6 +448,11 @@ public class Menu {
                 int[] positionMusic = getBoundPosition(imageMusicIcon,80,-45,1 );
                 if (mouseX >= positionMusic[2] && mouseX <= positionMusic[2] + positionMusic[0] && mouseY >= positionMusic[3] && mouseY <= positionMusic[3] + positionMusic[1] && gp.gameState != gp.startState) {
                     isMusicEnabled = !isMusicEnabled;
+                    if(!isMusicEnabled) {
+                        gp.stopMusic();
+                    } else {
+                        gp.playMusic(0);
+                    }
                 }
 
                 int[] positionSE = getBoundPosition(imageSoundEffectIcon,80,35,1 );
@@ -460,6 +482,7 @@ public class Menu {
                         public void actionPerformed(ActionEvent evt) {
                             gp.gameState = gp.playState;
                             isMusicEnabled = false;
+                            gp.stopMusic();
                             isSoundEffectEnabled = false;
                         }
                     };

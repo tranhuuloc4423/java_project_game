@@ -7,6 +7,8 @@ import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import Object.*;
@@ -130,7 +132,7 @@ public class Player extends Entity {
         hoeAnimate();
         wateringAnimate();
         idleAnimate();
-//        handleSE();
+        handleSE();
 
         spriteCounter++;
         if(spriteCounter > 30) {
@@ -144,47 +146,39 @@ public class Player extends Entity {
     }
 
     public void handleSE() {
-        if((keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && !keyH.waterPressed) {
+//        && !keyH.hoePressed && !keyH.waterPressed
+        if((keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed)) {
             if (!isWalkingSE) {
-                gp.playSE(3);
                 isWalkingSE = true;
-                isHoeSE = false;
-                isWateringSE = false;
+                gp.playSE(3);
             }
-        } else if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.waterPressed && keyH.hoePressed) {
+//            !(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.waterPressed &&
+        } else if(keyH.hoePressed) {
             if (!isHoeSE) {
                 gp.playSE(1);
                 isHoeSE = true;
-                isWateringSE = false;
-                isWalkingSE = false;
             }
-        } else if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && keyH.waterPressed) {
+//            !(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed &&
+        } else if(keyH.waterPressed) {
             if (!isWateringSE) {
                 gp.playSE(2);
                 isWateringSE = true;
-                isHoeSE = false;
-                isWalkingSE = false;
             }
         } else {
             if(isWalkingSE) {
-                gp.stopSE();
                 isWalkingSE = false;
             } else if(isHoeSE) {
-                gp.stopSE();
                 isHoeSE = false;
             } else if(isWateringSE) {
-                gp.stopSE();
                 isWateringSE = false;
             }
+            gp.stopSE();
         }
     }
 
     public void walkHandle() {
+
         if((keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && !keyH.waterPressed) {
-//            if(!isWalkingSE) {
-//                gp.playSE(3);
-//                isWalkingSE = true;
-//            }
             if(keyH.upPressed && keyH.rightPressed) {
                 direction = "upright";
             }else if(keyH.upPressed && keyH.leftPressed) {
@@ -257,24 +251,11 @@ public class Player extends Entity {
                         break;
                 }
             }
-
         }
-//        else {
-//            if (isWalkingSE) {
-//                gp.stopSE();
-//                isWalkingSE = false;
-//            }
-//            hoeAnimate();
-//            wateringAnimate();
-//        }
     }
 
     public void hoeAnimate() {
         if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.waterPressed && keyH.hoePressed) {
-//            if (!isHoeSE) {
-//                gp.playSE(1);
-//                isHoeSE = true;
-//            }
             switch (direction) {
                 case "up":
                     sprites = hoeUp;
@@ -290,12 +271,6 @@ public class Player extends Entity {
                     break;
             }
         }
-//        else {
-//            if (isHoeSE) {
-//                gp.stopSE();
-//                isHoeSE = false;
-//            }
-//        }
     }
 
     public void idleAnimate() {
@@ -320,10 +295,6 @@ public class Player extends Entity {
 
     public void wateringAnimate() {
         if(!(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && keyH.waterPressed) {
-//            if(!isWateringSE) {
-//                gp.playSE(2);
-//                isWateringSE = true;
-//            }
             switch (direction) {
                 case "up":
                     sprites = waterUp;
@@ -339,12 +310,7 @@ public class Player extends Entity {
                     break;
             }
         }
-//        else {
-//            if (isWateringSE) {
-//                gp.stopSE();
-//                isWateringSE = false;
-//            }
-//        }
+
     }
 
     public void interactNPC(int index) {

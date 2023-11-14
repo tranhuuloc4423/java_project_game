@@ -158,16 +158,13 @@ public class TileManager {
     public void interactTile(int col, int row, int tile, int target) {
         int playerX = gp.player.landTileX;
         int playerY = gp.player.landTileY;
-//        System.out.println("playerX : " + playerX);
-//        System.out.println("playerY : " + playerY);
-//        System.out.println("col : " + col);
-//        System.out.println("row : " + row);
-//        playerY == row + 2 || playerY == row - 2 ||
         if(playerX == col && playerY == row - 2 || playerY == row) {
             if(gp.tileM.mapTileNum[col][row] == tile) {
                 changeTileImage(col, row, target);
+                gp.playSEOnce(4);
             } else {
                 changeTileImage(col, row, tile);
+                gp.playSEOnce(4);
             }
         }
 

@@ -12,7 +12,7 @@ public class OBJ_Border extends SuperObject {
     public OBJ_Border(GamePanel gp) {
         name = "Border";
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/ui/SelectMenu.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/res/ui/border.png"));
             UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch(IOException e) {
             e.printStackTrace();
