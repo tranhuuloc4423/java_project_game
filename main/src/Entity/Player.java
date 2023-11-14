@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import Object.*;
 
 public class Player extends Entity {
     KeyHandler keyH;
@@ -48,7 +49,7 @@ public class Player extends Entity {
 
     public void setDefaultValues() {
         worldX = gp.tileSize * 34;
-        worldY = gp.tileSize * 32;
+        worldY = gp.tileSize * 33;
         speed = 4;
         direction = "down";
     }
@@ -58,9 +59,21 @@ public class Player extends Entity {
         landTileY = (worldY / gp.tileSize);
     }
 
-    public void pickUpObject(int index) {
+    public void interactObject(int index) {
         if(index != 999) {
-
+//            switch (index) {
+//                case 0:
+//                    if(gp.keyH.interactpressed) {
+//                        gp.obj[index] = gp.obj[1];
+//                    }
+////                    preventMove();
+//                    break;
+//                case 1:
+//                    if(gp.keyH.interactpressed) {
+//                        gp.obj[index] = gp.obj[0];
+//                    }
+//                    break;
+//            }
         }
     }
 
@@ -105,7 +118,7 @@ public class Player extends Entity {
     }
 
     public void drawBorder() {
-        gp.aSetter.setObject(landTileX, landTileY);
+        gp.aSetter.setBorder(landTileX, landTileY);
     }
 
     @Override
@@ -193,12 +206,11 @@ public class Player extends Entity {
             // check tile collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
-//            int objIndex = gp.cChecker.checkObject(this, true);
-//            pickUpObject(objIndex);
+            int objIndex = gp.cChecker.checkObject(this, true);
+            interactObject(objIndex);
 
 
-//            gp.cChecker.checkHitbox(this);
-            gp.cChecker.checkHitbox2(this);
+            gp.cChecker.checkHitbox(this);
             // check npc collision
 //            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 //            interactNPC(npcIndex);

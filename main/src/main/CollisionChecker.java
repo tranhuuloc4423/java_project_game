@@ -110,50 +110,7 @@ public class CollisionChecker {
 //        entity.collisionOn = true;
     }
 
-
     public void checkHitbox(Entity entity) {
-//        System.out.println("run checkhitbox");
-        for(int i = 0; i < Arrays.stream(gp.tileM.tile).count(); i++) {
-            if(gp.tileM.tile[i] != null) {
-                // entity
-                entity.solidArea.x = entity.worldX + entity.solidArea.x;
-                entity.solidArea.y = entity.worldY + entity.solidArea.y;
-
-                // tile
-                gp.tileM.tile[i].solidArea.x = gp.tileM.tile[i].worldX + gp.tileM.tile[i].solidArea.x;
-                gp.tileM.tile[i].solidArea.y = gp.tileM.tile[i].worldY + gp.tileM.tile[i].solidArea.y;
-
-                switch (entity.direction) {
-                    case "up":
-                        entity.solidArea.y -= entity.speed;
-                        break;
-                    case "down":
-                        entity.solidArea.y += entity.speed;
-
-                        break;
-                    case "left":
-                        entity.solidArea.x -= entity.speed;
-
-                        break;
-                    case "right":
-                        entity.solidArea.x += entity.speed;
-                        break;
-                }
-                if(entity.solidArea.intersects(gp.tileM.tile[i].solidArea)) {
-//                    System.out.println("intersects");
-                    if(gp.tileM.tile[i].collision) {
-                        entity.collisionOn = true;
-                    }
-                }
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
-                gp.tileM.tile[i].solidArea.x = gp.tileM.tile[i].solidAreaDefaultX;
-                gp.tileM.tile[i].solidArea.y = gp.tileM.tile[i].solidAreaDefaultY;
-            }
-        }
-    }
-
-    public void checkHitbox2(Entity entity) {
 //        System.out.println("run checkhitbox");
         for(int i = 0; i < gp.hitboxes.length; i++) {
             if(gp.hitboxes[i] != null) {

@@ -43,7 +43,7 @@ public class TileManager {
 
     public void getTileManager() {
         setup(298, "298",false);
-        setup(299, "299",false);
+        setup(299, "299",true);
         setup(300, "300",false);
         for(int i = 301; i <= 302; i++) {
             setup(i, String.valueOf(i),true);
@@ -65,8 +65,7 @@ public class TileManager {
         setup(328, "328",false);
 
         for(int i = 478; i <= 512; i++) {
-            if(i <= 481 && i>=491)setup(i, String.valueOf(i),true);
-            else setup(i, String.valueOf(i),false);
+            setup(i, String.valueOf(i),false);
         }
 
         for(int i = 600; i <= 657; i++) {
@@ -154,6 +153,24 @@ public class TileManager {
                 }
             }
         }
+    }
+
+    public void interactTile(int col, int row, int tile, int target) {
+        int playerX = gp.player.landTileX;
+        int playerY = gp.player.landTileY;
+        System.out.println("playerX : " + playerX);
+        System.out.println("playerY : " + playerY);
+        System.out.println("col : " + col);
+        System.out.println("row : " + row);
+//        playerY == row + 2 || playerY == row - 2 ||
+        if(playerX == col && playerY == row - 2 || playerY == row) {
+            if(gp.tileM.mapTileNum[col][row] == tile) {
+                changeTileImage(col, row, target);
+            } else {
+                changeTileImage(col, row, tile);
+            }
+        }
+
     }
 
     public void update() {

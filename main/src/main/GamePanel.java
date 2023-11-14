@@ -93,7 +93,7 @@ public class GamePanel extends JPanel implements  Runnable {
         }
     }
     public void setupGame() {
-//        aSetter.setObject();
+        aSetter.setObject();
         aSetter.setNPC();
         aSetter.setBox();
         playMusic(0); // 0 is main song
@@ -205,11 +205,11 @@ public class GamePanel extends JPanel implements  Runnable {
             plantcrop.draw(g2);
 
             // objects
-//            for (int i = 0; i < obj.length; i++) {
-//                if (obj[i] != null) {
-//                    obj[i].draw(g2, this);
-//                }
-//            }
+            for (int i = 0; i < obj.length; i++) {
+                if (obj[i] != null) {
+                    obj[i].draw(g2, this);
+                }
+            }
 
             if(drawBorder) {
                 border.draw(g2, this);
