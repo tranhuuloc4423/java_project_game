@@ -96,12 +96,58 @@ public class Menu extends MouseAdapter implements MouseListener {
             }
         }
     }
+    public int[] getBoundPosition(BufferedImage image, int xSize , int ySize, int size) {
+        int width = image.getWidth() * gp.scale * size;
+        int height = image.getHeight() * gp.scale;
+        int x = (gp.screenWidth - width) / 2 + xSize;
+        int y = (gp.screenHeight - height) / 2 + ySize;
+
+        int[] arr = new int[4];
+        arr[0] = width;
+        arr[1] = height;
+        arr[2] = x;
+        arr[3] = y;
+
+        return arr;
+    }
+    public boolean checkMousePosition(int[] position, int mouseX, int mouseY) {
+        return mouseX >= position[2] && mouseX <= position[2] + position[0] && mouseY >= position[3] && mouseY <= position[3] + position[1];
+    }
 
     public void drawImage(Graphics2D g2,BufferedImage image, int xSize , int ySize, int size) {
         int x = (gp.screenWidth - image.getWidth()) / 2 + xSize;
         int y = (gp.screenHeight - image.getHeight()) / 2 + ySize;
         g2.drawImage(image, x, y, null);
     }
+
+    public BufferedImage setupImage(String pathName) {
+        BufferedImage image;
+        BufferedImage scaledIamge = null;
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream("/res/menu/"+ pathName +".png"));
+            int width = image.getWidth() * gp.scale;
+            int height = image.getHeight() * gp.scale;
+            scaledIamge = UtilityTool.scaleImage(image, width, height);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return scaledIamge;
+    }
+
+    public BufferedImage setupImage(String pathName, int scale) {
+        BufferedImage image;
+        BufferedImage scaledIamge = null;
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream("/res/menu/"+ pathName +".png"));
+            int width = image.getWidth() * scale;
+            int height = image.getHeight() * scale;
+            scaledIamge = UtilityTool.scaleImage(image, width, height);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return scaledIamge;
+    }
+
 
     private class MouseClickListener extends MouseAdapter {
         @Override
@@ -119,23 +165,7 @@ public class Menu extends MouseAdapter implements MouseListener {
                 isCancel = false;
             }
         }
-        public int[] getBoundPosition(BufferedImage image, int xSize , int ySize, int size) {
-            int width = image.getWidth() * gp.scale * size;
-            int height = image.getHeight() * gp.scale;
-            int x = (gp.screenWidth - width) / 2 + xSize;
-            int y = (gp.screenHeight - height) / 2 + ySize;
 
-            int[] arr = new int[4];
-            arr[0] = width;
-            arr[1] = height;
-            arr[2] = x;
-            arr[3] = y;
-
-            return arr;
-        }
-        public boolean checkMousePosition(int[] position, int mouseX, int mouseY) {
-            return mouseX >= position[2] && mouseX <= position[2] + position[0] && mouseY >= position[3] && mouseY <= position[3] + position[1];
-        }
         @Override
         public void mousePressed(MouseEvent e) {
             int mouseX = e.getX();
@@ -173,10 +203,10 @@ public class Menu extends MouseAdapter implements MouseListener {
             BufferedImage imageCancelExit = null;
 
             try {
-                imagePlay = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/menu/Play.png")));
-                imageSetting = ImageIO.read(getClass().getResourceAsStream("/res/menu/Setting.png"));
-                imageAbout = ImageIO.read(getClass().getResourceAsStream("/res/menu/About.png"));
-                imageExit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
+                imagePlay = setupImage("Play");
+                imageSetting = setupImage("Setting");
+                imageAbout = setupImage("About");
+                imageExit = setupImage("Cancel");
                 imageMusicIconStart = ImageIO.read(getClass().getResourceAsStream("/res/menu/OffActive.png"));
                 imageSoundEffectIconStart = ImageIO.read(getClass().getResourceAsStream("/res/menu/OffActive.png"));
                 imageSubmitStart = ImageIO.read(getClass().getResourceAsStream("/res/menu/Submit.png"));
@@ -539,42 +569,35 @@ public class Menu extends MouseAdapter implements MouseListener {
         BufferedImage settingMenuSubmit = null;
         BufferedImage settingMenuCancel = null;
 
-        try {
-            settingMenuFrame = ImageIO.read(getClass().getResourceAsStream("/res/menu/OptionSetting.png"));
-            settingMenuMusic = ImageIO.read(getClass().getResourceAsStream("/res/menu/Music.png"));
-            settingMenuSoundEffect = ImageIO.read(getClass().getResourceAsStream("/res/menu/soundeffect.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        settingMenuFrame = setupImage("OptionSetting");
+        settingMenuMusic = setupImage("Music");
+        settingMenuSoundEffect = setupImage("soundeffect");
+
+
+        if(isMusicStartEnabled) {
+            settingMenuMusicIcon = setupImage("OnActive");
+        } else {
+            settingMenuMusicIcon = setupImage("OffActive");
         }
+        if(isSoundEffectStartEnabled){
+            settingMenuSEIcon = setupImage("OnActive");
+        } else {
+            settingMenuSEIcon = setupImage("OffActive");
+        }
+        if(isSubmitStartEnabled){
+            settingMenuSubmit = setupImage("SubmitActive");
+        } else {
+            settingMenuSubmit = setupImage("Submit");
+        }
+        if(isCancelStartEnabled){
+            settingMenuCancel = setupImage("CancelActive");
+        } else {
+            settingMenuCancel = setupImage("Cancel");
+        }
+
         drawImage(g2, settingMenuFrame, 0, 0, 1);
         drawImage(g2, settingMenuMusic, -85, -45, 1);
         drawImage(g2, settingMenuSoundEffect, -85, 35, 1);
-
-        try {
-            if(isMusicStartEnabled) {
-                settingMenuMusicIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/OnActive.png"));
-            } else {
-                settingMenuMusicIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/OffActive.png"));
-            }
-            if(isSoundEffectStartEnabled){
-                settingMenuSEIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/OnActive.png"));
-            } else {
-                settingMenuSEIcon = ImageIO.read(getClass().getResourceAsStream("/res/menu/OffActive.png"));
-            }
-            if(isSubmitStartEnabled){
-                settingMenuSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/SubmitActive.png"));
-            } else {
-                settingMenuSubmit = ImageIO.read(getClass().getResourceAsStream("/res/menu/Submit.png"));
-            }
-            if(isCancelStartEnabled){
-                settingMenuCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/CancelActive.png"));
-            } else {
-                settingMenuCancel = ImageIO.read(getClass().getResourceAsStream("/res/menu/Cancel.png"));
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
         drawImage(g2, settingMenuMusicIcon, 80, -45, 1);
         drawImage(g2, settingMenuSEIcon, 80, 35, 1);
         drawImage(g2, settingMenuSubmit, -100, 120, 1);
@@ -686,19 +709,7 @@ public class Menu extends MouseAdapter implements MouseListener {
         isCancelExitStart = false;
     }
 
-    public BufferedImage setupImage(String pathName) {
-        BufferedImage image;
-        BufferedImage scaledIamge = null;
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/menu/"+ pathName +".png"));
-            int width = image.getWidth() * gp.scale;
-            int height = image.getHeight() * gp.scale;
-            scaledIamge = UtilityTool.scaleImage(image, width, height);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        return scaledIamge;
-    }
+
 
     public void drawMenuSetting(Graphics2D g2) {
         BufferedImage imageSetting = null;
