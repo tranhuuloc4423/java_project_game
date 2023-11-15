@@ -9,27 +9,19 @@ import java.net.URL;
 
 public class Sound {
     Clip clip;
-    URL soundURL[] = new URL[30];
+//    URL soundURL[] = new URL[30];
+    URL soundURL = null;
+    GamePanel gp;
 
-    public Sound() {
-        soundURL[0] = getClass().getResource("/res/sound/background_music.wav");
-        soundURL[1] = getClass().getResource("/res/sound/hoe.wav");
-        soundURL[2] = getClass().getResource("/res/sound/water.wav");
-        soundURL[3] = getClass().getResource("/res/sound/walk.wav");
-        soundURL[4] = getClass().getResource("/res/sound/closedoor.wav");
-
-    }
-
-    public void setFile(int i) {
-//        try {
-//            AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
-//            clip = AudioSystem.getClip();
-//            clip.open(ais);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+    public Sound(String name, GamePanel gp) {
+        this.gp = gp;
+        soundURL = getClass().getResource("/res/sound/" + name + ".wav");
+//        soundURL[1] = getClass().getResource("/res/sound/walk.wav");
+//        soundURL[2] = getClass().getResource("/res/sound/hoe.wav");
+//        soundURL[3] = getClass().getResource("/res/sound/water.wav");
+//        soundURL[4] = getClass().getResource("/res/sound/closedoor.wav");
         try {
-            AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
+            AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL);
 
             // Đọc lại dữ liệu âm thanh từ đầu
             byte[] audioData = ais.readAllBytes();
@@ -43,8 +35,25 @@ public class Sound {
         }
     }
 
-    public void play() {
-        clip.start();
+    public void playMusic() {
+        if (gp.menu.isMusicEnabled && clip != null) {
+            clip.start();
+            this.loop();
+        }
+    }
+
+    public void playSE() {
+        if (gp.menu.isSoundEffectEnabled && clip != null) {
+            clip.start();
+            this.loop();
+        }
+    }
+
+    public void playSEOnce() {
+        if (gp.menu.isSoundEffectEnabled && clip != null) {
+            clip.setFramePosition(0); // Đặt vị trí khung âm thanh về 0
+            clip.start();
+        }
     }
 
     public void loop() {
@@ -54,13 +63,6 @@ public class Sound {
     public void stop() {
         if (clip != null) {
             clip.stop();
-        }
-    }
-
-    public void mute() {
-        if (clip != null && clip.isRunning()) {
-            clip.stop();
-            clip.close();
         }
     }
 }

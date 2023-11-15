@@ -146,33 +146,33 @@ public class Player extends Entity {
     }
 
     public void handleSE() {
-//        && !keyH.hoePressed && !keyH.waterPressed
-        if((keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed)) {
+        if(sprites == down || sprites == up || sprites == left || sprites == right) {
             if (!isWalkingSE) {
+                gp.music[1].playSE();
                 isWalkingSE = true;
-                gp.playSE(3);
             }
-//            !(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.waterPressed &&
-        } else if(keyH.hoePressed) {
+        } else if(sprites == hoeDown || sprites == hoeUp || sprites == hoeLeft || sprites == hoeRight) {
             if (!isHoeSE) {
-                gp.playSE(1);
+                gp.music[2].playSE();
                 isHoeSE = true;
             }
-//            !(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed &&
-        } else if(keyH.waterPressed) {
+        } else if(sprites == waterDown || sprites == waterUp || sprites == waterLeft || sprites == waterRight) {
             if (!isWateringSE) {
-                gp.playSE(2);
+                gp.music[3].playSE();
                 isWateringSE = true;
             }
         } else {
             if(isWalkingSE) {
                 isWalkingSE = false;
+                gp.music[1].stop();
             } else if(isHoeSE) {
                 isHoeSE = false;
+                gp.music[2].stop();
             } else if(isWateringSE) {
                 isWateringSE = false;
+                gp.music[3].stop();
             }
-            gp.stopSE();
+
         }
     }
 

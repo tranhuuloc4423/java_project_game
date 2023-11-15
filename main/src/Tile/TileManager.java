@@ -161,13 +161,12 @@ public class TileManager {
         if(playerX == col && playerY == row - 2 || playerY == row) {
             if(gp.tileM.mapTileNum[col][row] == tile) {
                 changeTileImage(col, row, target);
-                gp.playSEOnce(4);
+                gp.music[4].playSEOnce();
             } else {
                 changeTileImage(col, row, tile);
-                gp.playSEOnce(4);
+                gp.music[4].playSEOnce();
             }
         }
-
     }
 
     public void update() {

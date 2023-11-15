@@ -44,8 +44,7 @@ public class GamePanel extends JPanel implements  Runnable {
     Cursor customCursor;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
-    public Sound music = new Sound();
-    public Sound se = new Sound();
+    public Sound[] music = new Sound[10];
     public UI ui = new UI(this);
     Thread gameThread;
     public Player player = new Player(this, keyH);
@@ -96,8 +95,13 @@ public class GamePanel extends JPanel implements  Runnable {
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setBox();
-        playMusic(0); // 0 is main song
-//        stopMusic();
+        music[0] = new Sound("background_music", this);
+        music[1] = new Sound("walk", this);
+        music[2] = new Sound("hoe", this);
+        music[3] = new Sound("water", this);
+        music[4] = new Sound("closedoor", this);
+
+        music[0].playMusic();
         gameState = startState;
     }
     public void startGameThread() {
@@ -267,28 +271,28 @@ public class GamePanel extends JPanel implements  Runnable {
 //        g2.dispose();
         g2.dispose();
     }
-    public void playMusic(int i) {
-        music.setFile(i);
-        music.play();
-        music.loop();
-    }
-    public void stopMusic() {
-        music.stop();
-    }
-    public void playSE(int i) {
-        se.setFile(i);
-        se.play();
-        se.loop();
-    }
-
-    public void playSEOnce(int i) {
-        se.setFile(i);
-        se.play();
-    }
-
-    public void stopSE() {
-        if(se != null) {
-            se.stop();
-        }
-    }
+//    public void playMusic(int i) {
+//        music.setFile(i);
+//        music.play();
+//        music.loop();
+//    }
+//    public void stopMusic() {
+//        music.stop();
+//    }
+//    public void playSE(int i) {
+//        se.setFile(i);
+//        se.play();
+//        se.loop();
+//    }
+//
+//    public void playSEOnce(int i) {
+//        se.setFile(i);
+//        se.play();
+//    }
+//
+//    public void stopSE() {
+//        if(se != null) {
+//            se.stop();
+//        }
+//    }
 }
