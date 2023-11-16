@@ -13,7 +13,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class StartMenu extends Menu implements MouseListener {
+public class StartMenu extends Menu {
     private boolean drawStartMenu = true;
     private  boolean drawSettingMenu = false;
     private  boolean drawAboutMenu = false;
@@ -30,74 +30,68 @@ public class StartMenu extends Menu implements MouseListener {
     private boolean isSubmitExitStart = false;
     private boolean isCancelExitStart = false;
 
-    private boolean drawMainMenu = true;
-    private boolean drawSubMenu = false;
-    private boolean drawSubmitMenu = false;
-
     private boolean isPlayEnabled = false;
     private boolean isSettingEnabled = false;
     private boolean isAboutEnabled = false;
     private boolean isExitEnabled = false;
-
-    private boolean isPauseEnabled = false;
-    private boolean isOptionEnabled = false;
-    private boolean isQuitEnabled = false;
 
     public boolean isMusicEnabled = true;
     public boolean isSoundEffectEnabled = true;
     private boolean isSubmit = false;
     private boolean isCancel = false;
 
-    private boolean isSubmitExit = false;
-    private boolean isCancelExit = false;
-
 
     // start panel
     BufferedImage backgroundImage, playButtonImage, settingButtonImage, aboutButtonImage, exitButtonImage;
-    BufferedImage[] playButtonImages, settingButtonImages, aboutButtonImages, exitButtonImages = new BufferedImage[2];
+    BufferedImage[] playButtonImages = new BufferedImage[2];
+    BufferedImage[] settingButtonImages = new BufferedImage[2];
+    BufferedImage[] aboutButtonImages = new BufferedImage[2];
+    BufferedImage[] exitButtonImages = new BufferedImage[2];
 
     // option setting panel
-    BufferedImage settingMenuFrame,settingMenuMusic,settingMenuSoundEffect,  settingMenuMusicIcon, settingMenuSEIcon, settingMenuSubmit, settingMenuCancel;
-    BufferedImage[] settingMenuMusicIcons, settingMenuSEIcons, settingMenuSubmits, settingMenuCancels = new BufferedImage[2];
+//    BufferedImage settingMenuFrame,settingMenuMusic,settingMenuSoundEffect,  settingMenuMusicIcon, settingMenuSEIcon, settingMenuSubmit, settingMenuCancel;
+//    BufferedImage[] settingMenuMusicIcons = new BufferedImage[2];
+//    BufferedImage[] settingMenuSEIcons = new BufferedImage[2];
+//    BufferedImage[] settingMenuSubmits = new BufferedImage[2];
+//    BufferedImage[] settingMenuCancels = new BufferedImage[2];
 
     // about
     BufferedImage aboutMenuFrame, aboutMenuClose, aboutMenuMinus, aboutMenuAdd;
-    BufferedImage[] aboutMenuFrames, aboutMenuCloses, aboutMenuMinuses, aboutMenuAdds = new BufferedImage[2];
+    BufferedImage[] aboutMenuFrames = new BufferedImage[2];
+    BufferedImage[] aboutMenuCloses = new BufferedImage[2];
+    BufferedImage[] aboutMenuMinuses = new BufferedImage[2];
+    BufferedImage[] aboutMenuAdds = new BufferedImage[2];
 
     // exit panel
     BufferedImage exitMenuFrame, exitMenuSubmit, exitMenuCancel;
-    BufferedImage[] exitMenuSubmits, exitMenuCancels = new BufferedImage[2];
+    BufferedImage[] exitMenuSubmits = new BufferedImage[2];
+    BufferedImage[] exitMenuCancels = new BufferedImage[2];
 
     public StartMenu(GamePanel gp) {
         super(gp);
-        gp.addMouseListener(this);
+//        setupOptionPanel();
         setupPanel();
+        gp.addMouseListener(this);
+    }
+
+    public void draw(Graphics2D g2) {
+        if (gp.gameState == gp.startState) {
+            drawStartMenu(g2);
+            drawStartMenu = true;
+            if (drawSettingMenu) {
+                drawOptionPanel(g2);
+            } else if(drawAboutMenu) {
+                drawAboutMenu(g2);
+            } else if(drawAboutMenuPage2){
+                drawAboutMenuPage2(g2);
+            } else if(drawExitMenu) {
+                drawExitMenu(g2);
+            }
+        }
     }
 
     public void update() {
-
-        // setting option panel
-
-        if(isMusicStartEnabled) {
-            settingMenuMusicIcon = settingMenuMusicIcons[0];
-        } else {
-            settingMenuMusicIcon = settingMenuMusicIcons[1];
-        }
-        if(isSoundEffectStartEnabled){
-            settingMenuSEIcon = settingMenuSEIcons[0];
-        } else {
-            settingMenuSEIcon = settingMenuSEIcons[1];
-        }
-        if(isSubmitStartEnabled){
-            settingMenuSubmit = settingMenuSubmits[0];
-        } else {
-            settingMenuSubmit = settingMenuSubmits[1];
-        }
-        if(isCancelStartEnabled){
-            settingMenuCancel = settingMenuCancels[0];
-        } else {
-            settingMenuCancel = settingMenuCancels[1];
-        }
+        super.update();
 
         // start menu
         if(isPlayEnabled){
@@ -120,6 +114,7 @@ public class StartMenu extends Menu implements MouseListener {
         } else {
             exitButtonImage = exitButtonImages[1];
         }
+
 
 
 
@@ -184,21 +179,21 @@ public class StartMenu extends Menu implements MouseListener {
         exitButtonImage = exitButtonImages[0];
 
         // option panel
-        settingMenuFrame = setupImage("OptionSetting");
-        settingMenuMusic = setupImage("Music");
-        settingMenuSoundEffect = setupImage("soundeffect");
-        settingMenuMusicIcons[0] = setupImage("OnActive");
-        settingMenuMusicIcons[1] = setupImage("OffActive");
-        settingMenuSEIcons[0] = setupImage("OnActive");
-        settingMenuSEIcons[1] = setupImage("OffActive");
-        settingMenuSubmits[0] = setupImage("SubmitActive");
-        settingMenuSubmits[1] = setupImage("Submit");
-        settingMenuCancels[0] = setupImage("CancelActive");
-        settingMenuCancels[1] = setupImage("Cancel");
-        settingMenuMusicIcon = settingMenuMusicIcons[0];
-        settingMenuSEIcon = settingMenuSEIcons[0];
-        settingMenuSubmit = settingMenuSubmits[0];
-        settingMenuCancel = settingMenuCancels[0];
+//        settingMenuFrame = setupImage("OptionSetting");
+//        settingMenuMusic = setupImage("Music");
+//        settingMenuSoundEffect = setupImage("soundeffect");
+//        settingMenuMusicIcons[0] = setupImage("OnActive");
+//        settingMenuMusicIcons[1] = setupImage("OffActive");
+//        settingMenuSEIcons[0] = setupImage("OnActive");
+//        settingMenuSEIcons[1] = setupImage("OffActive");
+//        settingMenuSubmits[0] = setupImage("SubmitActive");
+//        settingMenuSubmits[1] = setupImage("Submit");
+//        settingMenuCancels[0] = setupImage("CancelActive");
+//        settingMenuCancels[1] = setupImage("Cancel");
+//        settingMenuMusicIcon = settingMenuMusicIcons[0];
+//        settingMenuSEIcon = settingMenuSEIcons[0];
+//        settingMenuSubmit = settingMenuSubmits[0];
+//        settingMenuCancel = settingMenuCancels[0];
 
         // about page 2
         aboutMenuFrames[0] = setupImage("AboutSetting");
@@ -224,19 +219,21 @@ public class StartMenu extends Menu implements MouseListener {
         exitMenuCancel = exitMenuCancels[0];
     }
 
-    public void drawOptionPanel(Graphics2D g2){
-        drawImage(g2, settingMenuFrame, 0, 0, 1);
-        drawImage(g2, settingMenuMusic, -85, -45, 1);
-        drawImage(g2, settingMenuSoundEffect, -85, 35, 1);
-        drawImage(g2, settingMenuMusicIcon, 80, -45, 1);
-        drawImage(g2, settingMenuSEIcon, 80, 35, 1);
-        drawImage(g2, settingMenuSubmit, -100, 120, 1);
-        drawImage(g2, settingMenuCancel, 95, 120, 1);
+//    public void drawOptionPanel(Graphics2D g2){
+//        drawImage(g2, settingMenuFrame, 0, 0, 1);
+//        drawImage(g2, settingMenuMusic, -85, -45, 1);
+//        drawImage(g2, settingMenuSoundEffect, -85, 35, 1);
+//        drawImage(g2, settingMenuMusicIcon, 80, -45, 1);
+//        drawImage(g2, settingMenuSEIcon, 80, 35, 1);
+//        drawImage(g2, settingMenuSubmit, -100, 120, 1);
+//        drawImage(g2, settingMenuCancel, 95, 120, 1);
 //        isMusicEnabled = false;
 //        isSoundEffectEnabled = false;
-    }
+//        isSubmitStartEnabled = false;
+//        isCancelStartEnabled = false;
+//    }
 
-    public void drawAboutMenuStartPage2(Graphics2D g2){
+    public void drawAboutMenuPage2(Graphics2D g2){
         aboutMenuFrame = aboutMenuFrames[0];
         drawImage(g2, aboutMenuFrame, 0, 0, 1);
         drawImage(g2, aboutMenuMinus, -130, 155, 1);
@@ -245,7 +242,7 @@ public class StartMenu extends Menu implements MouseListener {
         isCloseEnabled = false;
     }
 
-    public void drawAboutMenuStart(Graphics2D g2){
+    public void drawAboutMenu(Graphics2D g2){
         aboutMenuFrame = aboutMenuFrames[1];
         drawImage(g2, aboutMenuFrame, 0, 0, 1);
         drawImage(g2, aboutMenuAdd, 130, 155, 1);
@@ -254,7 +251,7 @@ public class StartMenu extends Menu implements MouseListener {
         isCloseEnabled = false;
     }
 
-    public void drawExitMenuStart(Graphics2D g2){
+    public void drawExitMenu(Graphics2D g2){
         drawImage(g2, exitMenuFrame, 0, 0, 1);
         drawImage(g2, exitMenuSubmit, -80, 40, 1);
         drawImage(g2, exitMenuCancel, 80, 40, 1);
@@ -262,16 +259,26 @@ public class StartMenu extends Menu implements MouseListener {
         isSubmitExitStart = false;
         isCancelExitStart = false;
     }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if(isSubmit) {
+            isSubmit = false;
+        }
+        if(isCancel) {
+            isMusicEnabled = !isMusicEnabled;
+            isSoundEffectEnabled = !isSoundEffectEnabled;
+            isCancel = false;
+        }
+    }
+
     @Override
     public void mousePressed(MouseEvent e) {
         int mouseX = e.getX();
         int mouseY = e.getY();
-
+        super.mousePressed(e);
         if(drawStartMenu) {
-            int[] positionSetting = getBoundPosition(settingButtonImages[1], 248, -215, 1);
-            int[] positionAbout = getBoundPosition(aboutButtonImages[1], 350, -215, 1);
-            int[] positionExit = getBoundPosition(exitButtonImages[1], 452, -215, 1);
-            int[] positionPlay = getBoundPosition(playButtonImages[1], 350, -300, 1);
+            int[] positionSetting = getBoundPosition(settingButtonImages[1],248,-215,1 );
             if (checkMousePosition(positionSetting, mouseX, mouseY) && !drawAboutMenu && !drawExitMenu && !drawAboutMenuPage2) {
                 isSettingEnabled = !isSettingEnabled;
                 int delay = 150;
@@ -283,23 +290,21 @@ public class StartMenu extends Menu implements MouseListener {
                 Timer timer = new Timer(delay, emptyAction);
                 timer.setRepeats(false);
                 timer.start();
-                timer = null;
             }
-
+            int[] positionAbout = getBoundPosition(aboutButtonImages[1],350,-215,1 );
             if (checkMousePosition(positionAbout, mouseX, mouseY) && !drawSettingMenu && !drawExitMenu && !drawAboutMenu && !drawAboutMenuPage2) {
                 isAboutEnabled = !isAboutEnabled;
                 int delay = 150;
                 ActionListener emptyAction = new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        drawAboutMenu = true;
+                        drawAboutMenu  = true;
                     }
                 };
                 Timer timer = new Timer(delay, emptyAction);
                 timer.setRepeats(false);
                 timer.start();
-                timer = null;
             }
-
+            int[] positionExit = getBoundPosition(exitButtonImages[1],452,-215,1 );
             if (checkMousePosition(positionExit, mouseX, mouseY) && !drawAboutMenu && !drawSettingMenu && !drawAboutMenuPage2) {
                 isExitEnabled = !isExitEnabled;
                 int delay = 150;
@@ -311,10 +316,8 @@ public class StartMenu extends Menu implements MouseListener {
                 Timer timer = new Timer(delay, emptyAction);
                 timer.setRepeats(false);
                 timer.start();
-                timer = null;
-
             }
-
+            int[] positionPlay = getBoundPosition(playButtonImages[1],350,-300,1 );
             if (checkMousePosition(positionPlay, mouseX, mouseY) && !drawSettingMenu && !drawAboutMenu && !drawExitMenu && !drawAboutMenuPage2) {
                 isPlayEnabled = !isPlayEnabled;
                 int delay = 150;
@@ -326,8 +329,145 @@ public class StartMenu extends Menu implements MouseListener {
                 Timer timer = new Timer(delay, emptyAction);
                 timer.setRepeats(false);
                 timer.start();
-                timer = null;
+            }
+        }
+//        checkDrawOptionPanel(mouseX, mouseY);
+//        if(drawSettingMenu) {
+//            int[] positionMusicIcon = getBoundPosition(settingMenuMusicIcons[1],80,-45,1 );
+//            if (checkMousePosition(positionMusicIcon, mouseX, mouseY)) {
+//                isMusicStartEnabled = !isMusicStartEnabled;
+////                if(!isMusicStartEnabled) {
+////                    gp.music[0].stop();
+////                } else {
+////                    gp.music[0].playMusic();
+////                }
+//            }
+//
+//            int[] positionSEStart = getBoundPosition(settingMenuSoundEffect,80,35,1 );
+//            if (checkMousePosition(positionSEStart, mouseX, mouseY)) {
+//                isSoundEffectStartEnabled = !isSoundEffectStartEnabled;
+//                System.out.println(isSoundEffectEnabled);
+//            }
+//
+//            int[] positionSubmit = getBoundPosition(settingMenuSEIcons[1],-100,120,1);
+//            if (checkMousePosition(positionSubmit, mouseX, mouseY)) {
+//                isSubmitStartEnabled = !isSubmitStartEnabled;
+//                int delay = 150;
+//                ActionListener emptyAction = new ActionListener() {
+//                    public void actionPerformed(ActionEvent evt) {
+//                        drawSettingMenu = false;
+//                    }
+//                };
+//                Timer timer = new Timer(delay, emptyAction);
+//                timer.setRepeats(false);
+//                timer.start();
+//            }
+//
+//            int[] positionCancel = getBoundPosition(settingMenuCancels[1],95,120,1 );
+//            if (checkMousePosition(positionCancel, mouseX, mouseY)) {
+//                isCancelStartEnabled = !isCancelStartEnabled;
+//                int delay = 150;
+//                ActionListener emptyAction = new ActionListener() {
+//                    public void actionPerformed(ActionEvent evt) {
+//                        isMusicStartEnabled = false;
+//                        gp.music[0].stop();
+//                        isSoundEffectStartEnabled = false;
+//                        drawSettingMenu = false;
+//                    }
+//                };
+//                Timer timer = new Timer(delay, emptyAction);
+//                timer.setRepeats(false);
+//                timer.start();
+//            }
+//        }
+        if (drawAboutMenuPage2) {
+            int[] positionAboutMinus = getBoundPosition(aboutMenuMinuses[1], -130, 155, 1);
+            if (checkMousePosition(positionAboutMinus, mouseX, mouseY)) {
+                isMinusEnabled = !isMinusEnabled;
+                int delay = 150;
+                ActionListener emptyAction = new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        drawAboutMenu = true;
+                        drawAboutMenuPage2 = false;
+                    }
+                };
+                Timer timer = new Timer(delay, emptyAction);
+                timer.setRepeats(false);
+                timer.start();
+            }
 
+            int[] positionAboutClose = getBoundPosition(aboutMenuCloses[1], -130, 155, 1);
+            if (checkMousePosition(positionAboutClose, mouseX, mouseY)) {
+                isCloseEnabled = !isCloseEnabled;
+                int delay = 150;
+                ActionListener emptyAction = new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        drawAboutMenuPage2 = false;
+                    }
+                };
+                Timer timer = new Timer(delay, emptyAction);
+                timer.setRepeats(false);
+                timer.start();
+            }
+        }
+
+        if(drawAboutMenu) {
+            int[] positionAboutAdd = getBoundPosition(aboutMenuAdds[1],130, 155, 1);
+            if (checkMousePosition(positionAboutAdd, mouseX, mouseY)) {
+                isAddEnabled = !isAddEnabled;
+                int delay = 150;
+                ActionListener emptyAction = new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        drawAboutMenuPage2 = true;
+                        drawAboutMenu = false;
+                    }
+                };
+                Timer timer = new Timer(delay, emptyAction);
+                timer.setRepeats(false);
+                timer.start();
+            }
+
+            int[] positionAboutExit = getBoundPosition(aboutMenuCloses[1], -130, 155, 1);
+            if (checkMousePosition(positionAboutExit, mouseX, mouseY)) {
+                isCloseEnabled = !isCloseEnabled;
+                int delay = 150;
+                ActionListener emptyAction = new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        drawAboutMenu = false;
+                    }
+                };
+                Timer timer = new Timer(delay, emptyAction);
+                timer.setRepeats(false);
+                timer.start();
+            }
+        }
+
+        if(drawExitMenu) {
+            int[] positionSubmitExit = getBoundPosition(exitMenuSubmits[1],-80,40,1 );
+            if (checkMousePosition(positionSubmitExit, mouseX, mouseY)) {
+                isSubmitExitStart = !isSubmitExitStart;
+                int delay = 150;
+                ActionListener emptyAction = new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        System.exit(0);
+                    }
+                };
+                Timer timer = new Timer(delay, emptyAction);
+                timer.setRepeats(false);
+                timer.start();
+            }
+            int[] positionCancelExit = getBoundPosition(exitMenuCancels[1],80,40,1 );
+            if (checkMousePosition(positionCancelExit, mouseX, mouseY)) {
+                isCancelExitStart = !isCancelExitStart;
+                int delay = 150;
+                ActionListener emptyAction = new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        drawExitMenu = false;
+                    }
+                };
+                Timer timer = new Timer(delay, emptyAction);
+                timer.setRepeats(false);
+                timer.start();
             }
         }
     }

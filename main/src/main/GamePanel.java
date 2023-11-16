@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import Object.*;
+import UI.*;
 
 public class GamePanel extends JPanel implements  Runnable {
 
@@ -60,7 +61,9 @@ public class GamePanel extends JPanel implements  Runnable {
     // tiles
     public TileManager tileM = new TileManager(this);
     public PlantCrop plantcrop = new PlantCrop(this);
-    public Menu menu = new Menu(this);
+//    public Menu menu = new Menu(this);
+    public StartMenu startMenu = new StartMenu(this);
+    public MainMenu mainMenu = new MainMenu(this);
     // inventory
     public InventoryManager invetoryM = new InventoryManager(this);
 
@@ -164,6 +167,10 @@ public class GamePanel extends JPanel implements  Runnable {
     }
 
     public void update() {
+        if(gameState == startState) {
+            startMenu.update();
+        }
+        mainMenu.update();
         if(gameState == playState) {
             player.update();
             // tiles
@@ -175,7 +182,6 @@ public class GamePanel extends JPanel implements  Runnable {
             // plantcrop
             plantcrop.update();
             // menu
-            menu.update();
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null) {
                     npc[i].update();
@@ -196,7 +202,7 @@ public class GamePanel extends JPanel implements  Runnable {
 
         // debug
         if (gameState == startState) {
-            menu.draw(g2);
+            startMenu.draw(g2);
         } else if (gameState == playState || gameState == pauseState) {
             long drawStart = 0;
 
@@ -262,7 +268,7 @@ public class GamePanel extends JPanel implements  Runnable {
                 g2.drawString("DrawTime : " + passed, 10, 400);
                 System.out.println("Draw time : " + passed);
             }
-            menu.draw(g2);
+            mainMenu.draw(g2);
         }
 
         // Sao chép bộ đệm ẩn lên màn hình
@@ -271,28 +277,4 @@ public class GamePanel extends JPanel implements  Runnable {
 //        g2.dispose();
         g2.dispose();
     }
-//    public void playMusic(int i) {
-//        music.setFile(i);
-//        music.play();
-//        music.loop();
-//    }
-//    public void stopMusic() {
-//        music.stop();
-//    }
-//    public void playSE(int i) {
-//        se.setFile(i);
-//        se.play();
-//        se.loop();
-//    }
-//
-//    public void playSEOnce(int i) {
-//        se.setFile(i);
-//        se.play();
-//    }
-//
-//    public void stopSE() {
-//        if(se != null) {
-//            se.stop();
-//        }
-//    }
 }

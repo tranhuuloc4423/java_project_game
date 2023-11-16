@@ -36,21 +36,24 @@ public class Sound {
     }
 
     public void playMusic() {
-        if (gp.menu.isMusicEnabled && clip != null) {
+//        gp.menu.isMusicEnabled &&
+        if (clip != null) {
             clip.start();
             this.loop();
         }
     }
 
     public void playSE() {
-        if (gp.menu.isSoundEffectEnabled && clip != null) {
+//        gp.menu.isSoundEffectEnabled &&
+        if (clip != null) {
             clip.start();
             this.loop();
         }
     }
 
     public void playSEOnce() {
-        if (gp.menu.isSoundEffectEnabled && clip != null) {
+//        gp.menu.isSoundEffectEnabled &&
+        if (clip != null) {
             clip.setFramePosition(0); // Đặt vị trí khung âm thanh về 0
             clip.start();
         }
