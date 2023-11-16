@@ -103,7 +103,7 @@ public class GamePanel extends JPanel implements  Runnable {
         music[3] = new Sound("water", this);
         music[4] = new Sound("closedoor", this);
 
-//        music[0].playMusic();
+        music[0].playMusic();
         gameState = startState;
     }
     public void startGameThread() {

@@ -19,8 +19,8 @@ public class Menu implements MouseListener {
     private  boolean drawAboutMenu = false;
     private  boolean drawAboutMenuPage2 = false;
 
-    public static boolean isMusicEnabled;
-    public static boolean isSoundEffectEnabled;
+    public static boolean isMusicEnabled = true;
+    public static boolean isSoundEffectEnabled = true;
     public boolean isSubmitEnabled = false;
     public boolean isCancelEnabled = false;
     public boolean isSubmitExit = false;
@@ -187,11 +187,11 @@ public class Menu implements MouseListener {
             int[] positionMusicIcon = getBoundPosition(settingMenuMusicIcons[1],80,-45,1 );
             if (checkMousePosition(positionMusicIcon, mouseX, mouseY)) {
                 isMusicEnabled = !isMusicEnabled;
-//                if(!isMusicStartEnabled) {
-//                    gp.music[0].stop();
-//                } else {
-//                    gp.music[0].playMusic();
-//                }
+                if(!isMusicEnabled) {
+                    gp.music[0].stop();
+                } else {
+                    gp.music[0].playMusic();
+                }
             }
 
             int[] positionSEStart = getBoundPosition(settingMenuSoundEffect,80,35,1 );

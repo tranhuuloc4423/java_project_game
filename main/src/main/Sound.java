@@ -36,7 +36,6 @@ public class Sound {
     }
 
     public void playMusic() {
-//        gp.menu.isMusicEnabled &&
         if (clip != null) {
             clip.start();
             this.loop();
@@ -44,18 +43,21 @@ public class Sound {
     }
 
     public void playSE() {
-//        gp.menu.isSoundEffectEnabled &&
-        if (clip != null) {
-            clip.start();
-            this.loop();
+        if(gp.mainMenu.isSoundEffectEnabled || gp.startMenu.isSoundEffectEnabled) {
+            if (clip != null) {
+                clip.start();
+                this.loop();
+            }
         }
     }
 
     public void playSEOnce() {
-//        gp.menu.isSoundEffectEnabled &&
-        if (clip != null) {
-            clip.setFramePosition(0); // Đặt vị trí khung âm thanh về 0
-            clip.start();
+        if (gp.mainMenu.isSoundEffectEnabled || gp.startMenu.isSoundEffectEnabled)
+        {
+            if(clip != null) {
+                clip.setFramePosition(0); // Đặt vị trí khung âm thanh về 0
+                clip.start();
+            }
         }
     }
 

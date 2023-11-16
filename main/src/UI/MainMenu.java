@@ -144,6 +144,11 @@ public class MainMenu extends Menu  {
             int[] positionMusicIcon = getBoundPosition(settingMenuMusicIcons[1],80,-45,1 );
             if (checkMousePosition(positionMusicIcon, mouseX, mouseY) && gp.gameState != gp.startState) {
                 isMusicEnabled = !isMusicEnabled;
+                if(isMusicEnabled) {
+                    gp.music[0].playMusic();
+                } else {
+                    gp.music[0].stop();
+                }
             }
 
             int[] positionSEStart = getBoundPosition(settingMenuSoundEffect,80,35,1 );
@@ -172,6 +177,7 @@ public class MainMenu extends Menu  {
                         gp.gameState = gp.playState;
                         isMusicEnabled = false;
                         isSoundEffectEnabled = false;
+                        gp.music[0].stop();
                         drawSettingMenu = false;
                     }
                 };
