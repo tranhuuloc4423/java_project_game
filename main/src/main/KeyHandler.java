@@ -50,6 +50,8 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.pauseState;
             } else if(gp.gameState == gp.pauseState) {
 //                gp.gameState = gp.playState;
+                gp.gameState = gp.playState;
+
             }
         }
 
@@ -111,7 +113,7 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_R) {
             hoePressed = true;
         }
-        if(code == KeyEvent.VK_Q) {
+        if(code == KeyEvent.VK_O) {
             plantPressed = true;
         }
         if(code == KeyEvent.VK_F) {
@@ -148,7 +150,7 @@ public class KeyHandler implements KeyListener {
             hoePressed = false;
         }
 
-        if(code == KeyEvent.VK_Q) {
+        if(code == KeyEvent.VK_O) {
             plantPressed = false;
         }
         if(code == KeyEvent.VK_F) {

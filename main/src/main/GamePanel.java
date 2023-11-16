@@ -46,7 +46,6 @@ public class GamePanel extends JPanel implements  Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public Sound[] music = new Sound[10];
-    public UI ui = new UI(this);
     Thread gameThread;
     public Player player = new Player(this, keyH);
     public SuperObject obj[] = new SuperObject[10];
@@ -104,7 +103,7 @@ public class GamePanel extends JPanel implements  Runnable {
         music[3] = new Sound("water", this);
         music[4] = new Sound("closedoor", this);
 
-        music[0].playMusic();
+//        music[0].playMusic();
         gameState = startState;
     }
     public void startGameThread() {
@@ -181,6 +180,7 @@ public class GamePanel extends JPanel implements  Runnable {
             }
             // plantcrop
             plantcrop.update();
+
             // menu
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null) {
