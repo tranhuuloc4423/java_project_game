@@ -173,9 +173,7 @@ public class GamePanel extends JPanel implements  Runnable {
             // tiles
             tileM.update();
             // inventory
-            if(invetoryM.inventoryOn) {
-                invetoryM.update();
-            }
+            invetoryM.update();
             // plantcrop
             plantcrop.update();
 

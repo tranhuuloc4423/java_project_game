@@ -116,10 +116,11 @@ public class KeyHandler implements KeyListener {
             plantPressed = true;
         }
         if(code == KeyEvent.VK_F) {
+            interactpressed = true;
             gp.tileM.interactTile(34, 34, 299, 298);
         }
         if(code == KeyEvent.VK_B) {
-            gp.store.storeOn = !gp.store.storeOn;
+//            gp.store.storeOn = !gp.store.storeOn;
         }
     }
 

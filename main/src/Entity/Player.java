@@ -60,19 +60,10 @@ public class Player extends Entity {
 
     public void interactObject(int index) {
         if(index != 999) {
-//            switch (index) {
-//                case 0:
-//                    if(gp.keyH.interactpressed) {
-//                        gp.obj[index] = gp.obj[1];
-//                    }
-////                    preventMove();
-//                    break;
-//                case 1:
-//                    if(gp.keyH.interactpressed) {
-//                        gp.obj[index] = gp.obj[0];
-//                    }
-//                    break;
-//            }
+            switch (index) {
+                case 0:
+                    break;
+            }
         }
     }
 
@@ -319,7 +310,8 @@ public class Player extends Entity {
 
     public void interactNPC(int index) {
         if(index != 999) {
-            System.out.println("You are hitting an npc!");
+            switch (index) {
+            }
         }
     }
 

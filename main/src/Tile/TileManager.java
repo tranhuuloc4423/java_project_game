@@ -152,8 +152,11 @@ public class TileManager {
     public void interactTile(int col, int row, int tile, int target) {
         int playerX = gp.player.landTileX;
         int playerY = gp.player.landTileY;
-        if(playerX == col && playerY == row - 2 || playerY == row) {
-            if(gp.tileM.mapTileNum[col][row] == tile) {
+        int radius = 1; // Bán kính 1 ô
+
+        // Kiểm tra xem vị trí của người chơi có nằm trong bán kính xung quanh ô cần tương tác
+        if (Math.abs(playerX - col) <= radius && Math.abs(playerY - row) <= radius || playerY == row - 2 && playerX == col) {
+            if (gp.tileM.mapTileNum[col][row] == tile) {
                 changeTileImage(col, row, target);
                 gp.music[4].playSEOnce();
             } else {
@@ -208,8 +211,6 @@ public class TileManager {
 
             worldX = worldCol * gp.tileSize;
             worldY = worldRow * gp.tileSize;
-//            tile[tileNum].worldX = worldX;
-//            tile[tileNum].worldY = worldY;
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
             if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX
