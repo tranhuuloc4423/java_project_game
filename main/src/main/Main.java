@@ -9,7 +9,7 @@ public class Main {
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setTitle("Sow & Grow 2D");
+        window.setTitle("Seeds Of Serenity 2D");
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
 

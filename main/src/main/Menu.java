@@ -55,8 +55,8 @@ public class Menu {
         gp.addMouseListener(mouseClickListener);
     }
     public void update() {
-        isMusicEnabled = isMusicStartEnabled;
-        isSoundEffectEnabled = isSoundEffectStartEnabled;
+//        isMusicEnabled = isMusicStartEnabled;
+//        isSoundEffectEnabled = isSoundEffectStartEnabled;
     }
 
     public void draw(Graphics2D g2) {

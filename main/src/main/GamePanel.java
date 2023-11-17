@@ -169,7 +169,7 @@ public class GamePanel extends JPanel implements  Runnable {
         if(gameState == startState) {
             startMenu.update();
         }
-        mainMenu.update();
+
         if(gameState == playState) {
             player.update();
             // tiles
@@ -188,8 +188,10 @@ public class GamePanel extends JPanel implements  Runnable {
                 }
             }
         }
+        mainMenu.update();
         if(gameState == pauseState) {
             // nothing
+
         }
     }
     public void paintComponent(Graphics g) {

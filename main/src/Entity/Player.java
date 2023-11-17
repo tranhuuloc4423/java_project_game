@@ -1,17 +1,14 @@
 package Entity;
 
-import Tile.Tile;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import Object.*;
+import java.util.Objects;
 
 public class Player extends Entity {
     KeyHandler keyH;
@@ -111,7 +108,7 @@ public class Player extends Entity {
         BufferedImage image = null;
         int size = gp.tileSize * scale;
         try{
-            image =  ImageIO.read(getClass().getResourceAsStream("/res/Player/" + imageName +".png"));
+            image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/Player/" + imageName + ".png")));
             image = UtilityTool.scaleImage(image, size, size);
         } catch(IOException e) {
             e.printStackTrace();
@@ -193,7 +190,7 @@ public class Player extends Entity {
                 direction = "down";
             } else if(keyH.leftPressed) {
                 direction = "left";
-            } else if(keyH.rightPressed) {
+            } else {
                 direction = "right";
             }
 
@@ -211,7 +208,6 @@ public class Player extends Entity {
 
             // IF COLLISON IS FALSE, PLAYER CAN MOVE
             if(!collisionOn) {
-
                 switch (direction){
                     case "up":
                         worldY -= speed;
@@ -288,6 +284,18 @@ public class Player extends Entity {
                     break;
                 case "right":
                     sprites = idleRight;
+                    break;
+                case "upright":
+                    sprites = idleRight;
+                    break;
+                case "upleft":
+                    sprites = idleLeft;
+                    break;
+                case "downright":
+                    sprites = idleRight;
+                    break;
+                case "downleft":
+                    sprites = idleLeft;
                     break;
             }
         }
