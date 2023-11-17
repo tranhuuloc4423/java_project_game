@@ -41,7 +41,6 @@ public class GamePanel extends JPanel implements  Runnable {
 
     // SYSTEM
     public KeyHandler keyH = new KeyHandler(this);
-    public MouseHandler mouseH = new MouseHandler(this);
     Cursor customCursor;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
@@ -81,7 +80,6 @@ public class GamePanel extends JPanel implements  Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
-        addMouseListener(mouseH);
         customCursor();
     }
     public void customCursor() {

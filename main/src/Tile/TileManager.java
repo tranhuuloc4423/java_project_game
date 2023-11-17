@@ -2,7 +2,6 @@ package Tile;
 
 import main.GamePanel;
 import main.KeyHandler;
-import main.MouseHandler;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
@@ -30,11 +29,7 @@ public class TileManager {
         tile = new Tile[1000];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileManager();
-//        setupCollisionTiles();
-//        setCollisonTile();
-//        loadMap("/res/maps/worldV2.txt");
         loadMap("/res/maps/Map.txt");
-//        this.mouseH = gp.mouseH;
     }
 
     public int getTileNumber(int x, int y) {
@@ -88,7 +83,6 @@ public class TileManager {
     public void setup(int index, String imageName, boolean collision) {
         try{
             tile[index] = new Tile();
-            tile[index].solidArea = new Rectangle(0, 0, 48, 48);
             BufferedImage image =  ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName +".png"));
             tile[index].collision = collision;
             tile[index].image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
@@ -214,8 +208,8 @@ public class TileManager {
 
             worldX = worldCol * gp.tileSize;
             worldY = worldRow * gp.tileSize;
-            tile[tileNum].worldX = worldX;
-            tile[tileNum].worldY = worldY;
+//            tile[tileNum].worldX = worldX;
+//            tile[tileNum].worldY = worldY;
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
             if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX

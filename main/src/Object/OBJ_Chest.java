@@ -11,7 +11,7 @@ public class OBJ_Chest extends SuperObject {
     public OBJ_Chest(GamePanel gp) {
         name = "Chest";
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/Object/chest.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/res/.png"));
             UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch(IOException e) {
             e.printStackTrace();

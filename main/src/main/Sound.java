@@ -9,17 +9,12 @@ import java.net.URL;
 
 public class Sound {
     Clip clip;
-//    URL soundURL[] = new URL[30];
     URL soundURL = null;
     GamePanel gp;
 
     public Sound(String name, GamePanel gp) {
         this.gp = gp;
         soundURL = getClass().getResource("/res/sound/" + name + ".wav");
-//        soundURL[1] = getClass().getResource("/res/sound/walk.wav");
-//        soundURL[2] = getClass().getResource("/res/sound/hoe.wav");
-//        soundURL[3] = getClass().getResource("/res/sound/water.wav");
-//        soundURL[4] = getClass().getResource("/res/sound/closedoor.wav");
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL);
 
@@ -55,7 +50,7 @@ public class Sound {
         if (gp.mainMenu.isSoundEffectEnabled || gp.startMenu.isSoundEffectEnabled)
         {
             if(clip != null) {
-                clip.setFramePosition(0); // Đặt vị trí khung âm thanh về 0
+                clip.setFramePosition(0);
                 clip.start();
             }
         }

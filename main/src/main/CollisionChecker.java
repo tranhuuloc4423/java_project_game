@@ -88,26 +88,6 @@ public class CollisionChecker {
         ) {
             entity.collisionOn = true;
         }
-
-//        if (tileNum1 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum1].solidArea) ||
-//                (tileNum2 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum2].solidArea)) ||
-//                (tileNum3 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum3].solidArea)) ||
-//                (tileNum4 != 0 && entity.solidArea.intersects(gp.tileM.tile[tileNum4].solidArea))) {
-//            System.out.println("collision intersects");
-//            entity.collisionOn = true;
-//        }
-
-//        if(gp.tileM.tile[tileNum1].solidArea.intersects(entity.solidArea)) {
-//            gp.tileM.tile[tileNum1].collision = true;
-//        } else if(gp.tileM.tile[tileNum2].solidArea.intersects((entity.solidArea))) {
-//            gp.tileM.tile[tileNum2].collision = true;
-//
-//        } else if(gp.tileM.tile[tileNum3].solidArea.intersects((entity.solidArea))) {
-//            gp.tileM.tile[tileNum3].collision = true;
-//        } else if(gp.tileM.tile[tileNum4].solidArea.intersects((entity.solidArea))) {
-//            gp.tileM.tile[tileNum4].collision = true;
-//        }
-//        entity.collisionOn = true;
     }
 
     public void checkHitbox(Entity entity) {

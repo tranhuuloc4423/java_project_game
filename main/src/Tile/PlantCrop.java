@@ -14,7 +14,6 @@ import java.util.Map;
 
 public class PlantCrop {
     GamePanel gp;
-    public ArrayList<Tree> plantList = new ArrayList<Tree>();
     public int plantcrop[][];
     public Map<Point, Tree> plantMap = new HashMap<>();
 
@@ -56,22 +55,22 @@ public class PlantCrop {
     public void plantcropSetup() {
         if(gp.keyH.plantPressed) {
             if(gp.invetoryM.selectedItem == 1) {
-                plantCrop("plant_1_", 1000);
+                plantCrop("plant_1_", 10000);
             }
             if(gp.invetoryM.selectedItem == 2) {
-                plantCrop("plant_2_", 2000);
+                plantCrop("plant_2_", 12000);
             }
             if(gp.invetoryM.selectedItem == 3) {
-                plantCrop("plant_3_", 2000);
+                plantCrop("plant_3_", 15000);
             }
             if(gp.invetoryM.selectedItem == 4) {
-                plantCrop("plant_4_", 1000);
+                plantCrop("plant_4_", 20000);
             }
             if(gp.invetoryM.selectedItem == 5) {
-                plantCrop("plant_5_", 1000);
+                plantCrop("plant_5_", 30000);
             }
             if(gp.invetoryM.selectedItem == 6) {
-                plantCrop("plant_6_", 1000);
+                plantCrop("plant_6_", 50000);
             }
         }
     }
@@ -120,8 +119,6 @@ public class PlantCrop {
                     plant.worldX = gp.tileSize * col;
                     plant.worldY = gp.tileSize * row;
                     plantMap.put(position, plant);
-
-//                    System.out.println(index);
                     gp.invetoryM.items.get(index).removeQuantity(1);
                 }
             }

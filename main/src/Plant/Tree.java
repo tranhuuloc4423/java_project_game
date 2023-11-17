@@ -12,19 +12,13 @@ import java.io.IOException;
 public class Tree {
 
     public BufferedImage[] treeImages; // Mảng các hình ảnh tương ứng với các trạng thái cây
-    public int growthTime; // Thời gian cây phát triển (tính bằng mili giây)
-    public long startTime; // Thời điểm cây bắt đầu mọc
     public BufferedImage image;
     public String name;
-    public boolean collision = true;
     public int worldX, worldY;
-//    UtilityTool tool = new UtilityTool();
 
     private int imageChangeInterval; // Khoảng thời gian thay đổi hình ảnh (tính bằng mili giây)
     private long lastImageChangeTime;
     private int currentImageIndex;
-
-    public boolean isHarvested;
 
 
     public Tree(BufferedImage[]treeImages, int imageChangeInterval, String name) {
@@ -74,9 +68,5 @@ public class Tree {
 
             }
         }
-    }
-
-    public void harvest() {
-        isHarvested = true;
     }
 }

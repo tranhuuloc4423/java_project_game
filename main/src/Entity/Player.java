@@ -108,7 +108,7 @@ public class Player extends Entity {
         BufferedImage image = null;
         int size = gp.tileSize * scale;
         try{
-            image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/Player/" + imageName + ".png")));
+            image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/" + imageName + ".png")));
             image = UtilityTool.scaleImage(image, size, size);
         } catch(IOException e) {
             e.printStackTrace();
@@ -285,17 +285,13 @@ public class Player extends Entity {
                 case "right":
                     sprites = idleRight;
                     break;
-                case "upright":
+                case "upright", "downright":
                     sprites = idleRight;
+                    direction = "right";
                     break;
-                case "upleft":
+                case "upleft", "downleft":
                     sprites = idleLeft;
-                    break;
-                case "downright":
-                    sprites = idleRight;
-                    break;
-                case "downleft":
-                    sprites = idleLeft;
+                    direction = "left";
                     break;
             }
         }
