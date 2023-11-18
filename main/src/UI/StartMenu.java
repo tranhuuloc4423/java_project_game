@@ -1,9 +1,11 @@
 package UI;
 
 import main.GamePanel;
+import main.Sound;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -114,10 +116,10 @@ public class StartMenu extends Menu {
         int widthBackground = gp.screenWidth;
         int heightBackground = gp.screenHeight;
         g2.drawImage(backgroundImage, 0, 0, widthBackground, heightBackground, null);
-        drawImage(g2, playButtonImage, 350, -300 , 1);
-        drawImage(g2, settingButtonImage, 248, -215 , 1);
-        drawImage(g2, aboutButtonImage, 350, -215 , 1);
-        drawImage(g2, exitButtonImage, 452, -215 , 1);
+        drawImage(g2, playButtonImage, 350, -300);
+        drawImage(g2, settingButtonImage, 248, -215);
+        drawImage(g2, aboutButtonImage, 350, -215);
+        drawImage(g2, exitButtonImage, 452, -215);
         isPlayEnabled = false;
         isSettingEnabled = false;
         isAboutEnabled = false;
@@ -157,18 +159,18 @@ public class StartMenu extends Menu {
 
     public void drawAboutMenuPage2(Graphics2D g2){
         aboutMenuFrame = aboutMenuFrames[0];
-        drawImage(g2, aboutMenuFrame, 0, 0, 1);
-        drawImage(g2, aboutMenuMinus, -130, 155, 1);
-        drawImage(g2, aboutMenuClose, 130, 155, 1);
+        drawImage(g2, aboutMenuFrame, 0, 0);
+        drawImage(g2, aboutMenuMinus, -130, 155);
+        drawImage(g2, aboutMenuClose, 130, 155);
         isMinusEnabled = false;
         isCloseEnabled = false;
     }
 
     public void drawAboutMenu(Graphics2D g2){
         aboutMenuFrame = aboutMenuFrames[1];
-        drawImage(g2, aboutMenuFrame, 0, 0, 1);
-        drawImage(g2, aboutMenuAdd, 130, 155, 1);
-        drawImage(g2, aboutMenuClose, -130, 155, 1);
+        drawImage(g2, aboutMenuFrame, 0, 0);
+        drawImage(g2, aboutMenuAdd, 130, 155);
+        drawImage(g2, aboutMenuClose, -130, 155);
         isAddEnabled = false;
         isCloseEnabled = false;
     }
@@ -215,7 +217,7 @@ public class StartMenu extends Menu {
                     }
                 }
                 if(drawSettingMenu) {
-                    int[] positionMusicIcon = getBoundPosition(settingMenuMusicIcons[1],80,-45,1 );
+                    int[] positionMusicIcon = getBoundPosition(settingMenuMusicIcons[1],80,-70,1 );
                     if (checkMousePosition(positionMusicIcon, mouseX, mouseY)) {
                         isMusicEnabled = !isMusicEnabled;
                         if(!isMusicEnabled) {
@@ -225,18 +227,18 @@ public class StartMenu extends Menu {
                         }
                     }
 
-                    int[] positionSEStart = getBoundPosition(settingMenuSoundEffect,80,35,1 );
-                    if (checkMousePosition(positionSEStart, mouseX, mouseY)) {
+                    int[] positionSE = getBoundPosition(settingMenuSEIcons[1],80,-10,1 );
+                    if (checkMousePosition(positionSE, mouseX, mouseY)) {
                         isSoundEffectEnabled = !isSoundEffectEnabled;
                     }
 
-                    int[] positionSubmit = getBoundPosition(settingMenuSEIcons[1],-100,120,1);
+                    int[] positionSubmit = getBoundPosition(settingMenuSubmits[1],-110,140,1);
                     if (checkMousePosition(positionSubmit, mouseX, mouseY)) {
                         isSubmitEnabled = !isSubmitEnabled;
                         action = () -> drawSettingMenu = false;
                     }
 
-                    int[] positionCancel = getBoundPosition(settingMenuCancels[1],95,120,1 );
+                    int[] positionCancel = getBoundPosition(settingMenuCancels[1],110,140,1 );
                     if (checkMousePosition(positionCancel, mouseX, mouseY)) {
                         isCancelEnabled = !isCancelEnabled;
                         action = () -> {
@@ -244,6 +246,42 @@ public class StartMenu extends Menu {
                             gp.music[0].stop();
                             isSoundEffectEnabled = false;
                             drawSettingMenu = false;
+                        };
+                    }
+
+                    int[] positionAdd = getBoundPosition(settingAdds[1],100,65,1 );
+                    if (checkMousePosition(positionAdd, mouseX, mouseY)) {
+                        isAddClicked = !isAddClicked;
+                        if(initVolume <= 9) {
+                            initVolume++;
+                        }
+                        float volume = (float) initVolume / 10;
+                        System.out.println(volume);
+                        for(int i = 0; i < gp.music.length; i++) {
+                            if(gp.music[i] != null) {
+                                Sound.setVolume(gp.music[i].clip, volume);
+                            }
+                        }
+                        action = () -> {
+                            isAddClicked = false;
+                        };
+                    }
+
+                    int[] positionMinus = getBoundPosition(settingMinuses[1],-20,65,1 );
+                    if (checkMousePosition(positionMinus, mouseX, mouseY)) {
+                        isMinusClicked = !isMinusClicked;
+                        if(initVolume != 0) {
+                            initVolume--;
+                        }
+                        float volume = (float) initVolume / 10;
+                        System.out.println(volume);
+                        for(int i = 0; i < gp.music.length; i++) {
+                            if(gp.music[i] != null) {
+                                Sound.setVolume(gp.music[i].clip, volume);
+                            }
+                        }
+                        action = () -> {
+                            isMinusClicked = false;
                         };
                     }
                 }

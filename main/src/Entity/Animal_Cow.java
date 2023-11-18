@@ -33,6 +33,40 @@ public class Animal_Cow extends Animal {
             idleRight[i - 1] = setup("cow_idle_right_" + i);
         }
     }
+    @Override
+    public void setAction() {
+        actionLockCounter++;
+        if(actionLockCounter == gp.FPS * 2) {
+            Random random = new Random();
+            int i = random.nextInt(150) + 1;
+
+            if(i >= 0 && i <= 25) {
+                direction = "up";
+            }
+
+            if(i > 25 && i <= 50) {
+                direction = "down";
+            }
+
+            if(i > 50 && i <= 75) {
+                direction = "left";
+            }
+
+            if(i > 75 && i <= 100) {
+                direction = "right";
+            }
+
+            if(i > 100 && i <= 125) {
+                direction = "idleright";
+                gp.music[6].playSEOnce();
+            }
+            if(i > 125 && i <= 150) {
+                direction = "idleleft";
+                gp.music[6].playSEOnce();
+            }
+            actionLockCounter = 0;
+        }
+    }
 
     public BufferedImage setup(String imageName) {
         BufferedImage image = null;

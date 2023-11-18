@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
+import Object.*;
 
 public class Player extends Entity {
     KeyHandler keyH;
@@ -67,6 +68,52 @@ public class Player extends Entity {
         }
     }
 
+    public void interactObject() {
+
+    }
+
+    public void chestHandle(int col, int row) {
+        int playerX = gp.player.landTileX;
+        int playerY = gp.player.landTileY;
+        int radius = 1; // Bán kính 1 ô
+        if (Math.abs(playerX - col) <= radius && Math.abs(playerY - row) <= radius) {
+            if(gp.obj[0].image == gp.obj[0].images[0]) {
+                gp.music[9].playSEOnce();
+                gp.obj[0].image = gp.obj[0].images[1];
+                gp.store.storeOn = true;
+            } else if(gp.obj[0].image == gp.obj[0].images[1]) {
+                gp.music[10].playSEOnce();
+                gp.obj[0].image = gp.obj[0].images[0];
+                gp.store.storeOn = false;
+            }
+        }
+
+    }
+    public void doorHandle(int col, int row) {
+        int playerX = gp.player.landTileX;
+        int playerY = gp.player.landTileY;
+        int radius = 1; // Bán kính 1 ô
+        if (Math.abs(playerX - col) <= radius && Math.abs(playerY - row) <= radius || playerX == col && playerY == row - 2) {
+            gp.music[4].playSEOnce();
+            if(gp.obj[1].image == gp.obj[1].images[0]) {
+                gp.obj[1].image = gp.obj[1].images[1];
+                gp.obj[1].collision = false;
+            } else if(gp.obj[1].image == gp.obj[1].images[1]) {
+                gp.music[4].playSEOnce();
+                gp.obj[1].image = gp.obj[1].images[0];
+                gp.obj[1].collision = true;
+            }
+        }
+    }
+
+    public void interactNPC(int index) {
+        if(index != 999) {
+            switch (index) {
+            }
+        }
+    }
+
+
     public void setPlayerImage() {
         for (int i = 1; i <= spritesNum; i++) {
             // move
@@ -114,8 +161,6 @@ public class Player extends Entity {
     @Override
     public void update() {
         getTilePositionPlayer();
-
-
         walkHandle();
         hoeAnimate();
         wateringAnimate();
@@ -188,8 +233,8 @@ public class Player extends Entity {
             // check tile collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
-            int objIndex = gp.cChecker.checkObject(this, true);
-            interactObject(objIndex);
+//            int objIndex = gp.cChecker.checkObject(this, true);
+//            interactObject(objIndex);
 
 
             gp.cChecker.checkHitbox(this);
@@ -306,13 +351,6 @@ public class Player extends Entity {
             }
         }
 
-    }
-
-    public void interactNPC(int index) {
-        if(index != 999) {
-            switch (index) {
-            }
-        }
     }
 
     public void draw(Graphics2D g2) {

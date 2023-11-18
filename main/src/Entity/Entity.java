@@ -47,7 +47,6 @@ public class Entity {
                 && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
                 && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY
         ) {
-
             switch (direction) {
                 case "up":
                     sprites = up;

@@ -15,6 +15,10 @@ public class AssetSetter {
         gp.obj[0] = new OBJ_Chest(gp);
         gp.obj[0].worldX = gp.tileSize * 38;
         gp.obj[0].worldY = gp.tileSize * 30;
+
+        gp.obj[1] = new OBJ_Door(gp);
+        gp.obj[1].worldX = gp.tileSize * 34;
+        gp.obj[1].worldY = gp.tileSize * 34;
     }
 
     public void setBorder(int x, int y) {

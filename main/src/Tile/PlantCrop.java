@@ -86,6 +86,7 @@ public class PlantCrop {
                 BufferedImage[] plantImages = plant.getPlantImages();
                 BufferedImage lastImage = plantImages[plantImages.length - 1];
                 if (plant.getCurrentImage() == lastImage) {
+                    gp.music[8].playSEOnce();
                     // Thu hoạch cây trồng
                     plant = null;
                     plantMap.remove(position);
@@ -110,6 +111,7 @@ public class PlantCrop {
             if (gp.tileM.mapTileNum[col][row] == 602) {
                 Point position = new Point(col, row);
                 if (!plantMap.containsKey(position)) {
+                    gp.music[5].playSEOnce();
                     BufferedImage[] plantImages = new BufferedImage[4];
                     for (int i = 0; i < plantImages.length; i++) {
                         String pathName = fileName + (i + 1);

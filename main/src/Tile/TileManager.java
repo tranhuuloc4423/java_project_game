@@ -60,7 +60,12 @@ public class TileManager {
         setup(328, "328",false);
 
         for(int i = 478; i <= 512; i++) {
-            setup(i, String.valueOf(i),false);
+            if(i >= 481 && i <= 489) {
+                setup(i, String.valueOf(i),true);
+            } else {
+                setup(i, String.valueOf(i),false);
+            }
+
         }
 
         for(int i = 600; i <= 657; i++) {
@@ -149,22 +154,7 @@ public class TileManager {
         }
     }
 
-    public void interactTile(int col, int row, int tile, int target) {
-        int playerX = gp.player.landTileX;
-        int playerY = gp.player.landTileY;
-        int radius = 1; // Bán kính 1 ô
 
-        // Kiểm tra xem vị trí của người chơi có nằm trong bán kính xung quanh ô cần tương tác
-        if (Math.abs(playerX - col) <= radius && Math.abs(playerY - row) <= radius || playerY == row - 2 && playerX == col) {
-            if (gp.tileM.mapTileNum[col][row] == tile) {
-                changeTileImage(col, row, target);
-                gp.music[4].playSEOnce();
-            } else {
-                changeTileImage(col, row, tile);
-                gp.music[4].playSEOnce();
-            }
-        }
-    }
 
     public void update() {
         if(gp.keyH.hoePressed) {

@@ -1,6 +1,7 @@
 package UI;
 
 import main.GamePanel;
+import main.Sound;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,10 +90,10 @@ public class MainMenu extends Menu  {
         imageQuit = imageQuits[0];
     }
     public void drawPanel(Graphics2D g2) {
-        drawImage(g2, panel, 0, 0 , 1);
-        drawImage(g2, imagePause, 0, -90 , 1);
-        drawImage(g2, imageOption, 0, 0 , 1);
-        drawImage(g2, imageQuit, 0, 90 , 1);
+        drawImage(g2, panel, 0, 0);
+        drawImage(g2, imagePause, 0, -90);
+        drawImage(g2, imageOption, 0, 0);
+        drawImage(g2, imageQuit, 0, 90);
         isPauseEnabled = false;
         isOptionEnabled = false;
         isQuitEnabled = false;
@@ -136,7 +137,7 @@ public class MainMenu extends Menu  {
                 }
 
                 if(drawSettingMenu) {
-                    int[] positionMusicIcon = getBoundPosition(settingMenuMusicIcons[1],80,-45,1 );
+                    int[] positionMusicIcon = getBoundPosition(settingMenuMusicIcons[1],80,-70,1 );
                     if (checkMousePosition(positionMusicIcon, mouseX, mouseY) && gp.gameState != gp.startState) {
                         isMusicEnabled = !isMusicEnabled;
                         if(isMusicEnabled) {
@@ -146,18 +147,18 @@ public class MainMenu extends Menu  {
                         }
                     }
 
-                    int[] positionSEStart = getBoundPosition(settingMenuSoundEffect,80,35,1 );
-                    if (checkMousePosition(positionSEStart, mouseX, mouseY) && gp.gameState != gp.startState) {
+                    int[] positionSE = getBoundPosition(settingMenuSoundEffect,80,-10,1 );
+                    if (checkMousePosition(positionSE, mouseX, mouseY) && gp.gameState != gp.startState) {
                         isSoundEffectEnabled = !isSoundEffectEnabled;
                     }
 
-                    int[] positionSubmit = getBoundPosition(settingMenuSEIcons[1],-100,120,1);
+                    int[] positionSubmit = getBoundPosition(settingMenuSEIcons[1],-110,140,1);
                     if (checkMousePosition(positionSubmit, mouseX, mouseY) && gp.gameState != gp.startState) {
                         isSubmitEnabled = !isSubmitEnabled;
                         action = () -> gp.gameState = gp.playState;
                     }
 
-                    int[] positionCancel = getBoundPosition(settingMenuCancels[1],95,120,1 );
+                    int[] positionCancel = getBoundPosition(settingMenuCancels[1],110,140,1 );
                     if (checkMousePosition(positionCancel, mouseX, mouseY) && gp.gameState != gp.startState) {
                         isCancelEnabled = !isCancelEnabled;
                         action = () -> {
@@ -166,6 +167,42 @@ public class MainMenu extends Menu  {
                             isSoundEffectEnabled = false;
                             gp.music[0].stop();
                             drawSettingMenu = false;
+                        };
+                    }
+
+                    int[] positionAdd = getBoundPosition(settingAdds[1],100,65,1 );
+                    if (checkMousePosition(positionAdd, mouseX, mouseY)) {
+                        isAddClicked = !isAddClicked;
+                        if(initVolume <= 9) {
+                            initVolume++;
+                        }
+                        float volume = (float) initVolume / 10;
+                        System.out.println(volume);
+                        for(int i = 0; i < gp.music.length; i++) {
+                            if(gp.music[i] != null) {
+                                Sound.setVolume(gp.music[i].clip, volume);
+                            }
+                        }
+                        action = () -> {
+                            isAddClicked = false;
+                        };
+                    }
+
+                    int[] positionMinus = getBoundPosition(settingMinuses[1],-20,65,1 );
+                    if (checkMousePosition(positionMinus, mouseX, mouseY)) {
+                        isMinusClicked = !isMinusClicked;
+                        if(initVolume != 0) {
+                            initVolume--;
+                        }
+                        float volume = (float) initVolume / 10;
+                        System.out.println(volume);
+                        for(int i = 0; i < gp.music.length; i++) {
+                            if(gp.music[i] != null) {
+                                Sound.setVolume(gp.music[i].clip, volume);
+                            }
+                        }
+                        action = () -> {
+                            isMinusClicked = false;
                         };
                     }
                 }

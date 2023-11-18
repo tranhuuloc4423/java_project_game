@@ -117,7 +117,8 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_F) {
             interactpressed = true;
-            gp.tileM.interactTile(34, 34, 299, 298);
+            gp.player.doorHandle(34, 34);
+            gp.player.chestHandle(38, 30);
         }
         if(code == KeyEvent.VK_B) {
 //            gp.store.storeOn = !gp.store.storeOn;

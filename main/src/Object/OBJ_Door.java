@@ -11,7 +11,9 @@ public class OBJ_Door extends SuperObject{
     public OBJ_Door(GamePanel gp) {
         name = "Door";
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/299.png"));
+            images[0] = ImageIO.read(getClass().getResourceAsStream("/res/tiles/299.png"));
+            images[1] = ImageIO.read(getClass().getResourceAsStream("/res/tiles/298.png"));
+            image = images[0];
             UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch(IOException e) {
             e.printStackTrace();

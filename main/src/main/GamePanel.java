@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements  Runnable {
     Cursor customCursor;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
-    public Sound[] music = new Sound[10];
+
     Thread gameThread;
     public Player player = new Player(this, keyH);
     public SuperObject obj[] = new SuperObject[10];
@@ -62,10 +62,9 @@ public class GamePanel extends JPanel implements  Runnable {
 //    public Menu menu = new Menu(this);
     public StartMenu startMenu = new StartMenu(this);
     public MainMenu mainMenu = new MainMenu(this);
+    public Sound[] music = new Sound[20];
     // inventory
     public InventoryManager invetoryM = new InventoryManager(this);
-
-
     public Store store = new Store(this);
     public Mission mission = new Mission(this);
     // game state
@@ -100,6 +99,12 @@ public class GamePanel extends JPanel implements  Runnable {
         music[2] = new Sound("hoe", this);
         music[3] = new Sound("water", this);
         music[4] = new Sound("closedoor", this);
+        music[5] = new Sound("seed", this);
+        music[6] = new Sound("cow", this);
+        music[7] = new Sound("chicken", this);
+        music[8] = new Sound("harvest", this);
+        music[9] = new Sound("chest_open", this);
+        music[10] = new Sound("chest_close", this);
 
         music[0].playMusic();
         gameState = startState;
