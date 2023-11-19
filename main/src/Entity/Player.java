@@ -72,6 +72,25 @@ public class Player extends Entity {
 
     }
 
+    public void bushHandle(int col, int row) {
+        if(landTileX == col && landTileY == row) {
+            if(gp.obj[2].image == gp.obj[2].images[1]) {
+                gp.obj[2].image = gp.obj[2].images[0];
+            }
+        }
+    }
+
+//    public void bedHandle(int col, int row) {
+//        int playerX = gp.player.landTileX;
+//        int playerY = gp.player.landTileY;
+//        int radius = 1; // Bán kính 1 ô
+//        if (Math.abs(playerX - col) <= radius && Math.abs(playerY - row) <= radius) {
+////            if(gp.gameHour >= 17) {
+////                gp.sleepAction(g2);
+////            }
+//        }
+//    }
+
     public void chestHandle(int col, int row) {
         int playerX = gp.player.landTileX;
         int playerY = gp.player.landTileY;
@@ -99,7 +118,6 @@ public class Player extends Entity {
                 gp.obj[1].image = gp.obj[1].images[1];
                 gp.obj[1].collision = false;
             } else if(gp.obj[1].image == gp.obj[1].images[1]) {
-                gp.music[4].playSEOnce();
                 gp.obj[1].image = gp.obj[1].images[0];
                 gp.obj[1].collision = true;
             }
@@ -233,8 +251,7 @@ public class Player extends Entity {
             // check tile collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
-//            int objIndex = gp.cChecker.checkObject(this, true);
-//            interactObject(objIndex);
+            gp.cChecker.checkObject(this, true);
 
 
             gp.cChecker.checkHitbox(this);

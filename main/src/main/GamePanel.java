@@ -34,6 +34,15 @@ public class GamePanel extends JPanel implements  Runnable {
     public final int maxWorldCol = 70;
     public final int maxWorldRow = 70;
 
+    // time
+    private static final int GAME_MINUTES_PER_HOUR = 60; // Số phút trong game tương đương với một giờ thời gian thực
+    private static final int GAME_HOURS_PER_DAY = 24; // Số giờ trong game tương đương với một ngày
+
+    public int gameMinute = 0;
+    public int gameHour = 17; // Giờ trong game
+    public int gameDay = 0; // Ngày trong game
+
+    private long lastUpdateTime = 0; // Thời điểm cập nhật cuối cùng
 
 
     // FPS
@@ -161,11 +170,85 @@ public class GamePanel extends JPanel implements  Runnable {
             }
 
             if(timer >= 1000000000) {
+                updateTime();
                 System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
         }
+    }
+
+    public void sleepAction(Graphics2D g2) {
+        int alpha = 0; // Giá trị alpha ban đầu
+        while (alpha < 250) {
+            alpha += 50; // Tăng deltaAlpha để tăng độ tối, deltaAlpha là một số nguyên dương
+            alpha = Math.min(alpha, 255); // Giới hạn giá trị alpha không vượt quá 255
+            g2.setColor(new Color(0, 0, 0, alpha));
+            g2.fillRect(0, 0, getWidth(), getHeight());
+            // Vẽ các thành phần khác trong màn hình game của bạn
+            // ...
+
+            // Cập nhật màn hình
+            repaint();
+            try {
+                Thread.sleep(2000); // Delay để thấy hiệu ứng tăng độ tối
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        int alpha2 = 250; // Giá trị alpha ban đầu
+        while (alpha2 > 0) {
+            alpha -= 50; // Giảm deltaAlpha để giảm độ tối, deltaAlpha là một số nguyên dương
+            alpha = Math.max(alpha, 0); // Giới hạn giá trị alpha không nhỏ hơn 0
+            g2.setColor(new Color(0, 0, 0, alpha));
+            g2.fillRect(0, 0, getWidth(), getHeight());
+            // Vẽ các thành phần khác trong màn hình game của bạn
+            // ...
+
+            // Cập nhật màn hình
+            repaint();
+            try {
+                Thread.sleep(2000); // Delay để thấy hiệu ứng giảm độ tối
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    void updateTime() {
+        if(gameState == playState) {
+            gameMinute += 5;
+            if(gameMinute >= GAME_MINUTES_PER_HOUR) {
+                gameMinute %= GAME_MINUTES_PER_HOUR;
+                gameHour++;
+                if (gameHour >= GAME_HOURS_PER_DAY) {
+                    gameHour %= GAME_HOURS_PER_DAY; // Đặt lại giờ trong game
+                    gameDay++; // Tăng ngày trong game
+
+                }
+            }
+        }
+    }
+
+    void drawTime(Graphics2D g2) {
+        String timeString = String.format("Day %d, %02d:%02d", gameDay, gameHour, gameMinute); // Chuỗi thời gian
+        Font font = new Font("Arial", Font.BOLD, 32); // Font chữ
+        g2.setFont(font);
+        g2.setColor(Color.WHITE);
+        g2.drawString(timeString, 10, 40);
+    }
+
+    void drawNight(Graphics2D g2) {
+        System.out.println("GameHour :" + gameHour);
+        if(gameHour >= 17 && gameHour <= 19) {
+            g2.setColor(new Color(0, 0, 0, 80)); // Màu đen với độ mờ (alpha) là 100
+            g2.fillRect(0, 0, getWidth(), getHeight()); // Vẽ một hình chữ nhật đậm trên toàn bộ màn hình
+        } else if(gameHour <= 4 || gameHour > 19) {
+            g2.setColor(new Color(0, 0, 0, 180));
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        }
+
     }
 
     public void update() {
@@ -174,6 +257,7 @@ public class GamePanel extends JPanel implements  Runnable {
         }
 
         if(gameState == playState) {
+//            updateGameTime();
             player.update();
             // tiles
             tileM.update();
@@ -186,6 +270,11 @@ public class GamePanel extends JPanel implements  Runnable {
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null) {
                     npc[i].update();
+                }
+            }
+            for(int i = 0; i < obj.length; i++) {
+                if(obj[i] != null) {
+                    obj[i].update();
                 }
             }
         }
@@ -271,6 +360,8 @@ public class GamePanel extends JPanel implements  Runnable {
                 g2.drawString("DrawTime : " + passed, 10, 400);
                 System.out.println("Draw time : " + passed);
             }
+            drawTime(g2);
+            drawNight(g2);
             mainMenu.draw(g2);
         }
 

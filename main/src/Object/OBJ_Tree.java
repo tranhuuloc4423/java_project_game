@@ -4,15 +4,15 @@ import main.GamePanel;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class OBJ_Chest extends SuperObject {
-    public OBJ_Chest(GamePanel gp) {
-        name = "Chest";
+public class OBJ_Tree extends SuperObject {
+    GamePanel gp;
+    public OBJ_Tree(GamePanel gp) {
+        name = "Tree";
         try {
-            images[0] = ImageIO.read(getClass().getResourceAsStream("/res/ui/chest.png"));
-            images[1] = ImageIO.read(getClass().getResourceAsStream("/res/ui/chest_open.png"));
+            images[0] = ImageIO.read(getClass().getResourceAsStream("/res/plants/tree_1.png"));
+            images[1] = ImageIO.read(getClass().getResourceAsStream("/res/tiles/298.png"));
             image = images[0];
             UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch(IOException e) {

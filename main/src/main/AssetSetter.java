@@ -19,6 +19,10 @@ public class AssetSetter {
         gp.obj[1] = new OBJ_Door(gp);
         gp.obj[1].worldX = gp.tileSize * 34;
         gp.obj[1].worldY = gp.tileSize * 34;
+
+        gp.obj[2] = new OBJ_Bush(gp);
+        gp.obj[2].worldX = gp.tileSize * 38;
+        gp.obj[2].worldY = gp.tileSize * 37;
     }
 
     public void setBorder(int x, int y) {

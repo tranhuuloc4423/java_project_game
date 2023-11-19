@@ -18,9 +18,9 @@ public class TileManager {
     public Tile[] tile;
     public int mapTileNum[][];
 //    public MouseHandler mouseH;
-    private long startTime; // Thời điểm bắt đầu nhấn giữ phím đào đất
-    private boolean isDigging; // Biến đánh dấu việc đang đào đất
-    private static final long DIGGING_DURATION = 1500;
+    private long startTime = 0; // Thời điểm bắt đầu nhấn giữ phím đào đất
+    private boolean isAction = false; // Biến đánh dấu việc đang đào đất
+    private static final long ACTION_DURATION = 2000;
 
     int worldX, worldY;
 
@@ -130,38 +130,56 @@ public class TileManager {
                 break;
             }
         }
-
-        if (isDirtNearby) {
-            if (!isDigging) {
-                startTime = System.currentTimeMillis();
-                isDigging = true;
-            } else {
-                long currentTime = System.currentTimeMillis();
-                long elapsedTime = currentTime - startTime;
-
-                if (elapsedTime >= DIGGING_DURATION) {
-                    for (int[] dir : directions) {
-                        int tileCol = col + dir[0];
-                        int tileRow = row + dir[1];
-                        if(map[tileCol][tileRow] == tile) {
-                            changeTileImage(tileCol, tileRow, tileTarget);
-                        }
-                    }
-                    isDigging = false;
-                    startTime = 0;
+        if(isDirtNearby) {
+            for (int[] dir : directions) {
+                int tileCol = col + dir[0];
+                int tileRow = row + dir[1];
+                if(map[tileCol][tileRow] == tile) {
+                    changeTileImage(tileCol, tileRow, tileTarget);
                 }
             }
         }
+        isAction = false;
+        startTime = 0;
     }
 
 
 
     public void update() {
-        if(gp.keyH.hoePressed) {
-            changTile(600, 601);
-        }
-        if(gp.keyH.waterPressed) {
-            changTile(601, 602);
+//        if(gp.keyH.hoePressed) {
+//            changTile(600, 601);
+//        }
+//        if(gp.keyH.waterPressed) {
+//            changTile(601, 602);
+//        }
+        if (gp.keyH.hoePressed) {
+            if (!isAction) {
+                // Bắt đầu tính thời gian
+                startTime = System.currentTimeMillis();
+                isAction = true;
+            } else {
+                long currentTime = System.currentTimeMillis();
+                long elapsedTime = currentTime - startTime;
+                if (elapsedTime >= ACTION_DURATION) {
+                    changTile(600, 601);
+                }
+            }
+        } else if(gp.keyH.waterPressed) {
+            if (!isAction) {
+                // Bắt đầu tính thời gian
+                startTime = System.currentTimeMillis();
+                isAction = true;
+            } else {
+                long currentTime = System.currentTimeMillis();
+                long elapsedTime = currentTime - startTime;
+
+                if (elapsedTime >= ACTION_DURATION) {
+                    changTile(601, 602);
+                }
+            }
+        } else {
+            isAction = false;
+            startTime = 0;
         }
     }
 
