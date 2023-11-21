@@ -9,15 +9,17 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Store {
+public class Storage {
     GamePanel gp;
     Graphics2D g2;
     BufferedImage panel;
     public boolean storeOn = false;
     public final int plantListSize = 6;
+
+    public int size = plantListSize;
     ArrayList<BufferedImage> boardlist = new ArrayList<>();
-    public ArrayList<Item> plantItems = new ArrayList<>();
-    public Store(GamePanel gp) {
+    public ArrayList<Item> items = new ArrayList<>();
+    public Storage(GamePanel gp) {
         this.gp = gp;
         panel = setupImage("storage");
         setupBoard();
@@ -27,7 +29,7 @@ public class Store {
     public void setupPlantItems() {
         for(int i = 1; i <= plantListSize; i++) {
             Item item = new Item("plant_" + i, "/res/plants/plant_" + i + "_4.png", 0, gp);
-            plantItems.add(item);
+            items.add(item);
         }
     }
 
@@ -52,10 +54,10 @@ public class Store {
 
             if(index <= 3) {
                 x = index * initX - 22;
-                y = initY * 3 + 20;
-            } else {
+                y = initY * 2 + 40;
+            } else  {
                 x = initX * (index - 3) - 22;
-                y = initY * 5 + 20;
+                y = initY * 4 + 30;
             }
             drawImage(boardlist.get(i), x, y);
         }
@@ -64,15 +66,15 @@ public class Store {
     public void drawPlantItems() {
         int initX = gp.tileSize * 2;
         int initY = gp.tileSize;
-        for(int i = 0; i < plantListSize; i++) {
-            Item item = plantItems.get(i);
+        for(int i = 0; i < size; i++) {
+            Item item = items.get(i);
             int index = i + 1;
             if(index <= 3) {
                 item.x = index * initX - 6;
-                item.y = initY * 3 + 34;
+                item.y = initY * 2 + 54;
             } else {
                 item.x = initX * (index - 3) - 6;
-                item.y = initY * 5 + 34;
+                item.y = initY * 4 + 44;
             }
             item.draw(g2);
             item.drawQuantity(g2);

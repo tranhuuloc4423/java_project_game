@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Tree {
-
+    GamePanel gp;
     public BufferedImage[] treeImages; // Mảng các hình ảnh tương ứng với các trạng thái cây
     public BufferedImage image;
     public String name;
@@ -21,7 +21,8 @@ public class Tree {
     private int currentImageIndex;
 
 
-    public Tree(BufferedImage[]treeImages, int imageChangeInterval, String name) {
+    public Tree(GamePanel gp, BufferedImage[]treeImages, int imageChangeInterval, String name) {
+        this.gp = gp;
         this.treeImages = treeImages;
         this.imageChangeInterval = imageChangeInterval;
         this.currentImageIndex = 0;
@@ -42,14 +43,18 @@ public class Tree {
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - lastImageChangeTime;
 
-        if (elapsedTime >= imageChangeInterval) {
-            // Đổi hình ảnh
-            if (currentImageIndex < treeImages.length - 1) {
-                currentImageIndex++;
+        if(!gp.pod.isSleep) {
+            if (elapsedTime >= imageChangeInterval) {
+                // Đổi hình ảnh
+                if (currentImageIndex < treeImages.length - 1) {
+                    currentImageIndex++;
+                }
+                image = treeImages[currentImageIndex];
+                // Cập nhật thời điểm thay đổi hình ảnh cuối cùng
+                lastImageChangeTime = currentTime;
             }
-            image = treeImages[currentImageIndex];
-            // Cập nhật thời điểm thay đổi hình ảnh cuối cùng
-            lastImageChangeTime = currentTime;
+        } else {
+            image = treeImages[treeImages.length - 1];
         }
     }
 

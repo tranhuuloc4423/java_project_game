@@ -5,9 +5,13 @@ import main.KeyHandler;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.Objects;
 import Object.*;
 
@@ -15,6 +19,7 @@ public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX, screenY;
     public int landTileX, landTileY;
+    Timer timer;
 
     public BufferedImage[] hoeUp = new BufferedImage[spritesNum];
     public BufferedImage[] hoeDown = new BufferedImage[spritesNum];
@@ -26,9 +31,15 @@ public class Player extends Entity {
     public BufferedImage[] waterLeft = new BufferedImage[spritesNum];
     public BufferedImage[] waterRight = new BufferedImage[spritesNum];
 
+    public BufferedImage[] cuttreeUp = new BufferedImage[spritesNum];
+    public BufferedImage[] cuttreeDown = new BufferedImage[spritesNum];
+    public BufferedImage[] cuttreeLeft = new BufferedImage[spritesNum];
+    public BufferedImage[] cuttreeRight = new BufferedImage[spritesNum];
+
     boolean isHoeSE = false;
     boolean isWalkingSE = false;
     boolean isWateringSE = false;
+    boolean isCuttreeSE = false;
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
@@ -70,58 +81,6 @@ public class Player extends Entity {
 
     public void interactObject() {
 
-    }
-
-    public void bushHandle(int col, int row) {
-        if(landTileX == col && landTileY == row) {
-            if(gp.obj[2].image == gp.obj[2].images[1]) {
-                gp.obj[2].image = gp.obj[2].images[0];
-            }
-        }
-    }
-
-//    public void bedHandle(int col, int row) {
-//        int playerX = gp.player.landTileX;
-//        int playerY = gp.player.landTileY;
-//        int radius = 1; // Bán kính 1 ô
-//        if (Math.abs(playerX - col) <= radius && Math.abs(playerY - row) <= radius) {
-////            if(gp.gameHour >= 17) {
-////                gp.sleepAction(g2);
-////            }
-//        }
-//    }
-
-    public void chestHandle(int col, int row) {
-        int playerX = gp.player.landTileX;
-        int playerY = gp.player.landTileY;
-        int radius = 1; // Bán kính 1 ô
-        if (Math.abs(playerX - col) <= radius && Math.abs(playerY - row) <= radius) {
-            if(gp.obj[0].image == gp.obj[0].images[0]) {
-                gp.music[9].playSEOnce();
-                gp.obj[0].image = gp.obj[0].images[1];
-                gp.store.storeOn = true;
-            } else if(gp.obj[0].image == gp.obj[0].images[1]) {
-                gp.music[10].playSEOnce();
-                gp.obj[0].image = gp.obj[0].images[0];
-                gp.store.storeOn = false;
-            }
-        }
-
-    }
-    public void doorHandle(int col, int row) {
-        int playerX = gp.player.landTileX;
-        int playerY = gp.player.landTileY;
-        int radius = 1; // Bán kính 1 ô
-        if (Math.abs(playerX - col) <= radius && Math.abs(playerY - row) <= radius || playerX == col && playerY == row - 2) {
-            gp.music[4].playSEOnce();
-            if(gp.obj[1].image == gp.obj[1].images[0]) {
-                gp.obj[1].image = gp.obj[1].images[1];
-                gp.obj[1].collision = false;
-            } else if(gp.obj[1].image == gp.obj[1].images[1]) {
-                gp.obj[1].image = gp.obj[1].images[0];
-                gp.obj[1].collision = true;
-            }
-        }
     }
 
     public void interactNPC(int index) {
@@ -212,6 +171,11 @@ public class Player extends Entity {
                 gp.music[3].playSE();
                 isWateringSE = true;
             }
+        } else if(sprites == cuttreeDown || sprites == cuttreeUp || sprites == cuttreeLeft || sprites == cuttreeRight) {
+            if (!isCuttreeSE) {
+                gp.music[12].playSE();
+                isCuttreeSE = true;
+            }
         } else {
             if(isWalkingSE) {
                 isWalkingSE = false;
@@ -222,13 +186,15 @@ public class Player extends Entity {
             } else if(isWateringSE) {
                 isWateringSE = false;
                 gp.music[3].stop();
+            } else if(isCuttreeSE) {
+                isCuttreeSE = false;
+                gp.music[12].stop();
             }
 
         }
     }
 
     public void walkHandle() {
-
         if((keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && !keyH.waterPressed) {
             if(keyH.upPressed && keyH.rightPressed) {
                 direction = "upright";
@@ -324,7 +290,11 @@ public class Player extends Entity {
 
     public void idleAnimate() {
         boolean movePressed = (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed);
-        if((!movePressed && !keyH.hoePressed && !keyH.waterPressed) || (movePressed && keyH.hoePressed) || (movePressed && keyH.waterPressed) || (keyH.hoePressed && keyH.waterPressed)) {
+        if((!movePressed && !keyH.hoePressed && !keyH.waterPressed)
+                || (movePressed && keyH.hoePressed)
+                || (movePressed && keyH.waterPressed)
+                || (keyH.hoePressed && keyH.waterPressed)
+        ) {
             switch (direction) {
                 case "up":
                     sprites = idleUp;
@@ -374,7 +344,9 @@ public class Player extends Entity {
 
         if (sprites != null && spriteNum >= 1 && spriteNum <= sprites.length) {
             BufferedImage image = sprites[spriteNum - 1];
-            if((keyH.waterPressed || keyH.hoePressed) && !(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !(keyH.hoePressed && keyH.waterPressed))  {
+            if((keyH.waterPressed || keyH.hoePressed)
+                    && !(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed)
+                    && !(keyH.hoePressed && keyH.waterPressed))  {
                 g2.drawImage(image, screenX - gp.tileSize, screenY - gp.tileSize, null);
             } else {
                 g2.drawImage(image, screenX, screenY, null);

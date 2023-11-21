@@ -96,8 +96,9 @@ public class KeyHandler implements KeyListener {
         }
 
         if(code == KeyEvent.VK_T) {
-            checkDrawTime = !checkDrawTime;
+
         }
+
         if(code == KeyEvent.VK_M) {
             gp.mission.missionOn = !gp.mission.missionOn;
         }
@@ -117,12 +118,16 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_F) {
             interactpressed = true;
-            gp.player.doorHandle(34, 34);
-            gp.player.chestHandle(38, 30);
-            gp.player.bushHandle(38, 37);
+            gp.interactH.doorHandle(34, 34);
+            gp.interactH.chestHandle(38, 30);
+            gp.interactH.bedHandle(36, 30);
         }
         if(code == KeyEvent.VK_B) {
 //            gp.store.storeOn = !gp.store.storeOn;
+        }
+
+        if(code == KeyEvent.VK_Z) {
+            checkDrawTime = !checkDrawTime;
         }
     }
 
@@ -150,6 +155,8 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_R) {
             hoePressed = false;
+        }
+        if(code == KeyEvent.VK_T) {
         }
 
         if(code == KeyEvent.VK_O) {

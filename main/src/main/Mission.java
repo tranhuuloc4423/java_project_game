@@ -20,10 +20,13 @@ public class Mission implements MouseListener {
     public ArrayList<Item> listPlant = new ArrayList<>();
     GamePanel gp;
 
-    BufferedImage missionPanel, bar, submitBtn;
+    BufferedImage missionPanel, bar, submitBtn, finishPanel;
     BufferedImage[] submitBtnArr = new BufferedImage[2];
     public boolean missionOn = false;
     public boolean missionSubmit = false;
+    public boolean isFinish = false;
+
+
 
     //    mission 1: 1:10 1 hạt giống 2
     //    mission 2: 1:20 2:10 1 hạt giống 3
@@ -35,9 +38,7 @@ public class Mission implements MouseListener {
 
     public Mission(GamePanel gp) {
         this.gp = gp;
-        missionPanel = setupImage("/res/menu/mission_panel.png");
         setupPanel();
-        submitBtn = submitBtnArr[0];
         createMissionList();
         createMissionLevel();
         gp.addMouseListener(this);
@@ -89,7 +90,7 @@ public class Mission implements MouseListener {
     }
 
     public void setupPlants() {
-        listPlant.addAll(gp.store.plantItems);
+        listPlant.addAll(gp.storage.items);
     }
 
     public void setupMissionLevel() {
@@ -127,24 +128,68 @@ public class Mission implements MouseListener {
 
     public void draw(Graphics2D g2) {
         this.g2 = g2;
-        drawImage(missionPanel, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() - gp.tileSize, gp.tileSize);
-        drawImage(submitBtn, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() + 22, gp.tileSize * 7);
-        drawMissionLevel(0);
+        if(!isFinish) {
+            drawImage(missionPanel, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() - gp.tileSize, gp.tileSize);
+            drawImage(submitBtn, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() + 22, gp.tileSize * 7);
+            drawMissionLevel(0);
+        }
+        drawCompletedGame(g2);
+    }
+
+    public void drawCompletedGame(Graphics2D g2) {
+        if(isFinish) {
+            gp.gameState = gp.pauseState;
+            int screenCenterX = (gp.screenWidth / 2);
+            int screenCenterY = (gp.screenHeight / 2);
+            int centerX = screenCenterX  - (finishPanel.getWidth() / 2);
+            int centerY = screenCenterY - (finishPanel.getHeight() / 2);
+            drawImage(finishPanel, centerX, centerY);
+
+            String title = "Congratulations!";
+            String text = "You completed";
+            String text2 = "the game in";
+            String time = gp.gameDay + " d, " + gp.gameHour + " h, " + gp.gameMinute + " m.";
+            FontMetrics fontMetrics = g2.getFontMetrics();
+            int titleWidth = fontMetrics.stringWidth(title);
+            int textWidth = fontMetrics.stringWidth(text);
+            int text2Width = fontMetrics.stringWidth(text2);
+            int timeWidth = fontMetrics.stringWidth(time);
+            int cornerXTitle = screenCenterX - (titleWidth / 2) - 78;
+            int cornerXText = screenCenterX - (textWidth / 2) - 50;
+            int cornerXText2 = screenCenterX - (text2Width / 2) - 44;
+            int cornerXTime = screenCenterX - (timeWidth / 2) - 44;
+            int cornerY = screenCenterY - 60;
+            drawText(title, cornerXTitle, cornerY);
+            drawText(text, cornerXText, cornerY + 50, 26);
+            drawText(text2, cornerXText2, cornerY + 100, 26);
+            drawText(time, cornerXTime, cornerY + 150, 26);
+            int widthBtn = screenCenterX - (submitBtn.getWidth()) + 90;
+            int heightBtn = screenCenterY + 110;
+            drawImage(submitBtn, widthBtn, heightBtn);
+        }
     }
 
     public void setupPanel() {
-        submitBtnArr[0] = setupImage("/res/menu/btnSubmit.png", 2);
-        submitBtnArr[1] = setupImage("/res/menu/btnSubmitActive.png", 2);
-        bar = setupImage("/res/menu/bar.png");
+        submitBtnArr[0] = setupImage("/res/ui/btnSubmit.png", 2);
+        submitBtnArr[1] = setupImage("/res/ui/btnSubmitActive.png", 2);
+        missionPanel = setupImage("/res/ui/mission_panel.png");
+        finishPanel = setupImage("/res/ui/finish.png");
+        bar = setupImage("/res/ui/bar.png");
+        submitBtn = submitBtnArr[0];
     }
 
-    public void drawText(Item item, String text) {
+    public void drawText(String text, int x, int y) {
         Font font = new Font("Arial", Font.BOLD, 32);
         g2.setFont(font);
         g2.setColor(Color.DARK_GRAY);
-        int cornerX = item.x + item.itemimage.getWidth();
-        int cornerY = item.y + item.itemimage.getHeight() / 2 + 10;
-        g2.drawString(text, cornerX, cornerY);
+        g2.drawString(text, x, y);
+    }
+
+    public void drawText(String text, int x, int y, int fontsize) {
+        Font font = new Font("Arial", Font.BOLD, fontsize);
+        g2.setFont(font);
+        g2.setColor(Color.DARK_GRAY);
+        g2.drawString(text, x, y);
     }
 
     public void drawMission(MissionLevel mission) {
@@ -175,7 +220,9 @@ public class Mission implements MouseListener {
 
             item.draw(g2);
             String text = String.valueOf(item.quantity) + " / " + String.valueOf(targets[i]);
-            drawText(item, text);
+            int x = item.x + item.itemimage.getWidth();
+            int y = item.y + item.itemimage.getHeight() / 2 + 10;
+            drawText(text, x, y);
             if (item.quantity < targets[i]) {
                 pass = false;
             }
@@ -184,14 +231,13 @@ public class Mission implements MouseListener {
         int rewardY = gp.tileSize * 6 - 22;
         drawReward(mission.reward, mission.quantityReward, rewardX, rewardY);
 
-
         // nếu đủ target và nhấn nút submit
         if (pass && missionSubmit) { // missionSubmit
             // lấy số lượng trong kho trừ targets
-            for(int i = 0; i < gp.store.plantListSize; i++) {
+            for(int i = 0; i < gp.storage.size; i++) {
                 for (int j = 0; j < names.length; j++) {
-                    if (gp.store.plantItems.get(i).name.equals(names[j])) {
-                        gp.store.plantItems.get(i).removeQuantity(mission.targets[j]);
+                    if (gp.storage.items.get(i).name.equals(names[j])) {
+                        gp.storage.items.get(i).removeQuantity(mission.targets[j]);
                     }
                 }
             }
@@ -212,12 +258,15 @@ public class Mission implements MouseListener {
         item.x = x + 34;
         g2.drawImage(item.itemimage, item.x, item.y, null);
         String text = "x " + quantity;
-        drawText(item, text);
+        int cornerX = item.x + item.itemimage.getWidth();
+        int cornerY = item.y + item.itemimage.getHeight() / 2 + 10;
+        drawText(text, cornerX, cornerY);
     }
 
     public void drawMissionLevel(int missionIndex) {
         if (missionIndex >= missionList.size()) {
             System.out.println("Mission completed");
+            isFinish = true;
             return;
         }
 
@@ -234,7 +283,7 @@ public class Mission implements MouseListener {
     }
 
     public void createMissionLevel() {
-        if(gp.store != null) {
+        if(gp.storage != null) {
             setupPlants();
             setupMissionLevel();
             //    mission 1: 1:10 1 hạt giống 2
@@ -261,13 +310,31 @@ public class Mission implements MouseListener {
             int delay = 100;
             ActionListener action = new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
-                    submitBtn = submitBtnArr[0];
                     missionSubmit = false;
+                    submitBtn = submitBtnArr[0];
                 }
             };
             Timer timer = new Timer(delay, action);
             timer.setRepeats(false);
             timer.start();
+            timer.restart();
+        }
+        int imageX2 = (gp.screenWidth / 2) - width + 90;
+        int imageY2 = (gp.screenHeight / 2) + 110;
+        if(x >= imageX2 && x <= width && y >= imageY2 && y <= height) {
+            submitBtn = submitBtnArr[1];
+            System.out.println("finish: " + isFinish);
+            int delay = 100;
+            ActionListener action = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    submitBtn = submitBtnArr[0];
+                    isFinish = false;
+                }
+            };
+            Timer timer = new Timer(delay, action);
+            timer.setRepeats(false);
+            timer.start();
+            timer.restart();
         }
     }
 

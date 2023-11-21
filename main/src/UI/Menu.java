@@ -174,7 +174,7 @@ public class Menu implements MouseListener {
         BufferedImage image;
         BufferedImage scaledIamge = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/menu/"+ pathName +".png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/res/ui/"+ pathName +".png"));
             int width = image.getWidth() * scale;
             int height = image.getHeight() * scale;
             scaledIamge = UtilityTool.scaleImage(image, width, height);

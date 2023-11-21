@@ -55,22 +55,22 @@ public class PlantCrop {
     public void plantcropSetup() {
         if(gp.keyH.plantPressed) {
             if(gp.invetoryM.selectedItem == 1) {
-                plantCrop("plant_1_", 10000);
+                plantCrop("plant_1_", 1000);
             }
             if(gp.invetoryM.selectedItem == 2) {
-                plantCrop("plant_2_", 12000);
+                plantCrop("plant_2_", 1000);
             }
             if(gp.invetoryM.selectedItem == 3) {
-                plantCrop("plant_3_", 15000);
+                plantCrop("plant_3_", 1000);
             }
             if(gp.invetoryM.selectedItem == 4) {
-                plantCrop("plant_4_", 20000);
+                plantCrop("plant_4_", 1000);
             }
             if(gp.invetoryM.selectedItem == 5) {
-                plantCrop("plant_5_", 30000);
+                plantCrop("plant_5_", 1000);
             }
             if(gp.invetoryM.selectedItem == 6) {
-                plantCrop("plant_6_", 50000);
+                plantCrop("plant_6_", 1000);
             }
         }
     }
@@ -100,7 +100,7 @@ public class PlantCrop {
     public void handleQuantity(String name) {
         int index = Integer.parseInt(name.split("_")[1]);
         gp.invetoryM.items.get(index - 1).addQuantity(2);
-        gp.store.plantItems.get(index - 1).addQuantity(2);
+        gp.storage.items.get(index - 1).addQuantity(2);
     }
 
     public void plantCrop(String fileName, int time) {
@@ -117,7 +117,7 @@ public class PlantCrop {
                         String pathName = fileName + (i + 1);
                         plantImages[i] = setupPlantImage(pathName);
                     }
-                    Tree plant = new Tree(plantImages, time, fileName);
+                    Tree plant = new Tree(gp, plantImages, time, fileName);
                     plant.worldX = gp.tileSize * col;
                     plant.worldY = gp.tileSize * row;
                     plantMap.put(position, plant);
