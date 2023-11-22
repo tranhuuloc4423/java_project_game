@@ -15,24 +15,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
+// Đối tượng quản lý menu và giao diện người dùng
 public class Menu implements MouseListener {
-    GamePanel gp;
-    public  boolean drawSettingMenu = false;
-    public boolean drawExitMenu = false;
+    GamePanel gp; // Tham chiếu đến đối tượng GamePanel
+    public  boolean drawSettingMenu = false; // Xác định liệu có vẽ menu cài đặt hay không
+    public boolean drawExitMenu = false; // Xác định liệu có vẽ menu thoát hay không
 
-    public static boolean isMusicEnabled = true;
-    public static boolean isSoundEffectEnabled = true;
-    public boolean isSubmitEnabled = false;
-    public boolean isCancelEnabled = false;
-    public boolean isSubmitExit = false;
-    public boolean isCancelExit = false;
-    public boolean isSubmit = false;
-    public boolean isCancel = false;
+    public static boolean isMusicEnabled = true; // Trạng thái âm thanh được kích hoạt hay không
+    public static boolean isSoundEffectEnabled = true; // Trạng thái hiệu ứng âm thanh được kích hoạt hay không
+    public boolean isSubmitEnabled = false; // Trạng thái nút submit được kích hoạt hay không
+    public boolean isCancelEnabled = false; // Trạng thái nút cancel được kích hoạt hay không
+    public boolean isSubmitExit = false; // Trạng thái nút submit trong menu thoát được kích hoạt hay không
+    public boolean isCancelExit = false; // Trạng thái nút cancel trong menu thoát được kích hoạt hay không
+    public boolean isSubmit = false; // Trạng thái nút submit được kích hoạt hay không
+    public boolean isCancel = false; // Trạng thái nút cancel được kích hoạt hay không
 
-    public boolean isAddClicked = false;
-    public boolean isMinusClicked = false;
+    public boolean isAddClicked = false; // Trạng thái nút add được nhấn hay không
+    public boolean isMinusClicked = false; // Trạng thái nút minus được nhấn hay không
 
-    public static int initVolume = 8;
+    public static int initVolume = 8;   // Giá trị khởi tạo của âm lượng
 
     // setting panel
     public BufferedImage settingMenuFrame,settingMenuMusic, settingMenuSoundEffect,  settingMenuMusicIcon, settingMenuSEIcon, settingMenuSubmit, settingMenuCancel, settingAdd, settingMinus;
@@ -48,11 +49,14 @@ public class Menu implements MouseListener {
     public BufferedImage[] imageSubmitExits = new BufferedImage[2];
     public BufferedImage[] imageCancelExits = new BufferedImage[2];
     public int delay = 150;
+    // Khởi tạo đối tượng Menu với GamePanel được chuyển vào
     public Menu(GamePanel gp) {
         this.gp = gp;
-        setupOptionPanel();
-        gp.addMouseListener(this);
+        setupOptionPanel(); // Khởi tạo các thành phần của menu
+        gp.addMouseListener(this); // Đăng ký lắng nghe sự kiện chuột
     }
+
+    // Cập nhật trạng thái của các thành phần trong menu
     public void update() {
         // option setting
         if(isMusicEnabled) {
@@ -99,6 +103,7 @@ public class Menu implements MouseListener {
         }
     }
 
+    // Khởi tạo các hình ảnh và biến cho menu cài đặt
     public void setupOptionPanel() {
         // option panel
         settingMenuFrame = setupImage("OptionSetting");
@@ -134,6 +139,7 @@ public class Menu implements MouseListener {
         imageCancelExit = imageCancelExits[0];
     }
 
+    // Tính toán vị trí và kích thước của một đối tượng dựa trên vị trí mong muốn và kích thước của màn hình
     public int[] getBoundPosition(BufferedImage image, int xSize , int ySize, int size) {
         int width = image.getWidth();
         int height = image.getHeight();
@@ -148,16 +154,19 @@ public class Menu implements MouseListener {
 
         return arr;
     }
+    // Kiểm tra xem chuột có ở trong vùng xác định của một đối tượng hay không
     public boolean checkMousePosition(int[] position, int mouseX, int mouseY) {
         return mouseX >= position[2] && mouseX <= position[2] + position[0] && mouseY >= position[3] && mouseY <= position[3] + position[1];
     }
 
+    // Vẽ một đối tượng BufferedImage lên màn hình tại vị trí và kích thước xác định
     public void drawImage(Graphics2D g2, BufferedImage image, int xSize , int ySize) {
         int x = (gp.screenWidth - image.getWidth()) / 2 + xSize;
         int y = (gp.screenHeight - image.getHeight()) / 2 + ySize;
         g2.drawImage(image, x, y, null);
     }
 
+    // Tải hình ảnh từ tệp nguồn và thay đổi kích thước theo tỉ lệ đã xác định
     public BufferedImage setupImage(String pathName) {
         BufferedImage image;
         BufferedImage scaledImage = null;
@@ -176,6 +185,7 @@ public class Menu implements MouseListener {
         }
         return scaledImage;
     }
+
 
     public BufferedImage setupImage(String pathName, int scale) {
         BufferedImage image;
@@ -196,6 +206,7 @@ public class Menu implements MouseListener {
         return scaledImage;
     }
 
+    // Vẽ các thành phần của menu cài đặt lên màn hình
     public void drawOptionPanel(Graphics2D g2){
         drawImage(g2, settingMenuFrame, 0, 0);
         drawImage(g2, settingMenuMusic, -85, -65);
@@ -212,6 +223,7 @@ public class Menu implements MouseListener {
         isCancelEnabled = false;
     }
 
+    // Vẽ một chuỗi văn bản lên màn hình tại một vị trí xác định
     public void drawText(Graphics2D g2, int value, int x, int y) {
         Font font = new Font("Arial", Font.BOLD, 40);
         g2.setFont(font);
@@ -222,6 +234,7 @@ public class Menu implements MouseListener {
         g2.drawString(text, newX, newY);
     }
 
+    // Vẽ các thành phần của menu thoát lên màn hình
     public void drawExitMenu(Graphics2D g2) {
         drawImage(g2, exitSetting, 0, 0);
         drawImage(g2, imageSubmitExit, -80, 40);
@@ -229,27 +242,33 @@ public class Menu implements MouseListener {
         isSubmitExit = false;
         isCancelExit = false;
     }
+
     @Override
+    // Phương thức không được triển khai cho sự kiện nhấp chuột
     public void mouseClicked(MouseEvent e) {
 
     }
 
     @Override
+    // Phương thức không được triển khai cho sự kiện nhấn chuột
     public void mousePressed(MouseEvent e) {
 
     }
 
     @Override
+    // Phương thức không được triển khai cho sự kiện nhả chuột
     public void mouseReleased(MouseEvent e) {
 
     }
 
     @Override
+    // Phương thức không được triển khai cho sự kiện chuột nhập vào
     public void mouseEntered(MouseEvent e) {
 
     }
 
     @Override
+    // Phương thức không được triển khai cho sự kiện chuột rời khỏi
     public void mouseExited(MouseEvent e) {
 
     }

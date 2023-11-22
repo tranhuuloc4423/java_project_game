@@ -10,27 +10,30 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+// Lớp MainMenu kế thừa từ Menu và quản lý menu chính của trò chơi
 public class MainMenu extends Menu  {
 
-    private boolean drawMainMenu = true;
-    private boolean isPauseEnabled = false;
-    private boolean isOptionEnabled = false;
-    private boolean isQuitEnabled = false;
+    private boolean drawMainMenu = true; // Xác định liệu có vẽ menu chính hay không
+    private boolean isPauseEnabled = false; // Trạng thái nút pause được kích hoạt hay không
+    private boolean isOptionEnabled = false; // Trạng thái nút option được kích hoạt hay không
+    private boolean isQuitEnabled = false; // Trạng thái nút quit được kích hoạt hay không
 
     // panel
-    BufferedImage panel, imagePause, imageOption, imageQuit;
+    BufferedImage panel, imagePause, imageOption, imageQuit; // Hình ảnh của panel và các nút trong menu
     BufferedImage[] imagePauses = new BufferedImage[2];
     BufferedImage[] imageOptions = new BufferedImage[2];
     BufferedImage[] imageQuits = new BufferedImage[2];
-    Timer timer;
+    Timer timer; // Timer để xử lý các hành động trễ
 
     // exit
 
+    // Khởi tạo đối tượng MainMenu với GamePanel được chuyển vào
     public MainMenu(GamePanel gp) {
         super(gp);
-        setupPanel();
+        setupPanel(); // Khởi tạo các thành phần của menu chính
     }
 
+    // Vẽ menu chính lên màn hình dựa trên trạng thái của game
     public void draw(Graphics2D g2) {
         if (gp.gameState == gp.playState) {
             drawSettingMenu = false;
@@ -55,7 +58,7 @@ public class MainMenu extends Menu  {
             }
         }
     }
-
+    // Cập nhật trạng thái các thành phần trong menu chính
     public void update() {
         super.update();
         // panel
@@ -75,7 +78,7 @@ public class MainMenu extends Menu  {
             imageQuit = imageQuits[1];
         }
     }
-
+    // Khởi tạo hình ảnh và biến cho menu chính
     public void setupPanel() {
         // panel
         panel = setupImage("BasicSetting");
@@ -89,6 +92,7 @@ public class MainMenu extends Menu  {
         imageOption = imageOptions[0];
         imageQuit = imageQuits[0];
     }
+    // Vẽ menu chính lên màn hình
     public void drawPanel(Graphics2D g2) {
         drawImage(g2, panel, 0, 0);
         drawImage(g2, imagePause, 0, -90);
@@ -100,6 +104,7 @@ public class MainMenu extends Menu  {
     }
 
     @Override
+    // Xử lý sự kiện khi chuột được nhả
     public void mouseReleased(MouseEvent e) {
         isPauseEnabled = false;
         isOptionEnabled = false;
@@ -116,6 +121,7 @@ public class MainMenu extends Menu  {
     }
 
     @Override
+    // Xử lý sự kiện khi chuột được nhấn
     public void mousePressed(MouseEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

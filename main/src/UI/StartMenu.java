@@ -15,19 +15,20 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+// Lớp StartMenu kế thừa từ Menu và quản lý menu bắt đầu của trò chơi
 public class StartMenu extends Menu {
-    private boolean drawStartMenu = true;
-    private  boolean drawAboutMenu = false;
-    private  boolean drawAboutMenuPage2 = false;
-    private  boolean drawExitMenu = false;
-    private  boolean isAddEnabled = false;
-    private  boolean isMinusEnabled = false;
-    private  boolean isCloseEnabled = false;
+    private boolean drawStartMenu = true; // Xác định liệu có vẽ menu bắt đầu hay không
+    private  boolean drawAboutMenu = false; // Xác định liệu có vẽ menu about hay không
+    private  boolean drawAboutMenuPage2 = false;  // Xác định liệu có vẽ trang thứ hai của menu about hay không
+    private  boolean drawExitMenu = false; // Xác định liệu có vẽ menu thoát hay không
+    private  boolean isAddEnabled = false;// Trạng thái nút add được kích hoạt hay không
+    private  boolean isMinusEnabled = false; // Trạng thái nút minus được kích hoạt hay không
+    private  boolean isCloseEnabled = false; // Trạng thái nút close được kích hoạt hay không
 
-    private boolean isPlayEnabled = false;
-    private boolean isSettingEnabled = false;
-    private boolean isAboutEnabled = false;
-    private boolean isExitEnabled = false;
+    private boolean isPlayEnabled = false; // Trạng thái nút play được kích hoạt hay không
+    private boolean isSettingEnabled = false; // Trạng thái nút setting được kích hoạt hay không
+    private boolean isAboutEnabled = false; // Trạng thái nút about được kích hoạt hay không
+    private boolean isExitEnabled = false; // Trạng thái nút exit được kích hoạt hay không
 
 
 
@@ -47,12 +48,14 @@ public class StartMenu extends Menu {
 
     Timer timer;
 
+    // Khởi tạo đối tượng StartMenu với GamePanel được chuyển vào
     public StartMenu(GamePanel gp) {
         super(gp);
-        setupPanel();
+        setupPanel(); // Khởi tạo các thành phần của menu bắt đầu
 //        gp.addMouseListener(this);
     }
 
+    // Vẽ menu bắt đầu lên màn hình dựa trên trạng thái của game
     public void draw(Graphics2D g2) {
         if (gp.gameState == gp.startState) {
             drawStartMenu(g2);
@@ -69,6 +72,7 @@ public class StartMenu extends Menu {
         }
     }
 
+    // Cập nhật trạng thái các thành phần trong menu bắt đầu
     public void update() {
         super.update();
 
@@ -112,6 +116,7 @@ public class StartMenu extends Menu {
         }
     }
 
+    // Vẽ menu bắt đầu lên màn hình
     public void drawStartMenu(Graphics2D g2) {
         int widthBackground = gp.screenWidth;
         int heightBackground = gp.screenHeight;
@@ -126,6 +131,7 @@ public class StartMenu extends Menu {
         isExitEnabled = false;
     }
 
+    // Khởi tạo hình ảnh và biến cho menu bắt đầu
     public void setupPanel() {
         // start menu
         backgroundImage = setupImage("BackgroundStartMenu");
@@ -157,6 +163,7 @@ public class StartMenu extends Menu {
         aboutMenuAdd = aboutMenuAdds[0];
     }
 
+    // Vẽ trang thứ hai của menu about lên màn hình
     public void drawAboutMenuPage2(Graphics2D g2){
         aboutMenuFrame = aboutMenuFrames[0];
         drawImage(g2, aboutMenuFrame, 0, 0);
@@ -166,6 +173,7 @@ public class StartMenu extends Menu {
         isCloseEnabled = false;
     }
 
+    // Vẽ menu about lên màn hình
     public void drawAboutMenu(Graphics2D g2){
         aboutMenuFrame = aboutMenuFrames[1];
         drawImage(g2, aboutMenuFrame, 0, 0);
@@ -176,6 +184,7 @@ public class StartMenu extends Menu {
     }
 
     @Override
+    // Xử lý sự kiện khi chuột được nhả ra
     public void mouseReleased(MouseEvent e) {
         if(isSubmit) {
             isSubmit = false;
@@ -187,6 +196,7 @@ public class StartMenu extends Menu {
         }
     }
     @Override
+    // Xử lý sự kiện khi chuột được nhấn
     public void mousePressed(MouseEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
