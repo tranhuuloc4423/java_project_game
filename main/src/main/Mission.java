@@ -153,7 +153,6 @@ public class Mission implements MouseListener {
     }
 
     public void drawCompletedGame(Graphics2D g2) {
-        gp.gameState = gp.pauseState;
         int screenCenterX = (gp.screenWidth / 2);
         int screenCenterY = (gp.screenHeight / 2);
         int centerX = screenCenterX  - (finishPanel.getWidth() / 2);
@@ -316,9 +315,9 @@ public class Mission implements MouseListener {
         int y = e.getY();
         int imageX = gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() + 22;
         int imageY = gp.tileSize * 7;
-        int width = submitBtn.getWidth() + x;
-        int height = submitBtn.getHeight() + y;
-        if (x >= imageX && x <= width && y >= imageY && y <= height) {
+        int width = submitBtn.getWidth() + imageX;
+        int height = submitBtn.getHeight() + imageY;
+        if (x >= imageX && x <= width && y >= imageY && y <= height && gp.mission.missionOn) {
             submitBtn = submitBtnArr[1];
             missionSubmit = true;
             int delay = 100;
@@ -333,9 +332,11 @@ public class Mission implements MouseListener {
             timer.start();
             timer.restart();
         }
-        int imageX2 = (gp.screenWidth / 2) - width + 90;
+        int imageX2 = (gp.screenWidth / 2) - 90;
         int imageY2 = (gp.screenHeight / 2) + 110;
-        if(x >= imageX2 && x <= width && y >= imageY2 && y <= height) {
+        int width2 = submitBtn.getWidth() + imageX2;
+        int height2 = submitBtn.getHeight() + imageY2;
+        if(x >= imageX2 && x <= width2 && y >= imageY2 && y <= height2 && gp.mission.missionOn) {
             submitBtn = submitBtnArr[1];
             System.out.println("finish: " + isFinish);
             int delay = 100;
