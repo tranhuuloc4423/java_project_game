@@ -29,7 +29,7 @@ public class Storage {
 
     public void setupPlantItems() {
         for(int i = 1; i <= plantListSize; i++) {
-            Item item = new Item("plant_" + i, "res/plants/plant_" + i + "_4.png", 0, gp);
+            Item item = new Item("plant_" + i, "res/plants/plant_" + i + "_4.png", 1000, gp);
             items.add(item);
         }
     }
