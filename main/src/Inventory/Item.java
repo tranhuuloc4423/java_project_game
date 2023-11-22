@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Item {
     public String name;
@@ -25,10 +26,15 @@ public class Item {
 
     public void drawImage(String filePath) {
         try {
-            BufferedImage image = ImageIO.read(getClass().getResourceAsStream(filePath));
-            int width = image.getWidth() * gp.scale;
-            int height = image.getHeight() * gp.scale;
-            itemimage = UtilityTool.scaleImage(image, width, height);
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
+            if (inputStream != null) {
+                BufferedImage image = ImageIO.read(inputStream);
+                int width = image.getWidth() * gp.scale;
+                int height = image.getHeight() * gp.scale;
+                itemimage = UtilityTool.scaleImage(image, width, height);
+            } else {
+                throw new IOException("Could not find resource: " + filePath);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

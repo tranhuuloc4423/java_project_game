@@ -12,7 +12,6 @@ public class Sound {
     public Clip clip;
     URL soundURL = null;
     GamePanel gp;
-
     public Sound(String name, GamePanel gp) {
         this.gp = gp;
         soundURL = getClass().getResource("/res/sound/" + name + ".wav");

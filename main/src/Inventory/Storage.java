@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class Storage {
@@ -28,7 +29,7 @@ public class Storage {
 
     public void setupPlantItems() {
         for(int i = 1; i <= plantListSize; i++) {
-            Item item = new Item("plant_" + i, "/res/plants/plant_" + i + "_4.png", 0, gp);
+            Item item = new Item("plant_" + i, "res/plants/plant_" + i + "_4.png", 0, gp);
             items.add(item);
         }
     }
@@ -90,16 +91,22 @@ public class Storage {
 
     public BufferedImage setupImage(String namePath) {
         BufferedImage image;
-        BufferedImage scaleImage = null;
+        BufferedImage scaledImage = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/menu/" + namePath + ".png"));
-            int width = image.getWidth() * gp.scale;
-            int height = image.getHeight() * gp.scale;
-            scaleImage = UtilityTool.scaleImage(image, width, height);
-            image = null;
+            String imagePath = "res/menu/" + namePath + ".png";
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(imagePath);
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                int width = image.getWidth() * gp.scale;
+                int height = image.getHeight() * gp.scale;
+                scaledImage = UtilityTool.scaleImage(image, width, height);
+                image = null;
+            } else {
+                throw new IOException("Could not find resource: " + imagePath);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return scaleImage;
+        return scaledImage;
     }
 }

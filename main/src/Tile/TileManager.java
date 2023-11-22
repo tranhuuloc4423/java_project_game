@@ -22,7 +22,7 @@ public class TileManager {
         tile = new Tile[1000];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileManager();
-        loadMap("/res/maps/Map.txt");
+        loadMap("res/maps/Map.txt");
     }
 
     public void getTileManager() {
@@ -64,12 +64,17 @@ public class TileManager {
         setup(999, "999",true);
     }
     public void setup(int index, String imageName, boolean collision) {
-        try{
+        try {
             tile[index] = new Tile();
-            BufferedImage image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/tiles/" + imageName + ".png")));
-            tile[index].collision = collision;
-            tile[index].image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
-        } catch(IOException e) {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("res/tiles/" + imageName + ".png");
+            if (inputStream != null) {
+                BufferedImage image = ImageIO.read(inputStream);
+                tile[index].collision = collision;
+                tile[index].image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            } else {
+                throw new IOException("Could not find resource: " + imageName);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -85,7 +90,7 @@ public class TileManager {
 
     public void loadMap(String filePath) {
         try {
-            InputStream is = getClass().getResourceAsStream(filePath);
+            InputStream is = getClass().getClassLoader().getResourceAsStream(filePath);
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
             int col = 0, row = 0;

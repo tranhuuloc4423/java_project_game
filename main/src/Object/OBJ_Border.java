@@ -10,6 +10,6 @@ public class OBJ_Border extends SuperObject {
     public OBJ_Border(GamePanel gp) {
         super(gp);
         name = "Border";
-        image = setupImage("/res/ui/border.png", 1.5);
+        image = setupImage("res/ui/border.png", 1.5);
     }
 }

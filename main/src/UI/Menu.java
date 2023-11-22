@@ -12,6 +12,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 
 public class Menu implements MouseListener {
     GamePanel gp;
@@ -150,7 +152,7 @@ public class Menu implements MouseListener {
         return mouseX >= position[2] && mouseX <= position[2] + position[0] && mouseY >= position[3] && mouseY <= position[3] + position[1];
     }
 
-    public void drawImage(Graphics2D g2,BufferedImage image, int xSize , int ySize) {
+    public void drawImage(Graphics2D g2, BufferedImage image, int xSize , int ySize) {
         int x = (gp.screenWidth - image.getWidth()) / 2 + xSize;
         int y = (gp.screenHeight - image.getHeight()) / 2 + ySize;
         g2.drawImage(image, x, y, null);
@@ -158,30 +160,40 @@ public class Menu implements MouseListener {
 
     public BufferedImage setupImage(String pathName) {
         BufferedImage image;
-        BufferedImage scaledIamge = null;
+        BufferedImage scaledImage = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/ui/"+ pathName +".png"));
-            int width = image.getWidth() * gp.scale;
-            int height = image.getHeight() * gp.scale;
-            scaledIamge = UtilityTool.scaleImage(image, width, height);
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("res/ui/" + pathName + ".png");
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                int width = image.getWidth() * gp.scale;
+                int height = image.getHeight() * gp.scale;
+                scaledImage = UtilityTool.scaleImage(image, width, height);
+            } else {
+                throw new IOException("Could not find resource: " + pathName);
+            }
         } catch(IOException e) {
             e.printStackTrace();
         }
-        return scaledIamge;
+        return scaledImage;
     }
 
     public BufferedImage setupImage(String pathName, int scale) {
         BufferedImage image;
-        BufferedImage scaledIamge = null;
+        BufferedImage scaledImage = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/ui/"+ pathName +".png"));
-            int width = image.getWidth() * scale;
-            int height = image.getHeight() * scale;
-            scaledIamge = UtilityTool.scaleImage(image, width, height);
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("res/ui/" + pathName + ".png");
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                int width = image.getWidth() * scale;
+                int height = image.getHeight() * scale;
+                scaledImage = UtilityTool.scaleImage(image, width, height);
+            } else {
+                throw new IOException("Could not find resource: " + pathName);
+            }
         } catch(IOException e) {
             e.printStackTrace();
         }
-        return scaledIamge;
+        return scaledImage;
     }
 
     public void drawOptionPanel(Graphics2D g2){

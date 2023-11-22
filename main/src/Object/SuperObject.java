@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 public class SuperObject {
@@ -31,11 +32,16 @@ public class SuperObject {
         BufferedImage image;
         BufferedImage scaledImage = null;
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(path)));
-            int width = image.getWidth() * gp.scale;
-            int height = image.getHeight() * gp.scale;
-            scaledImage = UtilityTool.scaleImage(image, width, height);
-        } catch(IOException e) {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path);
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                int width = image.getWidth() * gp.scale;
+                int height = image.getHeight() * gp.scale;
+                scaledImage = UtilityTool.scaleImage(image, width, height);
+            } else {
+                throw new IOException("Could not find resource: " + path);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return scaledImage;
@@ -45,11 +51,16 @@ public class SuperObject {
         BufferedImage image;
         BufferedImage scaledImage = null;
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(path)));
-            int width = (int) (image.getWidth() * scale);
-            int height = (int) (image.getHeight() * scale);
-            scaledImage = UtilityTool.scaleImage(image, width, height);
-        } catch(IOException e) {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path);
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                int width = (int) (image.getWidth() * scale);
+                int height = (int) (image.getHeight() * scale);
+                scaledImage = UtilityTool.scaleImage(image, width, height);
+            } else {
+                throw new IOException("Could not find resource: " + path);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return scaledImage;

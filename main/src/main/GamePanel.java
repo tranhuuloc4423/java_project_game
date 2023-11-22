@@ -5,7 +5,7 @@ import Entity.Player;
 import Inventory.InventoryManager;
 import Inventory.Storage;
 import Object.SuperObject;
-import Tile.PlantCrop;
+import Plant.PlantCrop;
 import Tile.TileManager;
 
 import javax.imageio.ImageIO;
@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 
 import Object.*;
 import UI.*;
@@ -93,9 +94,15 @@ public class GamePanel extends JPanel implements  Runnable {
     }
     public void customCursor() {
         try {
-            BufferedImage cursorImage = ImageIO.read(getClass().getResourceAsStream("/res/mouse/custom_mouse_1.png"));
-            customCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "customCursor");
-            setCursor(customCursor);
+            String imagePath = "res/mouse/custom_mouse_1.png";
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(imagePath);
+            if (inputStream != null) {
+                BufferedImage cursorImage = ImageIO.read(inputStream);
+                customCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "customCursor");
+                setCursor(customCursor);
+            } else {
+                throw new IOException("Could not find resource: " + imagePath);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -287,7 +294,7 @@ public class GamePanel extends JPanel implements  Runnable {
 
             // plantcrop
 
-//            ui.draw(g2);
+            // ui.draw(g2);
             if(mission.missionOn) {
                 mission.draw(g2);
             }

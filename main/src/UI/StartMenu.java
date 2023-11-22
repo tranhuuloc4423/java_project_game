@@ -160,8 +160,8 @@ public class StartMenu extends Menu {
     public void drawAboutMenuPage2(Graphics2D g2){
         aboutMenuFrame = aboutMenuFrames[0];
         drawImage(g2, aboutMenuFrame, 0, 0);
-        drawImage(g2, aboutMenuMinus, -130, 155);
-        drawImage(g2, aboutMenuClose, 130, 155);
+        drawImage(g2, aboutMenuMinus, 130, 155);
+        drawImage(g2, aboutMenuClose, -130, 155);
         isMinusEnabled = false;
         isCloseEnabled = false;
     }
@@ -286,19 +286,19 @@ public class StartMenu extends Menu {
                     }
                 }
                 if (drawAboutMenuPage2) {
-                    int[] positionAboutMinus = getBoundPosition(aboutMenuMinuses[1], -130, 155, 1);
+                    int[] positionAboutClose = getBoundPosition(aboutMenuCloses[1], -130, 155, 1);
+                    if (checkMousePosition(positionAboutClose, mouseX, mouseY)) {
+                        isCloseEnabled = !isCloseEnabled;
+                        action = () -> drawAboutMenuPage2 = false;
+                    }
+
+                    int[] positionAboutMinus = getBoundPosition(aboutMenuMinuses[1], 130, 155, 1);
                     if (checkMousePosition(positionAboutMinus, mouseX, mouseY)) {
                         isMinusEnabled = !isMinusEnabled;
                         action = () -> {
                             drawAboutMenu = true;
                             drawAboutMenuPage2 = false;
                         };
-                    }
-
-                    int[] positionAboutClose = getBoundPosition(aboutMenuCloses[1], -130, 155, 1);
-                    if (checkMousePosition(positionAboutClose, mouseX, mouseY)) {
-                        isCloseEnabled = !isCloseEnabled;
-                        action = () -> drawAboutMenuPage2 = false;
                     }
                 }
 

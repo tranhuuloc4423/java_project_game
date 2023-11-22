@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -25,6 +26,7 @@ public class Mission implements MouseListener {
     public boolean missionOn = false;
     public boolean missionSubmit = false;
     public boolean isFinish = false;
+    public boolean done = false;
 
 
 
@@ -64,29 +66,40 @@ public class Mission implements MouseListener {
 
     public BufferedImage setupImage(String imagePath) {
         BufferedImage image;
-        BufferedImage scaleImage = null;
+        BufferedImage scaledImage = null;
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
-            int width = image.getWidth() * gp.scale;
-            int height = image.getHeight() * gp.scale;
-            scaleImage = UtilityTool.scaleImage(image, width, height);
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(imagePath);
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                int width = image.getWidth() * gp.scale;
+                int height = image.getHeight() * gp.scale;
+                scaledImage = UtilityTool.scaleImage(image, width, height);
+            } else {
+                throw new IOException("Could not find resource: " + imagePath);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return scaleImage;
+        return scaledImage;
     }
+
     public BufferedImage setupImage(String imagePath, int scale) {
         BufferedImage image;
-        BufferedImage scaleImage = null;
+        BufferedImage scaledImage = null;
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
-            int width = image.getWidth() * scale;
-            int height = image.getHeight() * scale;
-            scaleImage = UtilityTool.scaleImage(image, width, height);
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(imagePath);
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                int width = image.getWidth() * scale;
+                int height = image.getHeight() * scale;
+                scaledImage = UtilityTool.scaleImage(image, width, height);
+            } else {
+                throw new IOException("Could not find resource: " + imagePath);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return scaleImage;
+        return scaledImage;
     }
 
     public void setupPlants() {
@@ -128,53 +141,54 @@ public class Mission implements MouseListener {
 
     public void draw(Graphics2D g2) {
         this.g2 = g2;
-        if(!isFinish) {
-            drawImage(missionPanel, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() - gp.tileSize, gp.tileSize);
-            drawImage(submitBtn, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() + 22, gp.tileSize * 7);
-            drawMissionLevel(0);
+        if(!done) {
+            if(!isFinish) {
+                drawImage(missionPanel, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() - gp.tileSize, gp.tileSize);
+                drawImage(submitBtn, gp.tileSize * (gp.maxScreenCol) - missionPanel.getWidth() + 22, gp.tileSize * 7);
+                drawMissionLevel(0);
+            } else {
+                drawCompletedGame(g2);
+            }
         }
-        drawCompletedGame(g2);
     }
 
     public void drawCompletedGame(Graphics2D g2) {
-        if(isFinish) {
-            gp.gameState = gp.pauseState;
-            int screenCenterX = (gp.screenWidth / 2);
-            int screenCenterY = (gp.screenHeight / 2);
-            int centerX = screenCenterX  - (finishPanel.getWidth() / 2);
-            int centerY = screenCenterY - (finishPanel.getHeight() / 2);
-            drawImage(finishPanel, centerX, centerY);
+        gp.gameState = gp.pauseState;
+        int screenCenterX = (gp.screenWidth / 2);
+        int screenCenterY = (gp.screenHeight / 2);
+        int centerX = screenCenterX  - (finishPanel.getWidth() / 2);
+        int centerY = screenCenterY - (finishPanel.getHeight() / 2);
+        drawImage(finishPanel, centerX, centerY);
 
-            String title = "Congratulations!";
-            String text = "You completed";
-            String text2 = "the game in";
-            String time = gp.gameDay + " d, " + gp.gameHour + " h, " + gp.gameMinute + " m.";
-            FontMetrics fontMetrics = g2.getFontMetrics();
-            int titleWidth = fontMetrics.stringWidth(title);
-            int textWidth = fontMetrics.stringWidth(text);
-            int text2Width = fontMetrics.stringWidth(text2);
-            int timeWidth = fontMetrics.stringWidth(time);
-            int cornerXTitle = screenCenterX - (titleWidth / 2) - 78;
-            int cornerXText = screenCenterX - (textWidth / 2) - 50;
-            int cornerXText2 = screenCenterX - (text2Width / 2) - 44;
-            int cornerXTime = screenCenterX - (timeWidth / 2) - 44;
-            int cornerY = screenCenterY - 60;
-            drawText(title, cornerXTitle, cornerY);
-            drawText(text, cornerXText, cornerY + 50, 26);
-            drawText(text2, cornerXText2, cornerY + 100, 26);
-            drawText(time, cornerXTime, cornerY + 150, 26);
-            int widthBtn = screenCenterX - (submitBtn.getWidth()) + 90;
-            int heightBtn = screenCenterY + 110;
-            drawImage(submitBtn, widthBtn, heightBtn);
-        }
+        String title = "Congratulations!";
+        String text = "You completed";
+        String text2 = "the game in";
+        String time = gp.gameDay + " d, " + gp.gameHour + " h, " + gp.gameMinute + " m.";
+        FontMetrics fontMetrics = g2.getFontMetrics();
+        int titleWidth = fontMetrics.stringWidth(title);
+        int textWidth = fontMetrics.stringWidth(text);
+        int text2Width = fontMetrics.stringWidth(text2);
+        int timeWidth = fontMetrics.stringWidth(time);
+        int cornerXTitle = screenCenterX - (titleWidth / 2) - 78;
+        int cornerXText = screenCenterX - (textWidth / 2) - 50;
+        int cornerXText2 = screenCenterX - (text2Width / 2) - 44;
+        int cornerXTime = screenCenterX - (timeWidth / 2) - 44;
+        int cornerY = screenCenterY - 60;
+        drawText(title, cornerXTitle, cornerY);
+        drawText(text, cornerXText, cornerY + 50, 26);
+        drawText(text2, cornerXText2, cornerY + 100, 26);
+        drawText(time, cornerXTime, cornerY + 150, 26);
+        int widthBtn = screenCenterX - (submitBtn.getWidth()) + 90;
+        int heightBtn = screenCenterY + 110;
+        drawImage(submitBtn, widthBtn, heightBtn);
     }
 
     public void setupPanel() {
-        submitBtnArr[0] = setupImage("/res/ui/btnSubmit.png", 2);
-        submitBtnArr[1] = setupImage("/res/ui/btnSubmitActive.png", 2);
-        missionPanel = setupImage("/res/ui/mission_panel.png");
-        finishPanel = setupImage("/res/ui/finish.png");
-        bar = setupImage("/res/ui/bar.png");
+        submitBtnArr[0] = setupImage("res/ui/btnSubmit.png", 2);
+        submitBtnArr[1] = setupImage("res/ui/btnSubmitActive.png", 2);
+        missionPanel = setupImage("res/ui/mission_panel.png");
+        finishPanel = setupImage("res/ui/finish.png");
+        bar = setupImage("res/ui/bar.png");
         submitBtn = submitBtnArr[0];
     }
 
@@ -329,6 +343,7 @@ public class Mission implements MouseListener {
                 public void actionPerformed(ActionEvent evt) {
                     submitBtn = submitBtnArr[0];
                     isFinish = false;
+                    done = true;
                 }
             };
             Timer timer = new Timer(delay, action);

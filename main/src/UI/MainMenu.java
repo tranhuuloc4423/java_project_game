@@ -147,12 +147,12 @@ public class MainMenu extends Menu  {
                         }
                     }
 
-                    int[] positionSE = getBoundPosition(settingMenuSoundEffect,80,-10,1 );
+                    int[] positionSE = getBoundPosition(settingMenuSEIcons[1],80,-10,1 );
                     if (checkMousePosition(positionSE, mouseX, mouseY) && gp.gameState != gp.startState) {
                         isSoundEffectEnabled = !isSoundEffectEnabled;
                     }
 
-                    int[] positionSubmit = getBoundPosition(settingMenuSEIcons[1],-110,140,1);
+                    int[] positionSubmit = getBoundPosition(settingMenuSubmits[1],-110,140,1);
                     if (checkMousePosition(positionSubmit, mouseX, mouseY) && gp.gameState != gp.startState) {
                         isSubmitEnabled = !isSubmitEnabled;
                         action = () -> gp.gameState = gp.playState;

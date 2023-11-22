@@ -6,6 +6,7 @@ import main.UtilityTool;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 
 public class Animal_Chicken extends Animal {
@@ -18,7 +19,6 @@ public class Animal_Chicken extends Animal {
         solidArea.y = 0;
         solidArea.width = 48;
         solidArea.height = 48;
-
     }
 
     @Override
@@ -72,10 +72,15 @@ public class Animal_Chicken extends Animal {
     public BufferedImage setup(String imageName) {
         BufferedImage image = null;
         int size = gp.tileSize;
-        try{
-            image =  ImageIO.read(getClass().getResourceAsStream("/res/animals/Chicken/" + imageName +".png"));
-            image = UtilityTool.scaleImage(image, size, size);
-        } catch(IOException e) {
+        try {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("res/animals/Chicken/" + imageName + ".png");
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                image = UtilityTool.scaleImage(image, size, size);
+            } else {
+                throw new IOException("Could not find resource: " + imageName);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return image;

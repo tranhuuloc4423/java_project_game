@@ -25,7 +25,6 @@ public class PeriodOfDay extends Menu {
         drawText(g2, timeString, 10, 40);
         drawNight(g2);
         if(isSleep) {
-            gp.gameDay++;
             gp.music[0].stop();
             drawSleepScene(g2);
             drawImage(g2, sleepingMessage, 130, -50);
@@ -63,14 +62,16 @@ public class PeriodOfDay extends Menu {
         g2.setColor(new Color(0, 0, 0, 200));
         g2.fillRect(0, 0, gp.getWidth(), gp.getHeight());
         gp.gameState = gp.pauseState;
-
         sleepTimer = new Timer(5000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 sleepTimer.stop();
-                isSleep = false;
+                if(isSleep) {
+                    gp.gameDay++;
+                }
                 gp.gameState = gp.playState;
                 gp.gameHour = 5;
+                isSleep = false;
                 if(gp.mainMenu.isMusicEnabled) {
                     gp.music[0].playMusic();
                 } else {

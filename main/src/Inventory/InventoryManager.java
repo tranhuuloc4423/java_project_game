@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.security.Key;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class InventoryManager {
             if(i == 1) {
                 initQuantity = 4;
             }
-            Item item = new Item("seed" + i, "/res/plants/seed_" + i + ".png", initQuantity, gp);
+            Item item = new Item("seed" + i, "res/plants/seed_" + i + ".png", initQuantity, gp);
             items.add(item);
         }
     }
@@ -45,11 +46,15 @@ public class InventoryManager {
         BufferedImage image = null;
         BufferedImage scaledImage = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream(filePath));
-            int width = image.getWidth() * gp.scale;
-            int height = image.getHeight() * gp.scale;
-            scaledImage = UtilityTool.scaleImage(image, width, height);
-
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                int width = image.getWidth() * gp.scale;
+                int height = image.getHeight() * gp.scale;
+                scaledImage = UtilityTool.scaleImage(image, width, height);
+            } else {
+                throw new IOException("Could not find resource: " + filePath);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,7 +62,7 @@ public class InventoryManager {
     }
 
     public BufferedImage drawInventoryBar(Graphics2D g2) {
-        BufferedImage image = setupImage("/res/ui/inventory_bar.png");
+        BufferedImage image = setupImage("res/ui/inventory_bar.png");
         int x = (gp.screenWidth - image.getWidth()) / 2;
         int y = gp.screenHeight - 160;
         g2.drawImage(image, x, y, null);
@@ -65,7 +70,7 @@ public class InventoryManager {
     }
 
     public void drawSelectItem(Graphics2D g2,int index) {
-        BufferedImage image = setupImage("/res/ui/SelectMenu.png");
+        BufferedImage image = setupImage("res/ui/SelectMenu.png");
         int initX = gp.tileSize * 6 + 30;
         int x = initX + (inventorySeparate * (index - 1));
         int y = gp.screenHeight - 154;

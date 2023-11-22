@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLOutput;
 import java.util.Objects;
 import Object.*;
@@ -122,10 +123,15 @@ public class Player extends Entity {
     public BufferedImage setup(String imageName, int scale) {
         BufferedImage image = null;
         int size = gp.tileSize * scale;
-        try{
-            image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/player/" + imageName + ".png")));
-            image = UtilityTool.scaleImage(image, size, size);
-        } catch(IOException e) {
+        try {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("res/player/" + imageName + ".png");
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                image = UtilityTool.scaleImage(image, size, size);
+            } else {
+                throw new IOException("Could not find resource: " + imageName);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return image;
