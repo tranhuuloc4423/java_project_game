@@ -1,22 +1,26 @@
 package Entity;
 
-import Tile.Tile;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLOutput;
+import java.util.Objects;
 import Object.*;
 
 public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX, screenY;
     public int landTileX, landTileY;
+    Timer timer;
 
     public BufferedImage[] hoeUp = new BufferedImage[spritesNum];
     public BufferedImage[] hoeDown = new BufferedImage[spritesNum];
@@ -28,9 +32,15 @@ public class Player extends Entity {
     public BufferedImage[] waterLeft = new BufferedImage[spritesNum];
     public BufferedImage[] waterRight = new BufferedImage[spritesNum];
 
+    public BufferedImage[] cuttreeUp = new BufferedImage[spritesNum];
+    public BufferedImage[] cuttreeDown = new BufferedImage[spritesNum];
+    public BufferedImage[] cuttreeLeft = new BufferedImage[spritesNum];
+    public BufferedImage[] cuttreeRight = new BufferedImage[spritesNum];
+
     boolean isHoeSE = false;
     boolean isWalkingSE = false;
     boolean isWateringSE = false;
+    boolean isCuttreeSE = false;
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
@@ -63,21 +73,24 @@ public class Player extends Entity {
 
     public void interactObject(int index) {
         if(index != 999) {
-//            switch (index) {
-//                case 0:
-//                    if(gp.keyH.interactpressed) {
-//                        gp.obj[index] = gp.obj[1];
-//                    }
-////                    preventMove();
-//                    break;
-//                case 1:
-//                    if(gp.keyH.interactpressed) {
-//                        gp.obj[index] = gp.obj[0];
-//                    }
-//                    break;
-//            }
+            switch (index) {
+                case 0:
+                    break;
+            }
         }
     }
+
+    public void interactObject() {
+
+    }
+
+    public void interactNPC(int index) {
+        if(index != 999) {
+            switch (index) {
+            }
+        }
+    }
+
 
     public void setPlayerImage() {
         for (int i = 1; i <= spritesNum; i++) {
@@ -110,10 +123,15 @@ public class Player extends Entity {
     public BufferedImage setup(String imageName, int scale) {
         BufferedImage image = null;
         int size = gp.tileSize * scale;
-        try{
-            image =  ImageIO.read(getClass().getResourceAsStream("/res/Player/" + imageName +".png"));
-            image = UtilityTool.scaleImage(image, size, size);
-        } catch(IOException e) {
+        try {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("res/player/" + imageName + ".png");
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                image = UtilityTool.scaleImage(image, size, size);
+            } else {
+                throw new IOException("Could not find resource: " + imageName);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return image;
@@ -126,8 +144,6 @@ public class Player extends Entity {
     @Override
     public void update() {
         getTilePositionPlayer();
-
-
         walkHandle();
         hoeAnimate();
         wateringAnimate();
@@ -161,6 +177,11 @@ public class Player extends Entity {
                 gp.music[3].playSE();
                 isWateringSE = true;
             }
+        } else if(sprites == cuttreeDown || sprites == cuttreeUp || sprites == cuttreeLeft || sprites == cuttreeRight) {
+            if (!isCuttreeSE) {
+                gp.music[12].playSE();
+                isCuttreeSE = true;
+            }
         } else {
             if(isWalkingSE) {
                 isWalkingSE = false;
@@ -171,13 +192,15 @@ public class Player extends Entity {
             } else if(isWateringSE) {
                 isWateringSE = false;
                 gp.music[3].stop();
+            } else if(isCuttreeSE) {
+                isCuttreeSE = false;
+                gp.music[12].stop();
             }
 
         }
     }
 
     public void walkHandle() {
-
         if((keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !keyH.hoePressed && !keyH.waterPressed) {
             if(keyH.upPressed && keyH.rightPressed) {
                 direction = "upright";
@@ -193,15 +216,14 @@ public class Player extends Entity {
                 direction = "down";
             } else if(keyH.leftPressed) {
                 direction = "left";
-            } else if(keyH.rightPressed) {
+            } else {
                 direction = "right";
             }
 
             // check tile collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
-            int objIndex = gp.cChecker.checkObject(this, true);
-            interactObject(objIndex);
+            gp.cChecker.checkObject(this, true);
 
 
             gp.cChecker.checkHitbox(this);
@@ -211,7 +233,6 @@ public class Player extends Entity {
 
             // IF COLLISON IS FALSE, PLAYER CAN MOVE
             if(!collisionOn) {
-
                 switch (direction){
                     case "up":
                         worldY -= speed;
@@ -275,7 +296,11 @@ public class Player extends Entity {
 
     public void idleAnimate() {
         boolean movePressed = (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed);
-        if((!movePressed && !keyH.hoePressed && !keyH.waterPressed) || (movePressed && keyH.hoePressed) || (movePressed && keyH.waterPressed) || (keyH.hoePressed && keyH.waterPressed)) {
+        if((!movePressed && !keyH.hoePressed && !keyH.waterPressed)
+                || (movePressed && keyH.hoePressed)
+                || (movePressed && keyH.waterPressed)
+                || (keyH.hoePressed && keyH.waterPressed)
+        ) {
             switch (direction) {
                 case "up":
                     sprites = idleUp;
@@ -288,6 +313,14 @@ public class Player extends Entity {
                     break;
                 case "right":
                     sprites = idleRight;
+                    break;
+                case "upright", "downright":
+                    sprites = idleRight;
+                    direction = "right";
+                    break;
+                case "upleft", "downleft":
+                    sprites = idleLeft;
+                    direction = "left";
                     break;
             }
         }
@@ -313,17 +346,13 @@ public class Player extends Entity {
 
     }
 
-    public void interactNPC(int index) {
-        if(index != 999) {
-            System.out.println("You are hitting an npc!");
-        }
-    }
-
     public void draw(Graphics2D g2) {
 
         if (sprites != null && spriteNum >= 1 && spriteNum <= sprites.length) {
             BufferedImage image = sprites[spriteNum - 1];
-            if((keyH.waterPressed || keyH.hoePressed) && !(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) && !(keyH.hoePressed && keyH.waterPressed))  {
+            if((keyH.waterPressed || keyH.hoePressed)
+                    && !(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed)
+                    && !(keyH.hoePressed && keyH.waterPressed))  {
                 g2.drawImage(image, screenX - gp.tileSize, screenY - gp.tileSize, null);
             } else {
                 g2.drawImage(image, screenX, screenY, null);

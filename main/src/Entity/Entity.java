@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Entity {
 
@@ -47,7 +48,6 @@ public class Entity {
                 && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
                 && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY
         ) {
-
             switch (direction) {
                 case "up":
                     sprites = up;
@@ -113,11 +113,15 @@ public class Entity {
         }
     }
     public BufferedImage setup(String imagePath) {
-        UtilityTool tool = new UtilityTool();
         BufferedImage image = null;
         try {
-            image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-            image = tool.scaleImage(image, gp.tileSize, gp.tileSize);
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("res/animals/Chicken/" + imagePath + ".png");
+            if (inputStream != null) {
+                image = ImageIO.read(inputStream);
+                image = UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            } else {
+                throw new IOException("Could not find resource: " + imagePath);
+            }
         } catch(IOException e) {
             e.printStackTrace();
         }

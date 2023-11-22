@@ -7,15 +7,9 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 
 public class OBJ_Border extends SuperObject {
-
-    GamePanel gp;
     public OBJ_Border(GamePanel gp) {
+        super(gp);
         name = "Border";
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/ui/border.png"));
-            UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        image = setupImage("res/ui/border.png", 1.5);
     }
 }

@@ -1,32 +1,28 @@
 package UI;
 
 import main.GamePanel;
+import main.Sound;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class MainMenu extends Menu  {
 
     private boolean drawMainMenu = true;
-
     private boolean isPauseEnabled = false;
     private boolean isOptionEnabled = false;
     private boolean isQuitEnabled = false;
-    private boolean isSubmit = false;
-    private boolean isCancel = false;
 
     // panel
     BufferedImage panel, imagePause, imageOption, imageQuit;
     BufferedImage[] imagePauses = new BufferedImage[2];
     BufferedImage[] imageOptions = new BufferedImage[2];
     BufferedImage[] imageQuits = new BufferedImage[2];
+    Timer timer;
 
     // exit
 
@@ -94,10 +90,10 @@ public class MainMenu extends Menu  {
         imageQuit = imageQuits[0];
     }
     public void drawPanel(Graphics2D g2) {
-        drawImage(g2, panel, 0, 0 , 1);
-        drawImage(g2, imagePause, 0, -90 , 1);
-        drawImage(g2, imageOption, 0, 0 , 1);
-        drawImage(g2, imageQuit, 0, 90 , 1);
+        drawImage(g2, panel, 0, 0);
+        drawImage(g2, imagePause, 0, -90);
+        drawImage(g2, imageOption, 0, 0);
+        drawImage(g2, imageQuit, 0, 90);
         isPauseEnabled = false;
         isOptionEnabled = false;
         isQuitEnabled = false;
@@ -120,112 +116,136 @@ public class MainMenu extends Menu  {
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
     public void mousePressed(MouseEvent e) {
-        int mouseX = e.getX();
-        int mouseY = e.getY();
-        checkDrawExitMenu(mouseX, mouseY, gp.playState);
-
-        if(drawSettingMenu) {
-            int[] positionMusicIcon = getBoundPosition(settingMenuMusicIcons[1],80,-45,1 );
-            if (checkMousePosition(positionMusicIcon, mouseX, mouseY) && gp.gameState != gp.startState) {
-                isMusicEnabled = !isMusicEnabled;
-            }
-
-            int[] positionSEStart = getBoundPosition(settingMenuSoundEffect,80,35,1 );
-            if (checkMousePosition(positionSEStart, mouseX, mouseY) && gp.gameState != gp.startState) {
-                isSoundEffectEnabled = !isSoundEffectEnabled;
-            }
-
-            int[] positionSubmit = getBoundPosition(settingMenuSEIcons[1],-100,120,1);
-            if (checkMousePosition(positionSubmit, mouseX, mouseY) && gp.gameState != gp.startState) {
-                isSubmitEnabled = !isSubmitEnabled;
-                ActionListener emptyAction = new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        gp.gameState = gp.playState;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Runnable action = null;
+                int mouseX = e.getX();
+                int mouseY = e.getY();
+                if (drawExitMenu) {
+                    int[] positionSubmitExit = getBoundPosition(imageSubmitExits[1],-80,40,1 );
+                    if (checkMousePosition(positionSubmitExit, mouseX, mouseY) && gp.gameState != gp.playState) {
+                        isSubmitExit = !isSubmitExit;
+                        action = () -> System.exit(0);
                     }
-                };
-                Timer timer = new Timer(delay, emptyAction);
-                timer.setRepeats(false);
-                timer.start();
-            }
-
-            int[] positionCancel = getBoundPosition(settingMenuCancels[1],95,120,1 );
-            if (checkMousePosition(positionCancel, mouseX, mouseY) && gp.gameState != gp.startState) {
-                isCancelEnabled = !isCancelEnabled;
-                ActionListener emptyAction = new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        gp.gameState = gp.playState;
-                        isMusicEnabled = false;
-                        isSoundEffectEnabled = false;
-                        drawSettingMenu = false;
+                    int[] positionCancelExit = getBoundPosition(imageCancelExits[1],80,40,1 );
+                    if (checkMousePosition(positionCancelExit, mouseX, mouseY) && gp.gameState != gp.playState) {
+                        isCancelExit = !isCancelExit;
+                        action = () -> gp.gameState = gp.playState;
                     }
-                };
-                Timer timer = new Timer(delay, emptyAction);
-                timer.setRepeats(false);
-                timer.start();
-            }
-        }
-        if (drawMainMenu) {
-            int[] positionPause = getBoundPosition(imagePause,0,-90,1 );
-            if (checkMousePosition(positionPause, mouseX, mouseY) && gp.gameState != gp.startState) {
-                isPauseEnabled = !isPauseEnabled;
-                int delay = 150;
-                ActionListener emptyAction = new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        gp.gameState = gp.playState;
-                    }
-                };
-                Timer timer = new Timer(delay, emptyAction);
-                timer.setRepeats(false);
-                timer.start();
-                timer = null;
+                }
 
-            }
-
-            int[] positionOption = getBoundPosition(imageOption,0,0,1 );
-            if (checkMousePosition(positionOption, mouseX, mouseY) && gp.gameState != gp.startState) {
-                isOptionEnabled = !isOptionEnabled;
-                int delay = 150;
-                ActionListener emptyAction = new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        drawSettingMenu = true;
+                if(drawSettingMenu) {
+                    int[] positionMusicIcon = getBoundPosition(settingMenuMusicIcons[1],80,-70,1 );
+                    if (checkMousePosition(positionMusicIcon, mouseX, mouseY) && gp.gameState != gp.startState) {
+                        isMusicEnabled = !isMusicEnabled;
+                        if(isMusicEnabled) {
+                            gp.music[0].playMusic();
+                        } else {
+                            gp.music[0].stop();
+                        }
                     }
-                };
-                Timer timer = new Timer(delay, emptyAction);
-                timer.setRepeats(false);
-                timer.start();
-            }
 
-            int[] positionQuit = getBoundPosition(imageQuit,0,90,1 );
-            if (checkMousePosition(positionQuit, mouseX, mouseY) && gp.gameState != gp.startState) {
-                isQuitEnabled = !isQuitEnabled;
-                int delay = 150;
-                ActionListener emptyAction = new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        drawMainMenu = !drawMainMenu;
-                        drawExitMenu = true;
+                    int[] positionSE = getBoundPosition(settingMenuSEIcons[1],80,-10,1 );
+                    if (checkMousePosition(positionSE, mouseX, mouseY) && gp.gameState != gp.startState) {
+                        isSoundEffectEnabled = !isSoundEffectEnabled;
                     }
-                };
-                Timer timer = new Timer(delay, emptyAction);
-                timer.setRepeats(false);
-                timer.start();
-                timer = null;
+
+                    int[] positionSubmit = getBoundPosition(settingMenuSubmits[1],-110,140,1);
+                    if (checkMousePosition(positionSubmit, mouseX, mouseY) && gp.gameState != gp.startState) {
+                        isSubmitEnabled = !isSubmitEnabled;
+                        action = () -> gp.gameState = gp.playState;
+                    }
+
+                    int[] positionCancel = getBoundPosition(settingMenuCancels[1],110,140,1 );
+                    if (checkMousePosition(positionCancel, mouseX, mouseY) && gp.gameState != gp.startState) {
+                        isCancelEnabled = !isCancelEnabled;
+                        action = () -> {
+                            gp.gameState = gp.playState;
+                            isMusicEnabled = false;
+                            isSoundEffectEnabled = false;
+                            gp.music[0].stop();
+                            drawSettingMenu = false;
+                        };
+                    }
+
+                    int[] positionAdd = getBoundPosition(settingAdds[1],100,65,1 );
+                    if (checkMousePosition(positionAdd, mouseX, mouseY)) {
+                        isAddClicked = !isAddClicked;
+                        if(initVolume <= 9) {
+                            initVolume++;
+                        }
+                        float volume = (float) initVolume / 10;
+                        System.out.println(volume);
+                        for(int i = 0; i < gp.music.length; i++) {
+                            if(gp.music[i] != null) {
+                                Sound.setVolume(gp.music[i].clip, volume);
+                            }
+                        }
+                        action = () -> {
+                            isAddClicked = false;
+                        };
+                    }
+
+                    int[] positionMinus = getBoundPosition(settingMinuses[1],-20,65,1 );
+                    if (checkMousePosition(positionMinus, mouseX, mouseY)) {
+                        isMinusClicked = !isMinusClicked;
+                        if(initVolume != 0) {
+                            initVolume--;
+                        }
+                        float volume = (float) initVolume / 10;
+                        System.out.println(volume);
+                        for(int i = 0; i < gp.music.length; i++) {
+                            if(gp.music[i] != null) {
+                                Sound.setVolume(gp.music[i].clip, volume);
+                            }
+                        }
+                        action = () -> {
+                            isMinusClicked = false;
+                        };
+                    }
+                }
+                if (drawMainMenu) {
+                    int[] positionPause = getBoundPosition(imagePause,0,-90,1 );
+                    if (checkMousePosition(positionPause, mouseX, mouseY) && gp.gameState != gp.startState) {
+                        isPauseEnabled = !isPauseEnabled;
+                        action = () -> gp.gameState = gp.playState;
+                    }
+
+                    int[] positionOption = getBoundPosition(imageOption,0,0,1 );
+                    if (checkMousePosition(positionOption, mouseX, mouseY) && gp.gameState != gp.startState) {
+                        isOptionEnabled = !isOptionEnabled;
+                        action = () -> drawSettingMenu = true;
+                    }
+
+                    int[] positionQuit = getBoundPosition(imageQuit,0,90,1 );
+                    if (checkMousePosition(positionQuit, mouseX, mouseY) && gp.gameState != gp.startState) {
+                        isQuitEnabled = !isQuitEnabled;
+                        action = () -> {
+                            drawMainMenu = !drawMainMenu;
+                            drawExitMenu = true;
+                        };
+                    }
+                }
+                if (action != null) {
+                    if (timer != null && timer.isRunning()) {
+                        timer.stop(); // Dừng Timer hiện tại nếu đang chạy
+                    }
+
+                    Runnable finalAction = action;
+                    ActionListener delayedAction = new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            finalAction.run();
+                        }
+                    };
+
+                    timer = new Timer(delay, delayedAction);
+                    timer.setRepeats(false);
+                    timer.start();
+                }
             }
-        }
+        });
     }
 }

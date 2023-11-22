@@ -1,20 +1,14 @@
 package Object;
 
 import main.GamePanel;
-import main.UtilityTool;
-
-import javax.imageio.ImageIO;
-import java.io.IOException;
 
 public class OBJ_Chest extends SuperObject {
-    GamePanel gp;
     public OBJ_Chest(GamePanel gp) {
+        super(gp);
         name = "Chest";
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/Object/chest.png"));
-            UtilityTool.scaleImage(image, gp.tileSize, gp.tileSize);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        images[0] = setupImage("res/object/chest.png");
+        images[1] = setupImage("res/object/chest_open.png");
+        image = images[0];
+        collision = true;
     }
 }

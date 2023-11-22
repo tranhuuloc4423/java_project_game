@@ -10,24 +10,19 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Tree {
-
+    GamePanel gp;
     public BufferedImage[] treeImages; // Mảng các hình ảnh tương ứng với các trạng thái cây
-    public int growthTime; // Thời gian cây phát triển (tính bằng mili giây)
-    public long startTime; // Thời điểm cây bắt đầu mọc
     public BufferedImage image;
     public String name;
-    public boolean collision = true;
     public int worldX, worldY;
-//    UtilityTool tool = new UtilityTool();
 
     private int imageChangeInterval; // Khoảng thời gian thay đổi hình ảnh (tính bằng mili giây)
     private long lastImageChangeTime;
     private int currentImageIndex;
 
-    public boolean isHarvested;
 
-
-    public Tree(BufferedImage[]treeImages, int imageChangeInterval, String name) {
+    public Tree(GamePanel gp, BufferedImage[]treeImages, int imageChangeInterval, String name) {
+        this.gp = gp;
         this.treeImages = treeImages;
         this.imageChangeInterval = imageChangeInterval;
         this.currentImageIndex = 0;
@@ -48,14 +43,18 @@ public class Tree {
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - lastImageChangeTime;
 
-        if (elapsedTime >= imageChangeInterval) {
-            // Đổi hình ảnh
-            if (currentImageIndex < treeImages.length - 1) {
-                currentImageIndex++;
+        if(!gp.pod.isSleep) {
+            if (elapsedTime >= imageChangeInterval) {
+                // Đổi hình ảnh
+                if (currentImageIndex < treeImages.length - 1) {
+                    currentImageIndex++;
+                }
+                image = treeImages[currentImageIndex];
+                // Cập nhật thời điểm thay đổi hình ảnh cuối cùng
+                lastImageChangeTime = currentTime;
             }
-            image = treeImages[currentImageIndex];
-            // Cập nhật thời điểm thay đổi hình ảnh cuối cùng
-            lastImageChangeTime = currentTime;
+        } else {
+            image = treeImages[treeImages.length - 1];
         }
     }
 
@@ -74,9 +73,5 @@ public class Tree {
 
             }
         }
-    }
-
-    public void harvest() {
-        isHarvested = true;
     }
 }

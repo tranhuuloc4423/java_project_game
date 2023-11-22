@@ -3,10 +3,9 @@ package main;
 import Entity.Entity;
 import Entity.Player;
 import Inventory.InventoryManager;
-import Inventory.Store;
+import Inventory.Storage;
 import Object.SuperObject;
-import Plant.Tree;
-import Tile.PlantCrop;
+import Plant.PlantCrop;
 import Tile.TileManager;
 
 import javax.imageio.ImageIO;
@@ -14,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+
 import Object.*;
 import UI.*;
 
@@ -34,21 +35,26 @@ public class GamePanel extends JPanel implements  Runnable {
     public final int maxWorldCol = 70;
     public final int maxWorldRow = 70;
 
+    // time
+    private static final int GAME_MINUTES_PER_HOUR = 60; // Số phút trong game tương đương với một giờ thời gian thực
+    private static final int GAME_HOURS_PER_DAY = 24; // Số giờ trong game tương đương với một ngày
 
+    public int gameMinute = 0;
+    public int gameHour = 0; // Giờ trong game
+    public int gameDay = 0; // Ngày trong game
 
     // FPS
     public int FPS = 60;
 
     // SYSTEM
     public KeyHandler keyH = new KeyHandler(this);
-    public MouseHandler mouseH = new MouseHandler(this);
     Cursor customCursor;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
-    public Sound[] music = new Sound[10];
+
     Thread gameThread;
     public Player player = new Player(this, keyH);
-    public SuperObject obj[] = new SuperObject[10];
+    public SuperObject obj[] = new SuperObject[50];
     public SuperObject border = new OBJ_Border(this);
     public boolean drawBorder = true;
 //    public Tree plants[] = new Tree[10];
@@ -63,12 +69,14 @@ public class GamePanel extends JPanel implements  Runnable {
 //    public Menu menu = new Menu(this);
     public StartMenu startMenu = new StartMenu(this);
     public MainMenu mainMenu = new MainMenu(this);
+    public PeriodOfDay pod = new PeriodOfDay(this);
+    public Sound[] music = new Sound[20];
     // inventory
     public InventoryManager invetoryM = new InventoryManager(this);
-
-
-    public Store store = new Store(this);
+    public Storage storage = new Storage(this);
     public Mission mission = new Mission(this);
+
+    public InteractHandler interactH = new InteractHandler(this);
     // game state
     public int gameState;
     public final int playState = 1;
@@ -81,14 +89,20 @@ public class GamePanel extends JPanel implements  Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
-        addMouseListener(mouseH);
         customCursor();
+        gameHour = 0;
     }
     public void customCursor() {
         try {
-            BufferedImage cursorImage = ImageIO.read(getClass().getResourceAsStream("/res/mouse/custom_mouse_1.png"));
-            customCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "customCursor");
-            setCursor(customCursor);
+            String imagePath = "res/mouse/custom_mouse_1.png";
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(imagePath);
+            if (inputStream != null) {
+                BufferedImage cursorImage = ImageIO.read(inputStream);
+                customCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "customCursor");
+                setCursor(customCursor);
+            } else {
+                throw new IOException("Could not find resource: " + imagePath);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,8 +116,16 @@ public class GamePanel extends JPanel implements  Runnable {
         music[2] = new Sound("hoe", this);
         music[3] = new Sound("water", this);
         music[4] = new Sound("closedoor", this);
+        music[5] = new Sound("seed", this);
+        music[6] = new Sound("cow", this);
+        music[7] = new Sound("chicken", this);
+        music[8] = new Sound("harvest", this);
+        music[9] = new Sound("chest_open", this);
+        music[10] = new Sound("chest_close", this);
+        music[11] = new Sound("sleep", this);
+        music[12] = new Sound("cut_tree", this);
 
-//        music[0].playMusic();
+        music[0].playMusic();
         gameState = startState;
     }
     public void startGameThread() {
@@ -158,9 +180,26 @@ public class GamePanel extends JPanel implements  Runnable {
             }
 
             if(timer >= 1000000000) {
+                updateTime();
                 System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
+            }
+        }
+    }
+
+
+
+    void updateTime() {
+        if(gameState == playState) {
+            gameMinute += 5;
+            if(gameMinute >= GAME_MINUTES_PER_HOUR) {
+                gameMinute %= GAME_MINUTES_PER_HOUR;
+                gameHour++;
+                if (gameHour >= GAME_HOURS_PER_DAY) {
+                    gameHour %= GAME_HOURS_PER_DAY;
+                    gameDay++;
+                }
             }
         }
     }
@@ -169,15 +208,14 @@ public class GamePanel extends JPanel implements  Runnable {
         if(gameState == startState) {
             startMenu.update();
         }
-        mainMenu.update();
+
         if(gameState == playState) {
+//            updateGameTime();
             player.update();
             // tiles
             tileM.update();
             // inventory
-            if(invetoryM.inventoryOn) {
-                invetoryM.update();
-            }
+            invetoryM.update();
             // plantcrop
             plantcrop.update();
 
@@ -187,9 +225,18 @@ public class GamePanel extends JPanel implements  Runnable {
                     npc[i].update();
                 }
             }
+            for(int i = 0; i < obj.length; i++) {
+                if(obj[i] != null) {
+                    obj[i].update();
+                }
+            }
+
+            interactH.update();
         }
+        mainMenu.update();
         if(gameState == pauseState) {
             // nothing
+
         }
     }
     public void paintComponent(Graphics g) {
@@ -214,16 +261,9 @@ public class GamePanel extends JPanel implements  Runnable {
             tileM.draw(g2);
             plantcrop.draw(g2);
 
-            // objects
-            for (int i = 0; i < obj.length; i++) {
-                if (obj[i] != null) {
-                    obj[i].draw(g2, this);
-                }
-            }
 
-            if(drawBorder) {
-                border.draw(g2, this);
-            }
+
+
 
             // npc
             for (int i = 0; i < npc.length; i++) {
@@ -231,11 +271,21 @@ public class GamePanel extends JPanel implements  Runnable {
                     npc[i].draw(g2);
                 }
             }
-
-
-
+            obj[0].draw(g2, this);
             // player
             player.draw(g2);
+
+            // objects
+            for (int i = 1; i < obj.length; i++) {
+                if (obj[i] != null) {
+                    obj[i].draw(g2, this);
+                }
+            }
+
+            // border
+            if(drawBorder) {
+                border.draw(g2, this);
+            }
 
             // inventory
             if(invetoryM.inventoryOn) {
@@ -244,21 +294,20 @@ public class GamePanel extends JPanel implements  Runnable {
 
             // plantcrop
 
-
-//            ui.draw(g2);
+            // ui.draw(g2);
             if(mission.missionOn) {
                 mission.draw(g2);
             }
 
-            if(store.storeOn) {
-                store.draw(g2);
+            if(storage.storeOn) {
+                storage.draw(g2);
             }
 
-            for(int i = 0; i < hitboxes.length; i++) {
-                if(hitboxes[i] != null) {
-                    hitboxes[i].draw(g2, this);
-                }
-            }
+//            for(int i = 0; i < hitboxes.length; i++) {
+//                if(hitboxes[i] != null) {
+//                    hitboxes[i].draw(g2, this);
+//                }
+//            }
 
             // debug
             if (keyH.checkDrawTime) {
@@ -269,6 +318,8 @@ public class GamePanel extends JPanel implements  Runnable {
                 System.out.println("Draw time : " + passed);
             }
             mainMenu.draw(g2);
+
+            pod.draw(g2);
         }
 
         // Sao chép bộ đệm ẩn lên màn hình

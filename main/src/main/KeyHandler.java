@@ -49,7 +49,6 @@ public class KeyHandler implements KeyListener {
             if(gp.gameState == gp.playState) {
                 gp.gameState = gp.pauseState;
             } else if(gp.gameState == gp.pauseState) {
-//                gp.gameState = gp.playState;
                 gp.gameState = gp.playState;
 
             }
@@ -97,8 +96,9 @@ public class KeyHandler implements KeyListener {
         }
 
         if(code == KeyEvent.VK_T) {
-            checkDrawTime = !checkDrawTime;
+
         }
+
         if(code == KeyEvent.VK_M) {
             gp.mission.missionOn = !gp.mission.missionOn;
         }
@@ -117,10 +117,17 @@ public class KeyHandler implements KeyListener {
             plantPressed = true;
         }
         if(code == KeyEvent.VK_F) {
-            gp.tileM.interactTile(34, 34, 299, 298);
+            interactpressed = true;
+            gp.interactH.doorHandle(34, 34);
+            gp.interactH.chestHandle(38, 30);
+            gp.interactH.bedHandle(36, 30);
         }
         if(code == KeyEvent.VK_B) {
-            gp.store.storeOn = !gp.store.storeOn;
+//            gp.store.storeOn = !gp.store.storeOn;
+        }
+
+        if(code == KeyEvent.VK_Z) {
+            checkDrawTime = !checkDrawTime;
         }
     }
 
@@ -148,6 +155,8 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_R) {
             hoePressed = false;
+        }
+        if(code == KeyEvent.VK_T) {
         }
 
         if(code == KeyEvent.VK_O) {
